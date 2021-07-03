@@ -54,7 +54,7 @@ public class FunctionalGroupEntity {
     @ApiModelProperty(notes = "hard delete.", example = "1 | 0")
     private int hardDelete;
 
-    public Long getFunctionalGroupId() {
+	public Long getFunctionalGroupId() {
 		return functionalGroupId;
 	}
 
