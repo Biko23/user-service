@@ -16,27 +16,27 @@ public class SystemUserFunctionalGroupMappingService {
     private SystemUserFunctionalGroupMappingRepository systemUserFunctionalGroupMappingRepository;
 
     public SystemUserFunctionalGroupMappingEntity saveSystemUserFunctionalGroupMapping(SystemUserFunctionalGroupMappingEntity systemUserFunctionalGroupMappingEntity) {
-        log.info("Inside saveSystemUserFunctionalGroupMapping method of SystemUserFunctionalGroupMappingService");
+//        log.info("Inside saveSystemUserFunctionalGroupMapping method of SystemUserFunctionalGroupMappingService");
         return systemUserFunctionalGroupMappingRepository.save(systemUserFunctionalGroupMappingEntity);
     }
 
     public SystemUserFunctionalGroupMappingEntity findBySystemUserFunctionalGroupMappingId(Long systemUserFunctionalGroupMappingEntity) {
-        log.info("Inside findBySystemUserFunctionalGroupMappingId method of SystemUserFunctionalGroupMappingService");
+//        log.info("Inside findBySystemUserFunctionalGroupMappingId method of SystemUserFunctionalGroupMappingService");
         return systemUserFunctionalGroupMappingRepository.findBySystemUserFunctionalGroupMappingId(systemUserFunctionalGroupMappingEntity);
     }
 
     public List<SystemUserFunctionalGroupMappingEntity> listAllSystemUserFunctionalGroupMappings() {
-        log.info("Inside listAllSystemUserFunctionalGroupMappings method of SystemUserFunctionalGroupMappingService");
+//        log.info("Inside listAllSystemUserFunctionalGroupMappings method of SystemUserFunctionalGroupMappingService");
         return systemUserFunctionalGroupMappingRepository.findAll();
     }
 
     public void deleteSystemUserFunctionalGroupMapping(Long systemUserFunctionalGroupMappingEntity) {
-        log.info("Inside deleteSystemUserFunctionalGroupMapping method of SystemUserFunctionalGroupMappingService");
+//        log.info("Inside deleteSystemUserFunctionalGroupMapping method of SystemUserFunctionalGroupMappingService");
         systemUserFunctionalGroupMappingRepository.deleteById(systemUserFunctionalGroupMappingEntity);
     }
 
     public void deleteAllSystemUserFunctionalGroupMappings() {
-        log.info("Inside deleteAllSystemUserFunctionalGroupMappings method of SystemUserFunctionalGroupMappingService");
+//        log.info("Inside deleteAllSystemUserFunctionalGroupMappings method of SystemUserFunctionalGroupMappingService");
         systemUserFunctionalGroupMappingRepository.deleteAll();
     }
 

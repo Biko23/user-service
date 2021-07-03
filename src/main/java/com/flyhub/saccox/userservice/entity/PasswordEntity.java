@@ -68,4 +68,12 @@ public class PasswordEntity {
     @ApiModelProperty(notes = "hard delete.", example = "1 | 0")
     private int hardDelete;
 
+	public Long getPasswordId() {
+		return passwordId;
+	}
+
+	public void setPasswordId(Long passwordId) {
+		this.passwordId = passwordId;
+	}
+
 }

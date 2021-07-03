@@ -16,27 +16,27 @@ public class LoginAttemptService {
     private LoginAttemptRepository loginAttemptRepository;
 
     public LoginAttemptEntity saveLoginAttempt(LoginAttemptEntity loginAttemptEntity) {
-        log.info("Inside saveLoginAttempt method of LoginAttemptService");
+//        log.info("Inside saveLoginAttempt method of LoginAttemptService");
         return loginAttemptRepository.save(loginAttemptEntity);
     }
 
     public LoginAttemptEntity findByLoginAttemptId(Long loginAttemptId) {
-        log.info("Inside findByLoginAttemptId method of LoginAttemptService");
+//        log.info("Inside findByLoginAttemptId method of LoginAttemptService");
         return loginAttemptRepository.findByLoginAttemptId(loginAttemptId);
     }
 
     public List<LoginAttemptEntity> listAllLoginAttempts() {
-        log.info("Inside listAllLoginAttempts method of LoginAttemptService");
+//        log.info("Inside listAllLoginAttempts method of LoginAttemptService");
         return loginAttemptRepository.findAll();
     }
 
     public void deleteLoginAttempt(Long loginAttemptId) {
-        log.info("Inside deleteLoginAttempt method of LoginAttemptService");
+//        log.info("Inside deleteLoginAttempt method of LoginAttemptService");
         loginAttemptRepository.deleteById(loginAttemptId);
     }
 
     public void deleteAllLoginAttempts() {
-        log.info("Inside deleteAllLoginAttempts method of LoginAttemptService");
+//        log.info("Inside deleteAllLoginAttempts method of LoginAttemptService");
         loginAttemptRepository.deleteAll();
     }
 

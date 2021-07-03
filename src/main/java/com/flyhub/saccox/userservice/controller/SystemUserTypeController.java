@@ -22,7 +22,7 @@ public class SystemUserTypeController {
 
     @PostMapping("")
     public ResponseEntity<SystemUserTypeEntity> saveSystemUserType(@RequestBody SystemUserTypeEntity systemUserTypeEntity) {
-        log.info("Inside saveSystemUserType method of SystemUserTypeController");
+//        log.info("Inside saveSystemUserType method of SystemUserTypeController");
         try {
             SystemUserTypeEntity _systemUserTypeEntity = systemUserTypeService.saveSystemUserType(systemUserTypeEntity);
             return new ResponseEntity<>(_systemUserTypeEntity, HttpStatus.CREATED);
@@ -33,7 +33,7 @@ public class SystemUserTypeController {
 
     @GetMapping("/{systemUserTypeId}")
     public ResponseEntity<SystemUserTypeEntity> findBySystemUserTypeId(@PathVariable("systemUserTypeId") Long systemUserTypeId) {
-        log.info("Inside findBySystemUserTypeId method of SystemUserTypeController");
+//        log.info("Inside findBySystemUserTypeId method of SystemUserTypeController");
         Optional<SystemUserTypeEntity> systemUserTypeOptional = Optional.ofNullable(systemUserTypeService.findBySystemUserTypeId(systemUserTypeId));
 
         if (systemUserTypeOptional.isPresent()) {
@@ -45,7 +45,7 @@ public class SystemUserTypeController {
 
     @GetMapping("")
     public ResponseEntity<List<SystemUserTypeEntity>> findAllSystemUserTypes() {
-        log.info("Inside findAllSystemUserTypes method of SystemUserTypeController");
+//        log.info("Inside findAllSystemUserTypes method of SystemUserTypeController");
         try {
             List<SystemUserTypeEntity> systemUserTypes = new ArrayList<SystemUserTypeEntity>();
             systemUserTypes.addAll(systemUserTypeService.listAllSystemUserTypes());
@@ -62,7 +62,7 @@ public class SystemUserTypeController {
 
     @PutMapping("/{systemUserTypeId}")
     public ResponseEntity<SystemUserTypeEntity> fullUpdateSystemUserType(@PathVariable("systemUserTypeId") Long systemUserTypeId, @RequestBody SystemUserTypeEntity systemUserTypeEntity) {
-        log.info("Inside fullUpdateSystemUserType method of SystemUserTypeController");
+//        log.info("Inside fullUpdateSystemUserType method of SystemUserTypeController");
         Optional<SystemUserTypeEntity> systemUserTypeOptional = Optional.ofNullable(systemUserTypeService.findBySystemUserTypeId(systemUserTypeId));
 
         if (systemUserTypeOptional.isPresent()) {
@@ -75,7 +75,7 @@ public class SystemUserTypeController {
 
     @PatchMapping("/{systemUserTypeId}")
     public ResponseEntity<SystemUserTypeEntity> partialUpdateSystemUserType(@PathVariable("systemUserTypeId") Long systemUserTypeId, @RequestBody SystemUserTypeEntity systemUserTypeEntity) {
-        log.info("Inside partialUpdateSystemUserType method of SystemUserTypeController");
+//        log.info("Inside partialUpdateSystemUserType method of SystemUserTypeController");
         Optional<SystemUserTypeEntity> systemUserTypeOptional = Optional.ofNullable(systemUserTypeService.findBySystemUserTypeId(systemUserTypeId));
 
         if (systemUserTypeOptional.isPresent()) {
@@ -88,7 +88,7 @@ public class SystemUserTypeController {
 
     @DeleteMapping("/{systemUserTypeId}")
     public ResponseEntity<HttpStatus> deleteSystemUserType(@PathVariable("systemUserTypeId") Long systemUserTypeId) {
-        log.info("Inside deleteSystemUserType method of SystemUserTypeController");
+//        log.info("Inside deleteSystemUserType method of SystemUserTypeController");
         try {
             systemUserTypeService.deleteSystemUserType(systemUserTypeId);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -99,7 +99,7 @@ public class SystemUserTypeController {
 
     @DeleteMapping("")
     public ResponseEntity<HttpStatus> deleteAllSystemUserTypes() {
-        log.info("Inside deleteAllSystemUserTypes method of SystemUserTypeController");
+//        log.info("Inside deleteAllSystemUserTypes method of SystemUserTypeController");
         try {
             systemUserTypeService.deleteAllSystemUserTypes();
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);

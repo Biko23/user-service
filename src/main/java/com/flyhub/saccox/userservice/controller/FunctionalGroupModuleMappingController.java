@@ -22,7 +22,7 @@ public class FunctionalGroupModuleMappingController {
 
     @PostMapping("")
     public ResponseEntity<FunctionalGroupModuleMappingEntity> saveFunctionalGroupModuleMapping(@RequestBody FunctionalGroupModuleMappingEntity functionalGroupModuleMappingEntity) {
-        log.info("Inside saveFunctionalGroupModuleMapping method of FunctionalGroupModuleMappingController");
+//        log.info("Inside saveFunctionalGroupModuleMapping method of FunctionalGroupModuleMappingController");
         try {
             FunctionalGroupModuleMappingEntity _functionalGroupModuleMappingEntity = functionalGroupModuleMappingService.saveFunctionalGroupModuleMapping(functionalGroupModuleMappingEntity);
             return new ResponseEntity<>(_functionalGroupModuleMappingEntity, HttpStatus.CREATED);
@@ -33,7 +33,7 @@ public class FunctionalGroupModuleMappingController {
 
     @GetMapping("/{functionalGroupModuleMappingId}")
     public ResponseEntity<FunctionalGroupModuleMappingEntity> findByFunctionalGroupModuleMappingId(@PathVariable("functionalGroupModuleMappingId") Long functionalGroupModuleMappingId) {
-        log.info("Inside findByFunctionalGroupModuleMappingId method of FunctionalGroupModuleMappingController");
+//        log.info("Inside findByFunctionalGroupModuleMappingId method of FunctionalGroupModuleMappingController");
         Optional<FunctionalGroupModuleMappingEntity> functionalGroupModuleMappingOptional = Optional.ofNullable(functionalGroupModuleMappingService.findByFunctionalGroupModuleMappingId(functionalGroupModuleMappingId));
 
         if (functionalGroupModuleMappingOptional.isPresent()) {
@@ -45,7 +45,7 @@ public class FunctionalGroupModuleMappingController {
 
     @GetMapping("")
     public ResponseEntity<List<FunctionalGroupModuleMappingEntity>> findAllFunctionalGroupModuleMappings() {
-        log.info("Inside findAllFunctionalGroupModuleMappings method of FunctionalGroupModuleMappingController");
+//        log.info("Inside findAllFunctionalGroupModuleMappings method of FunctionalGroupModuleMappingController");
         try {
             List<FunctionalGroupModuleMappingEntity> functionalGroupModuleMappings = new ArrayList<FunctionalGroupModuleMappingEntity>();
             functionalGroupModuleMappings.addAll(functionalGroupModuleMappingService.listAllFunctionalGroupModuleMappings());
@@ -62,7 +62,7 @@ public class FunctionalGroupModuleMappingController {
 
     @PutMapping("/{functionalGroupModuleMappingId}")
     public ResponseEntity<FunctionalGroupModuleMappingEntity> fullUpdateFunctionalGroupModuleMapping(@PathVariable("functionalGroupModuleMappingId") Long functionalGroupModuleMappingId, @RequestBody FunctionalGroupModuleMappingEntity functionalGroupModuleMappingEntity) {
-        log.info("Inside fullUpdateFunctionalGroupModuleMapping method of FunctionalGroupModuleMappingController");
+//        log.info("Inside fullUpdateFunctionalGroupModuleMapping method of FunctionalGroupModuleMappingController");
         Optional<FunctionalGroupModuleMappingEntity> functionalGroupModuleMappingOptional = Optional.ofNullable(functionalGroupModuleMappingService.findByFunctionalGroupModuleMappingId(functionalGroupModuleMappingId));
 
         if (functionalGroupModuleMappingOptional.isPresent()) {
@@ -75,7 +75,7 @@ public class FunctionalGroupModuleMappingController {
 
     @PatchMapping("/{functionalGroupModuleMappingId}")
     public ResponseEntity<FunctionalGroupModuleMappingEntity> partialUpdateFunctionalGroupModuleMapping(@PathVariable("functionalGroupModuleMappingId") Long functionalGroupModuleMappingId, @RequestBody FunctionalGroupModuleMappingEntity functionalGroupModuleMappingEntity) {
-        log.info("Inside partialUpdateFunctionalGroupModuleMapping method of FunctionalGroupModuleMappingController");
+//        log.info("Inside partialUpdateFunctionalGroupModuleMapping method of FunctionalGroupModuleMappingController");
         Optional<FunctionalGroupModuleMappingEntity> functionalGroupModuleMappingOptional = Optional.ofNullable(functionalGroupModuleMappingService.findByFunctionalGroupModuleMappingId(functionalGroupModuleMappingId));
 
         if (functionalGroupModuleMappingOptional.isPresent()) {
@@ -88,7 +88,7 @@ public class FunctionalGroupModuleMappingController {
 
     @DeleteMapping("/{functionalGroupModuleMappingId}")
     public ResponseEntity<HttpStatus> deleteFunctionalGroupModuleMapping(@PathVariable("functionalGroupModuleMappingId") Long functionalGroupModuleMappingId) {
-        log.info("Inside deleteFunctionalGroupModuleMapping method of FunctionalGroupModuleMappingController");
+//        log.info("Inside deleteFunctionalGroupModuleMapping method of FunctionalGroupModuleMappingController");
         try {
             functionalGroupModuleMappingService.deleteFunctionalGroupModuleMapping(functionalGroupModuleMappingId);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -99,7 +99,7 @@ public class FunctionalGroupModuleMappingController {
 
     @DeleteMapping("")
     public ResponseEntity<HttpStatus> deleteAllFunctionalGroupModuleMappings() {
-        log.info("Inside deleteAllFunctionalGroupModuleMappings method of FunctionalGroupModuleMappingController");
+//        log.info("Inside deleteAllFunctionalGroupModuleMappings method of FunctionalGroupModuleMappingController");
         try {
             functionalGroupModuleMappingService.deleteAllFunctionalGroupModuleMappings();
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);

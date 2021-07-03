@@ -16,27 +16,27 @@ public class FunctionalGroupModuleMappingService {
     private FunctionalGroupModuleMappingRepository functionalGroupModuleMappingRepository;
 
     public FunctionalGroupModuleMappingEntity saveFunctionalGroupModuleMapping(FunctionalGroupModuleMappingEntity functionalGroupModuleMappingEntity) {
-        log.info("Inside saveFunctionalGroupModuleMapping method of FunctionalGroupModuleMappingService");
+//        log.info("Inside saveFunctionalGroupModuleMapping method of FunctionalGroupModuleMappingService");
         return functionalGroupModuleMappingRepository.save(functionalGroupModuleMappingEntity);
     }
 
     public FunctionalGroupModuleMappingEntity findByFunctionalGroupModuleMappingId(Long functionalGroupModuleMappingId) {
-        log.info("Inside findByFunctionalGroupModuleMappingId method of FunctionalGroupModuleMappingService");
+//        log.info("Inside findByFunctionalGroupModuleMappingId method of FunctionalGroupModuleMappingService");
         return functionalGroupModuleMappingRepository.findByFunctionalGroupModuleMappingId(functionalGroupModuleMappingId);
     }
 
     public List<FunctionalGroupModuleMappingEntity> listAllFunctionalGroupModuleMappings() {
-        log.info("Inside listAllFunctionalGroupModuleMappings method of FunctionalGroupModuleMappingService");
+//        log.info("Inside listAllFunctionalGroupModuleMappings method of FunctionalGroupModuleMappingService");
         return functionalGroupModuleMappingRepository.findAll();
     }
 
     public void deleteFunctionalGroupModuleMapping(Long functionalGroupModuleMappingId) {
-        log.info("Inside deleteFunctionalGroupModuleMapping method of FunctionalGroupModuleMappingService");
+//        log.info("Inside deleteFunctionalGroupModuleMapping method of FunctionalGroupModuleMappingService");
         functionalGroupModuleMappingRepository.deleteById(functionalGroupModuleMappingId);
     }
 
     public void deleteAllFunctionalGroupModuleMappings() {
-        log.info("Inside deleteAllFunctionalGroupModuleMappings method of FunctionalGroupModuleMappingService");
+//        log.info("Inside deleteAllFunctionalGroupModuleMappings method of FunctionalGroupModuleMappingService");
         functionalGroupModuleMappingRepository.deleteAll();
     }
 

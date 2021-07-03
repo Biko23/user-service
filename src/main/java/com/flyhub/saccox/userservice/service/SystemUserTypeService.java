@@ -16,27 +16,27 @@ public class SystemUserTypeService {
     private SystemUserTypeRepository systemUserTypeRepository;
 
     public SystemUserTypeEntity saveSystemUserType(SystemUserTypeEntity systemUserTypeEntity) {
-        log.info("Inside saveSystemUserType method of SystemUserTypeService");
+//        log.info("Inside saveSystemUserType method of SystemUserTypeService");
         return systemUserTypeRepository.save(systemUserTypeEntity);
     }
 
     public SystemUserTypeEntity findBySystemUserTypeId(Long systemUserTypeId) {
-        log.info("Inside findBySystemUserTypeId method of SystemUserTypeService");
+//        log.info("Inside findBySystemUserTypeId method of SystemUserTypeService");
         return systemUserTypeRepository.findBySystemUserTypeId(systemUserTypeId);
     }
 
     public List<SystemUserTypeEntity> listAllSystemUserTypes() {
-        log.info("Inside listAllSystemUserTypes method of SystemUserTypeService");
+//        log.info("Inside listAllSystemUserTypes method of SystemUserTypeService");
         return systemUserTypeRepository.findAll();
     }
 
     public void deleteSystemUserType(Long systemUserTypeId) {
-        log.info("Inside deleteSystemUserType method of SystemUserTypeService");
+//        log.info("Inside deleteSystemUserType method of SystemUserTypeService");
         systemUserTypeRepository.deleteById(systemUserTypeId);
     }
 
     public void deleteAllSystemUserTypes() {
-        log.info("Inside deleteAllSystemUserTypes method of SystemUserTypeService");
+//        log.info("Inside deleteAllSystemUserTypes method of SystemUserTypeService");
         systemUserTypeRepository.deleteAll();
     }
 

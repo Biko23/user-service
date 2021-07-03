@@ -23,7 +23,7 @@ public class FunctionalGroupModuleTypeController {
 
     @PostMapping("")
     public ResponseEntity<FunctionalGroupModuleTypeEntity> saveFunctionalGroupModuleType(@RequestBody FunctionalGroupModuleTypeEntity functionalGroupModuleTypeEntity) {
-        log.info("Inside saveFunctionalGroupModuleType method of FunctionalGroupModuleTypeController");
+//        log.info("Inside saveFunctionalGroupModuleType method of FunctionalGroupModuleTypeController");
         try {
             FunctionalGroupModuleTypeEntity _functionalGroupModuleTypeEntity = functionalGroupModuleTypeService.saveFunctionalGroupModuleType(functionalGroupModuleTypeEntity);
             return new ResponseEntity<>(_functionalGroupModuleTypeEntity, HttpStatus.CREATED);
@@ -34,7 +34,7 @@ public class FunctionalGroupModuleTypeController {
 
     @GetMapping("/{functionalGroupModuleTypeId}")
     public ResponseEntity<FunctionalGroupModuleTypeEntity> findByFunctionalGroupModuleTypeId(@PathVariable("functionalGroupModuleTypeId") Long functionalGroupModuleTypeId) {
-        log.info("Inside findByFunctionalGroupModuleTypeId method of FunctionalGroupModuleTypeController");
+//        log.info("Inside findByFunctionalGroupModuleTypeId method of FunctionalGroupModuleTypeController");
         Optional<FunctionalGroupModuleTypeEntity> functionalGroupModuleTypeOptional = Optional.ofNullable(functionalGroupModuleTypeService.findByFunctionalGroupModuleTypeId(functionalGroupModuleTypeId));
 
         if (functionalGroupModuleTypeOptional.isPresent()) {
@@ -46,7 +46,7 @@ public class FunctionalGroupModuleTypeController {
 
     @GetMapping("")
     public ResponseEntity<List<FunctionalGroupModuleTypeEntity>> findAllFunctionalGroupModuleTypes() {
-        log.info("Inside findAllFunctionalGroupModuleTypes method of FunctionalGroupModuleTypeController");
+//        log.info("Inside findAllFunctionalGroupModuleTypes method of FunctionalGroupModuleTypeController");
         try {
             List<FunctionalGroupModuleTypeEntity> functionalGroupModuleTypes = new ArrayList<FunctionalGroupModuleTypeEntity>();
             functionalGroupModuleTypes.addAll(functionalGroupModuleTypeService.listAllFunctionalGroupModuleTypes());
@@ -63,7 +63,7 @@ public class FunctionalGroupModuleTypeController {
 
     @PutMapping("/{functionalGroupModuleTypeId}")
     public ResponseEntity<FunctionalGroupModuleTypeEntity> fullUpdateFunctionalGroupModuleType(@PathVariable("functionalGroupModuleTypeId") Long functionalGroupModuleTypeId, @RequestBody FunctionalGroupModuleTypeEntity functionalGroupModuleTypeEntity) {
-        log.info("Inside fullUpdateFunctionalGroupModuleType method of FunctionalGroupModuleTypeController");
+//        log.info("Inside fullUpdateFunctionalGroupModuleType method of FunctionalGroupModuleTypeController");
         Optional<FunctionalGroupModuleTypeEntity> functionalGroupModuleTypeOptional = Optional.ofNullable(functionalGroupModuleTypeService.findByFunctionalGroupModuleTypeId(functionalGroupModuleTypeId));
 
         if (functionalGroupModuleTypeOptional.isPresent()) {
@@ -76,7 +76,7 @@ public class FunctionalGroupModuleTypeController {
 
     @PatchMapping("/{functionalGroupModuleTypeId}")
     public ResponseEntity<FunctionalGroupModuleTypeEntity> partialUpdateFunctionalGroupModuleType(@PathVariable("functionalGroupModuleTypeId") Long functionalGroupModuleTypeId, @RequestBody FunctionalGroupModuleTypeEntity functionalGroupModuleTypeEntity) {
-        log.info("Inside partialUpdateFunctionalGroupModuleType method of FunctionalGroupModuleTypeController");
+//        log.info("Inside partialUpdateFunctionalGroupModuleType method of FunctionalGroupModuleTypeController");
         Optional<FunctionalGroupModuleTypeEntity> functionalGroupModuleTypeOptional = Optional.ofNullable(functionalGroupModuleTypeService.findByFunctionalGroupModuleTypeId(functionalGroupModuleTypeId));
 
         if (functionalGroupModuleTypeOptional.isPresent()) {
@@ -89,7 +89,7 @@ public class FunctionalGroupModuleTypeController {
 
     @DeleteMapping("/{functionalGroupModuleTypeId}")
     public ResponseEntity<HttpStatus> deleteFunctionalGroupModuleType(@PathVariable("functionalGroupModuleTypeId") Long functionalGroupModuleTypeId) {
-        log.info("Inside deleteFunctionalGroupModuleType method of FunctionalGroupModuleTypeController");
+//        log.info("Inside deleteFunctionalGroupModuleType method of FunctionalGroupModuleTypeController");
         try {
             functionalGroupModuleTypeService.deleteFunctionalGroupModuleType(functionalGroupModuleTypeId);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -100,7 +100,7 @@ public class FunctionalGroupModuleTypeController {
 
     @DeleteMapping("")
     public ResponseEntity<HttpStatus> deleteAllFunctionalGroupModuleTypes() {
-        log.info("Inside deleteAllFunctionalGroupModuleTypes method of FunctionalGroupModuleTypeController");
+//        log.info("Inside deleteAllFunctionalGroupModuleTypes method of FunctionalGroupModuleTypeController");
         try {
             functionalGroupModuleTypeService.deleteAllFunctionalGroupModuleTypes();
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);

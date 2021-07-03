@@ -16,27 +16,27 @@ public class FunctionalGroupModuleTypeService {
     private FunctionalGroupModuleTypeRepository functionalGroupModuleTypeRepository;
 
     public FunctionalGroupModuleTypeEntity saveFunctionalGroupModuleType(FunctionalGroupModuleTypeEntity functionalGroupModuleTypeEntity) {
-        log.info("Inside saveFunctionalGroupModuleType method of FunctionalGroupModuleTypeService");
+//        log.info("Inside saveFunctionalGroupModuleType method of FunctionalGroupModuleTypeService");
         return functionalGroupModuleTypeRepository.save(functionalGroupModuleTypeEntity);
     }
 
     public FunctionalGroupModuleTypeEntity findByFunctionalGroupModuleTypeId(Long moduleId) {
-        log.info("Inside findByFunctionalGroupModuleTypeId method of FunctionalGroupModuleTypeService");
+//        log.info("Inside findByFunctionalGroupModuleTypeId method of FunctionalGroupModuleTypeService");
         return functionalGroupModuleTypeRepository.findByFunctionalGroupModuleTypeId(moduleId);
     }
 
     public List<FunctionalGroupModuleTypeEntity> listAllFunctionalGroupModuleTypes() {
-        log.info("Inside listAllFunctionalGroupModuleTypes method of FunctionalGroupModuleTypeService");
+//        log.info("Inside listAllFunctionalGroupModuleTypes method of FunctionalGroupModuleTypeService");
         return functionalGroupModuleTypeRepository.findAll();
     }
 
     public void deleteFunctionalGroupModuleType(Long moduleId) {
-        log.info("Inside deleteFunctionalGroupModuleType method of FunctionalGroupModuleTypeService");
+//        log.info("Inside deleteFunctionalGroupModuleType method of FunctionalGroupModuleTypeService");
         functionalGroupModuleTypeRepository.deleteById(moduleId);
     }
 
     public void deleteAllFunctionalGroupModuleTypes() {
-        log.info("Inside deleteAllFunctionalGroupModuleTypes method of FunctionalGroupModuleTypeService");
+//        log.info("Inside deleteAllFunctionalGroupModuleTypes method of FunctionalGroupModuleTypeService");
         functionalGroupModuleTypeRepository.deleteAll();
     }
 

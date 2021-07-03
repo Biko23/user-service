@@ -56,4 +56,12 @@ public class LoginAttemptEntity {
     @ApiModelProperty(notes = "hard delete.", example = "1 | 0")
     private int hardDelete;
 
+	public Long getLoginAttemptId() {
+		return loginAttemptId;
+	}
+
+	public void setLoginAttemptId(Long loginAttemptId) {
+		this.loginAttemptId = loginAttemptId;
+	}
+
 }

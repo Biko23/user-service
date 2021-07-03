@@ -16,27 +16,27 @@ public class ResponseFilterService {
     private ResponseFilterRepository responseFilterRepository;
 
     public ResponseFilterEntity saveResponseFilter(ResponseFilterEntity responseFilterEntity) {
-        log.info("Inside saveResponse method of ResponseService");
+//        log.info("Inside saveResponse method of ResponseService");
         return responseFilterRepository.save(responseFilterEntity);
     }
 
     public ResponseFilterEntity findByResponseFilterId(Long responseFilterId) {
-        log.info("Inside findByResponseId method of ResponseService");
+//        log.info("Inside findByResponseId method of ResponseService");
         return responseFilterRepository.findByResponseFilterId(responseFilterId);
     }
 
     public List<ResponseFilterEntity> listAllResponseFilters() {
-        log.info("Inside listAllResponses method of ResponseService");
+//        log.info("Inside listAllResponses method of ResponseService");
         return responseFilterRepository.findAll();
     }
 
     public void deleteResponseFilter(Long responseFilterId) {
-        log.info("Inside deleteResponse method of ResponseService");
+//        log.info("Inside deleteResponse method of ResponseService");
         responseFilterRepository.deleteById(responseFilterId);
     }
 
     public void deleteAllResponseFilters() {
-        log.info("Inside deleteAllResponses method of ResponseService");
+//        log.info("Inside deleteAllResponses method of ResponseService");
         responseFilterRepository.deleteAll();
     }
 

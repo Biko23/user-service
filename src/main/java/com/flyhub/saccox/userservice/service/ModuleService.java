@@ -16,27 +16,27 @@ public class ModuleService {
     private ModuleRepository moduleRepository;
 
     public ModuleEntity saveModule(ModuleEntity adminLookupAddressTypeEntity) {
-        log.info("Inside saveModule method of ModuleService");
+//        log.info("Inside saveModule method of ModuleService");
         return moduleRepository.save(adminLookupAddressTypeEntity);
     }
 
     public ModuleEntity findByModuleId(Long moduleId) {
-        log.info("Inside findByModuleId method of ModuleService");
+//        log.info("Inside findByModuleId method of ModuleService");
         return moduleRepository.findByModuleId(moduleId);
     }
 
     public List<ModuleEntity> listAllModules() {
-        log.info("Inside listAllModules method of ModuleService");
+//        log.info("Inside listAllModules method of ModuleService");
         return moduleRepository.findAll();
     }
 
     public void deleteModule(Long moduleId) {
-        log.info("Inside deleteModule method of ModuleService");
+//        log.info("Inside deleteModule method of ModuleService");
         moduleRepository.deleteById(moduleId);
     }
 
     public void deleteAllModules() {
-        log.info("Inside deleteAllModules method of ModuleService");
+//        log.info("Inside deleteAllModules method of ModuleService");
         moduleRepository.deleteAll();
     }
 

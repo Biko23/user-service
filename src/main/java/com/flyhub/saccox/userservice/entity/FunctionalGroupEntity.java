@@ -21,8 +21,8 @@ public class FunctionalGroupEntity {
     @JsonProperty("functional_group_id")
     @ApiModelProperty(notes = "Unique identifier of a functional group entity. Auto generated.", example = "1")
     private Long functionalGroupId;
-
-    @JsonProperty("functional_group_name")
+    
+	@JsonProperty("functional_group_name")
     @ApiModelProperty(notes = "Functional group name.", example = "1")
     private String functionalGroupName;
 
@@ -53,5 +53,14 @@ public class FunctionalGroupEntity {
     @JsonProperty("hard_delete")
     @ApiModelProperty(notes = "hard delete.", example = "1 | 0")
     private int hardDelete;
+
+    public Long getFunctionalGroupId() {
+		return functionalGroupId;
+	}
+
+	public void setFunctionalGroupId(Long functionalGroupId) {
+		this.functionalGroupId = functionalGroupId;
+	}
+
 
 }
