@@ -54,4 +54,13 @@ public class SystemUserTypeEntity {
     @ApiModelProperty(notes = "hard delete.", example = "1 | 0")
     private int hardDelete;
 
+	public Long getSystemUserTypeId() {
+		return systemUserTypeId;
+	}
+
+	public void setSystemUserTypeId(Long systemUserTypeId) {
+		this.systemUserTypeId = systemUserTypeId;
+	}
+
+    
 }

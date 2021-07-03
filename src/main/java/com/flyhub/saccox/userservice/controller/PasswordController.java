@@ -22,7 +22,7 @@ public class PasswordController {
 
     @PostMapping("")
     public ResponseEntity<PasswordEntity> savePassword(@RequestBody PasswordEntity passwordEntity) {
-        log.info("Inside savePassword method of PasswordController");
+//        log.info("Inside savePassword method of PasswordController");
         try {
             PasswordEntity _passwordEntity = passwordService.savePassword(passwordEntity);
             return new ResponseEntity<>(_passwordEntity, HttpStatus.CREATED);
@@ -33,7 +33,7 @@ public class PasswordController {
 
     @GetMapping("/{passwordId}")
     public ResponseEntity<PasswordEntity> findByPasswordId(@PathVariable("passwordId") Long passwordId) {
-        log.info("Inside findByPasswordId method of PasswordController");
+//        log.info("Inside findByPasswordId method of PasswordController");
         Optional<PasswordEntity> passwordOptional = Optional.ofNullable(passwordService.findByPasswordId(passwordId));
 
         if (passwordOptional.isPresent()) {
@@ -45,7 +45,7 @@ public class PasswordController {
 
     @GetMapping("")
     public ResponseEntity<List<PasswordEntity>> findAllPasswords() {
-        log.info("Inside findAllPasswords method of PasswordController");
+//        log.info("Inside findAllPasswords method of PasswordController");
         try {
             List<PasswordEntity> passwords = new ArrayList<PasswordEntity>();
             passwords.addAll(passwordService.listAllPasswords());
@@ -62,7 +62,7 @@ public class PasswordController {
 
     @PutMapping("/{passwordId}")
     public ResponseEntity<PasswordEntity> fullUpdatePassword(@PathVariable("passwordId") Long passwordId, @RequestBody PasswordEntity passwordEntity) {
-        log.info("Inside fullUpdatePassword method of PasswordController");
+//        log.info("Inside fullUpdatePassword method of PasswordController");
         Optional<PasswordEntity> passwordOptional = Optional.ofNullable(passwordService.findByPasswordId(passwordId));
 
         if (passwordOptional.isPresent()) {
@@ -75,7 +75,7 @@ public class PasswordController {
 
     @PatchMapping("/{passwordId}")
     public ResponseEntity<PasswordEntity> partialUpdatePassword(@PathVariable("passwordId") Long passwordId, @RequestBody PasswordEntity passwordEntity) {
-        log.info("Inside partialUpdatePassword method of PasswordController");
+//        log.info("Inside partialUpdatePassword method of PasswordController");
         Optional<PasswordEntity> passwordOptional = Optional.ofNullable(passwordService.findByPasswordId(passwordId));
 
         if (passwordOptional.isPresent()) {
@@ -88,7 +88,7 @@ public class PasswordController {
 
     @DeleteMapping("/{passwordId}")
     public ResponseEntity<HttpStatus> deletePassword(@PathVariable("passwordId") Long passwordId) {
-        log.info("Inside deletePassword method of PasswordController");
+//        log.info("Inside deletePassword method of PasswordController");
         try {
             passwordService.deletePassword(passwordId);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -99,7 +99,7 @@ public class PasswordController {
 
     @DeleteMapping("")
     public ResponseEntity<HttpStatus> deleteAllPasswords() {
-        log.info("Inside deleteAllPasswords method of PasswordController");
+//        log.info("Inside deleteAllPasswords method of PasswordController");
         try {
             passwordService.deleteAllPasswords();
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);

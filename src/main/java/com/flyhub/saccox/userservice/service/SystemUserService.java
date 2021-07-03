@@ -16,27 +16,27 @@ public class SystemUserService {
     private SystemUserRepository systemUserRepository;
 
     public SystemUserEntity saveSystemUser(SystemUserEntity systemUserEntity) {
-        log.info("Inside saveSystemUser method of SystemUserService");
+//        log.info("Inside saveSystemUser method of SystemUserService");
         return systemUserRepository.save(systemUserEntity);
     }
 
     public SystemUserEntity findBySystemUserId(Long systemUserId) {
-        log.info("Inside findBySystemUserId method of SystemUserService");
+//        log.info("Inside findBySystemUserId method of SystemUserService");
         return systemUserRepository.findBySystemUserId(systemUserId);
     }
 
     public List<SystemUserEntity> listAllSystemUsers() {
-        log.info("Inside listAllSystemUsers method of SystemUserService");
+//        log.info("Inside listAllSystemUsers method of SystemUserService");
         return systemUserRepository.findAll();
     }
 
     public void deleteSystemUser(Long systemUserId) {
-        log.info("Inside deleteSystemUser method of SystemUserService");
+//        log.info("Inside deleteSystemUser method of SystemUserService");
         systemUserRepository.deleteById(systemUserId);
     }
 
     public void deleteAllSystemUsers() {
-        log.info("Inside deleteAllSystemUsers method of SystemUserService");
+//        log.info("Inside deleteAllSystemUsers method of SystemUserService");
         systemUserRepository.deleteAll();
     }
 

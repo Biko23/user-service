@@ -104,4 +104,13 @@ public class FunctionalGroupModuleMappingEntity {
     @ApiModelProperty(notes = "hard delete.", example = "1 | 0")
     private int hardDelete;
 
+	public Long getFunctionalGroupModuleMappingId() {
+		return functionalGroupModuleMappingId;
+	}
+
+	public void setFunctionalGroupModuleMappingId(Long functionalGroupModuleMappingId) {
+		this.functionalGroupModuleMappingId = functionalGroupModuleMappingId;
+	}
+
+    
 }

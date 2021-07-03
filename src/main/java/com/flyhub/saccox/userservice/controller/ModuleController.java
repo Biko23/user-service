@@ -22,7 +22,7 @@ public class ModuleController {
 
     @PostMapping("")
     public ResponseEntity<ModuleEntity> saveModule(@RequestBody ModuleEntity moduleEntity) {
-        log.info("Inside saveModule method of ModuleController");
+//        log.info("Inside saveModule method of ModuleController");
         try {
             ModuleEntity _module = moduleService.saveModule(moduleEntity);
             return new ResponseEntity<>(_module, HttpStatus.CREATED);
@@ -33,7 +33,7 @@ public class ModuleController {
 
     @GetMapping("/{moduleId}")
     public ResponseEntity<ModuleEntity> findByModuleId(@PathVariable("moduleId") Long moduleId) {
-        log.info("Inside findByModuleId method of ModuleController");
+//        log.info("Inside findByModuleId method of ModuleController");
         Optional<ModuleEntity> moduleOptional = Optional.ofNullable(moduleService.findByModuleId(moduleId));
 
         if (moduleOptional.isPresent()) {
@@ -45,7 +45,7 @@ public class ModuleController {
 
     @GetMapping("")
     public ResponseEntity<List<ModuleEntity>> findAllModules() {
-        log.info("Inside findAllModules method of ModuleController");
+//        log.info("Inside findAllModules method of ModuleController");
         try {
             List<ModuleEntity> modules = new ArrayList<ModuleEntity>();
             modules.addAll(moduleService.listAllModules());
@@ -62,7 +62,7 @@ public class ModuleController {
 
     @PutMapping("/{moduleId}")
     public ResponseEntity<ModuleEntity> fullUpdateModule(@PathVariable("moduleId") Long moduleId, @RequestBody ModuleEntity moduleEntity) {
-        log.info("Inside fullUpdateModule method of ModuleController");
+//        log.info("Inside fullUpdateModule method of ModuleController");
         Optional<ModuleEntity> moduleOptional = Optional.ofNullable(moduleService.findByModuleId(moduleId));
 
         if (moduleOptional.isPresent()) {
@@ -75,7 +75,7 @@ public class ModuleController {
 
     @PatchMapping("/{moduleId}")
     public ResponseEntity<ModuleEntity> partialUpdateModule(@PathVariable("moduleId") Long moduleId, @RequestBody ModuleEntity moduleEntity) {
-        log.info("Inside partialUpdateModule method of ModuleController");
+//        log.info("Inside partialUpdateModule method of ModuleController");
         Optional<ModuleEntity> moduleOptional = Optional.ofNullable(moduleService.findByModuleId(moduleId));
 
         if (moduleOptional.isPresent()) {
@@ -88,7 +88,7 @@ public class ModuleController {
 
     @DeleteMapping("/{moduleId}")
     public ResponseEntity<HttpStatus> deleteModule(@PathVariable("moduleId") Long moduleId) {
-        log.info("Inside deleteModule method of ModuleController");
+//        log.info("Inside deleteModule method of ModuleController");
         try {
             moduleService.deleteModule(moduleId);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -99,7 +99,7 @@ public class ModuleController {
 
     @DeleteMapping("")
     public ResponseEntity<HttpStatus> deleteAllModules() {
-        log.info("Inside deleteAllModules method of ModuleController");
+//        log.info("Inside deleteAllModules method of ModuleController");
         try {
             moduleService.deleteAllModules();
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
