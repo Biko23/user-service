@@ -22,7 +22,7 @@ public class SystemUserController {
 
     @PostMapping("")
     public ResponseEntity<SystemUserEntity> saveSystemUser(@RequestBody SystemUserEntity systemUserEntity) {
-        log.info("Inside saveSystemUser method of SystemUserController");
+//        log.info("Inside saveSystemUser method of SystemUserController");
         try {
             SystemUserEntity _systemUserEntity = systemUserService.saveSystemUser(systemUserEntity);
             return new ResponseEntity<>(_systemUserEntity, HttpStatus.CREATED);
@@ -33,7 +33,7 @@ public class SystemUserController {
 
     @GetMapping("/{systemUserId}")
     public ResponseEntity<SystemUserEntity> findBySystemUserId(@PathVariable("systemUserId") Long systemUserId) {
-        log.info("Inside findBySystemUserId method of SystemUserController");
+//        log.info("Inside findBySystemUserId method of SystemUserController");
         Optional<SystemUserEntity> systemUserOptional = Optional.ofNullable(systemUserService.findBySystemUserId(systemUserId));
 
         if (systemUserOptional.isPresent()) {
@@ -45,7 +45,7 @@ public class SystemUserController {
 
     @GetMapping("")
     public ResponseEntity<List<SystemUserEntity>> findAllSystemUsers() {
-        log.info("Inside findAllSystemUsers method of SystemUserController");
+//        log.info("Inside findAllSystemUsers method of SystemUserController");
         try {
             List<SystemUserEntity> systemUsers = new ArrayList<SystemUserEntity>();
             systemUsers.addAll(systemUserService.listAllSystemUsers());
@@ -62,7 +62,7 @@ public class SystemUserController {
 
     @PutMapping("/{systemUserId}")
     public ResponseEntity<SystemUserEntity> fullUpdateSystemUser(@PathVariable("systemUserId") Long systemUserId, @RequestBody SystemUserEntity systemUserEntity) {
-        log.info("Inside fullUpdateSystemUser method of SystemUserController");
+//        log.info("Inside fullUpdateSystemUser method of SystemUserController");
         Optional<SystemUserEntity> systemUserOptional = Optional.ofNullable(systemUserService.findBySystemUserId(systemUserId));
 
         if (systemUserOptional.isPresent()) {
@@ -75,7 +75,7 @@ public class SystemUserController {
 
     @PatchMapping("/{systemUserId}")
     public ResponseEntity<SystemUserEntity> partialUpdateSystemUser(@PathVariable("systemUserId") Long systemUserId, @RequestBody SystemUserEntity systemUserEntity) {
-        log.info("Inside partialUpdateSystemUser method of SystemUserController");
+//        log.info("Inside partialUpdateSystemUser method of SystemUserController");
         Optional<SystemUserEntity> systemUserOptional = Optional.ofNullable(systemUserService.findBySystemUserId(systemUserId));
 
         if (systemUserOptional.isPresent()) {
@@ -88,7 +88,7 @@ public class SystemUserController {
 
     @DeleteMapping("/{systemUserId}")
     public ResponseEntity<HttpStatus> deleteSystemUser(@PathVariable("systemUserId") Long systemUserId) {
-        log.info("Inside deleteSystemUser method of SystemUserController");
+//        log.info("Inside deleteSystemUser method of SystemUserController");
         try {
             systemUserService.deleteSystemUser(systemUserId);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -99,7 +99,7 @@ public class SystemUserController {
 
     @DeleteMapping("")
     public ResponseEntity<HttpStatus> deleteAllSystemUsers() {
-        log.info("Inside deleteAllSystemUsers method of SystemUserController");
+//        log.info("Inside deleteAllSystemUsers method of SystemUserController");
         try {
             systemUserService.deleteAllSystemUsers();
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);

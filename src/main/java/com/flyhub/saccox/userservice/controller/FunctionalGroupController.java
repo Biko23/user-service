@@ -22,7 +22,7 @@ public class FunctionalGroupController {
 
     @PostMapping("")
     public ResponseEntity<FunctionalGroupEntity> saveFunctionalGroup(@RequestBody FunctionalGroupEntity functionalGroupEntity) {
-        log.info("Inside saveFunctionalGroup method of FunctionalGroupController");
+//        log.info("Inside saveFunctionalGroup method of FunctionalGroupController");
         try {
             FunctionalGroupEntity _functionalGroupEntity = functionalGroupService.saveFunctionalGroup(functionalGroupEntity);
             return new ResponseEntity<>(_functionalGroupEntity, HttpStatus.CREATED);
@@ -33,7 +33,7 @@ public class FunctionalGroupController {
 
     @GetMapping("/{functionalGroupId}")
     public ResponseEntity<FunctionalGroupEntity> findByFunctionalGroupId(@PathVariable("functionalGroupId") Long functionalGroupId) {
-        log.info("Inside findByFunctionalGroupId method of FunctionalGroupController");
+//        log.info("Inside findByFunctionalGroupId method of FunctionalGroupController");
         Optional<FunctionalGroupEntity> functionalGroupOptional = Optional.ofNullable(functionalGroupService.findByFunctionalGroupId(functionalGroupId));
 
         if (functionalGroupOptional.isPresent()) {
@@ -45,7 +45,7 @@ public class FunctionalGroupController {
 
     @GetMapping("")
     public ResponseEntity<List<FunctionalGroupEntity>> findAllFunctionalGroups() {
-        log.info("Inside findAllFunctionalGroups method of FunctionalGroupController");
+//        log.info("Inside findAllFunctionalGroups method of FunctionalGroupController");
         try {
             List<FunctionalGroupEntity> functionalGroups = new ArrayList<FunctionalGroupEntity>();
             functionalGroups.addAll(functionalGroupService.listAllFunctionalGroups());
@@ -62,7 +62,7 @@ public class FunctionalGroupController {
 
     @PutMapping("/{functionalGroupId}")
     public ResponseEntity<FunctionalGroupEntity> fullUpdateFunctionalGroup(@PathVariable("functionalGroupId") Long functionalGroupId, @RequestBody FunctionalGroupEntity functionalGroupEntity) {
-        log.info("Inside fullUpdateFunctionalGroup method of FunctionalGroupController");
+//        log.info("Inside fullUpdateFunctionalGroup method of FunctionalGroupController");
         Optional<FunctionalGroupEntity> functionalGroupOptional = Optional.ofNullable(functionalGroupService.findByFunctionalGroupId(functionalGroupId));
 
         if (functionalGroupOptional.isPresent()) {
@@ -75,7 +75,7 @@ public class FunctionalGroupController {
 
     @PatchMapping("/{functionalGroupId}")
     public ResponseEntity<FunctionalGroupEntity> partialUpdateFunctionalGroup(@PathVariable("functionalGroupId") Long functionalGroupId, @RequestBody FunctionalGroupEntity functionalGroupEntity) {
-        log.info("Inside partialUpdateFunctionalGroup method of FunctionalGroupController");
+//        log.info("Inside partialUpdateFunctionalGroup method of FunctionalGroupController");
         Optional<FunctionalGroupEntity> functionalGroupOptional = Optional.ofNullable(functionalGroupService.findByFunctionalGroupId(functionalGroupId));
 
         if (functionalGroupOptional.isPresent()) {
@@ -88,7 +88,7 @@ public class FunctionalGroupController {
 
     @DeleteMapping("/{functionalGroupId}")
     public ResponseEntity<HttpStatus> deleteFunctionalGroup(@PathVariable("functionalGroupId") Long functionalGroupId) {
-        log.info("Inside deleteFunctionalGroup method of FunctionalGroupController");
+//        log.info("Inside deleteFunctionalGroup method of FunctionalGroupController");
         try {
             functionalGroupService.deleteFunctionalGroup(functionalGroupId);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -99,7 +99,7 @@ public class FunctionalGroupController {
 
     @DeleteMapping("")
     public ResponseEntity<HttpStatus> deleteAllFunctionalGroups() {
-        log.info("Inside deleteAllFunctionalGroups method of FunctionalGroupController");
+//        log.info("Inside deleteAllFunctionalGroups method of FunctionalGroupController");
         try {
             functionalGroupService.deleteAllFunctionalGroups();
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);

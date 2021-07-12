@@ -16,27 +16,27 @@ public class PasswordService {
     private PasswordRepository passwordRepository;
 
     public PasswordEntity savePassword(PasswordEntity passwordEntity) {
-        log.info("Inside savePassword method of PasswordService");
+//        log.info("Inside savePassword method of PasswordService");
         return passwordRepository.save(passwordEntity);
     }
 
     public PasswordEntity findByPasswordId(Long passwordId) {
-        log.info("Inside findByPasswordId method of PasswordService");
+//        log.info("Inside findByPasswordId method of PasswordService");
         return passwordRepository.findByPasswordId(passwordId);
     }
 
     public List<PasswordEntity> listAllPasswords() {
-        log.info("Inside listAllPasswords method of PasswordService");
+//        log.info("Inside listAllPasswords method of PasswordService");
         return passwordRepository.findAll();
     }
 
     public void deletePassword(Long passwordId) {
-        log.info("Inside deletePassword method of PasswordService");
+//        log.info("Inside deletePassword method of PasswordService");
         passwordRepository.deleteById(passwordId);
     }
 
     public void deleteAllPasswords() {
-        log.info("Inside deleteAllPasswords method of PasswordService");
+//        log.info("Inside deleteAllPasswords method of PasswordService");
         passwordRepository.deleteAll();
     }
 

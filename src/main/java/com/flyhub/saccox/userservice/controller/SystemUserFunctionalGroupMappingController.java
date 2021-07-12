@@ -22,7 +22,7 @@ public class SystemUserFunctionalGroupMappingController {
 
     @PostMapping("")
     public ResponseEntity<SystemUserFunctionalGroupMappingEntity> saveSystemUserFunctionalGroupMapping(@RequestBody SystemUserFunctionalGroupMappingEntity systemUserFunctionalGroupMappingEntity) {
-        log.info("Inside saveSystemUserFunctionalGroupMapping method of SystemUserFunctionalGroupMappingController");
+//        log.info("Inside saveSystemUserFunctionalGroupMapping method of SystemUserFunctionalGroupMappingController");
         try {
             SystemUserFunctionalGroupMappingEntity _systemUserFunctionalGroupMappingEntity = systemUserFunctionalGroupMapping.saveSystemUserFunctionalGroupMapping(systemUserFunctionalGroupMappingEntity);
             return new ResponseEntity<>(_systemUserFunctionalGroupMappingEntity, HttpStatus.CREATED);
@@ -33,7 +33,7 @@ public class SystemUserFunctionalGroupMappingController {
 
     @GetMapping("/{systemUserFunctionalGroupMappingId}")
     public ResponseEntity<SystemUserFunctionalGroupMappingEntity> findBySystemUserFunctionalGroupMappingId(@PathVariable("systemUserFunctionalGroupMappingId") Long systemUserFunctionalGroupMappingId) {
-        log.info("Inside findBySystemUserFunctionalGroupMappingId method of SystemUserFunctionalGroupMappingController");
+//        log.info("Inside findBySystemUserFunctionalGroupMappingId method of SystemUserFunctionalGroupMappingController");
         Optional<SystemUserFunctionalGroupMappingEntity> systemUserFunctionalGroupMappingOptional = Optional.ofNullable(systemUserFunctionalGroupMapping.findBySystemUserFunctionalGroupMappingId(systemUserFunctionalGroupMappingId));
 
         if (systemUserFunctionalGroupMappingOptional.isPresent()) {
@@ -45,7 +45,7 @@ public class SystemUserFunctionalGroupMappingController {
 
     @GetMapping("")
     public ResponseEntity<List<SystemUserFunctionalGroupMappingEntity>> findAllSystemUserFunctionalGroupMappings() {
-        log.info("Inside findAllSystemUserFunctionalGroupMappings method of SystemUserFunctionalGroupMappingController");
+//        log.info("Inside findAllSystemUserFunctionalGroupMappings method of SystemUserFunctionalGroupMappingController");
         try {
             List<SystemUserFunctionalGroupMappingEntity> systemUserFunctionalGroupMappings = new ArrayList<SystemUserFunctionalGroupMappingEntity>();
             systemUserFunctionalGroupMappings.addAll(systemUserFunctionalGroupMapping.listAllSystemUserFunctionalGroupMappings());
@@ -62,7 +62,7 @@ public class SystemUserFunctionalGroupMappingController {
 
     @PutMapping("/{systemUserFunctionalGroupMappingId}")
     public ResponseEntity<SystemUserFunctionalGroupMappingEntity> fullUpdateSystemUserFunctionalGroupMapping(@PathVariable("systemUserFunctionalGroupMappingId") Long systemUserFunctionalGroupMappingId, @RequestBody SystemUserFunctionalGroupMappingEntity systemUserFunctionalGroupMappingEntity) {
-        log.info("Inside fullUpdateSystemUserFunctionalGroupMapping method of SystemUserFunctionalGroupMappingController");
+//        log.info("Inside fullUpdateSystemUserFunctionalGroupMapping method of SystemUserFunctionalGroupMappingController");
         Optional<SystemUserFunctionalGroupMappingEntity> systemUserFunctionalGroupMappingOptional = Optional.ofNullable(systemUserFunctionalGroupMapping.findBySystemUserFunctionalGroupMappingId(systemUserFunctionalGroupMappingId));
 
         if (systemUserFunctionalGroupMappingOptional.isPresent()) {
@@ -75,7 +75,7 @@ public class SystemUserFunctionalGroupMappingController {
 
     @PatchMapping("/{systemUserFunctionalGroupMappingId}")
     public ResponseEntity<SystemUserFunctionalGroupMappingEntity> partialUpdateSystemUserFunctionalGroupMapping(@PathVariable("systemUserFunctionalGroupMappingId") Long systemUserFunctionalGroupMappingId, @RequestBody SystemUserFunctionalGroupMappingEntity systemUserFunctionalGroupMappingEntity) {
-        log.info("Inside partialUpdateSystemUserFunctionalGroupMapping method of SystemUserFunctionalGroupMappingController");
+//        log.info("Inside partialUpdateSystemUserFunctionalGroupMapping method of SystemUserFunctionalGroupMappingController");
         Optional<SystemUserFunctionalGroupMappingEntity> systemUserFunctionalGroupMappingOptional = Optional.ofNullable(systemUserFunctionalGroupMapping.findBySystemUserFunctionalGroupMappingId(systemUserFunctionalGroupMappingId));
 
         if (systemUserFunctionalGroupMappingOptional.isPresent()) {
@@ -88,7 +88,7 @@ public class SystemUserFunctionalGroupMappingController {
 
     @DeleteMapping("/{systemUserFunctionalGroupMappingId}")
     public ResponseEntity<HttpStatus> deleteSystemUserFunctionalGroupMapping(@PathVariable("systemUserFunctionalGroupMappingId") Long systemUserFunctionalGroupMappingId) {
-        log.info("Inside deleteSystemUserFunctionalGroupMapping method of SystemUserFunctionalGroupMappingController");
+//        log.info("Inside deleteSystemUserFunctionalGroupMapping method of SystemUserFunctionalGroupMappingController");
         try {
             systemUserFunctionalGroupMapping.deleteSystemUserFunctionalGroupMapping(systemUserFunctionalGroupMappingId);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -99,7 +99,7 @@ public class SystemUserFunctionalGroupMappingController {
 
     @DeleteMapping("")
     public ResponseEntity<HttpStatus> deleteAllSystemUserFunctionalGroupMappings() {
-        log.info("Inside deleteAllSystemUserFunctionalGroupMappings method of SystemUserFunctionalGroupMappingController");
+//        log.info("Inside deleteAllSystemUserFunctionalGroupMappings method of SystemUserFunctionalGroupMappingController");
         try {
             systemUserFunctionalGroupMapping.deleteAllSystemUserFunctionalGroupMappings();
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);

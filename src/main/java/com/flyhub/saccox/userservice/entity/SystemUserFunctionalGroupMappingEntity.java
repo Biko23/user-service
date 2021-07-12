@@ -58,4 +58,13 @@ public class SystemUserFunctionalGroupMappingEntity {
     @ApiModelProperty(notes = "hard delete.", example = "1 | 0")
     private int hardDelete;
 
+	public Long getSystemUserFunctionalGroupMappingId() {
+		return systemUserFunctionalGroupMappingId;
+	}
+
+	public void setSystemUserFunctionalGroupMappingId(Long systemUserFunctionalGroupMappingId) {
+		this.systemUserFunctionalGroupMappingId = systemUserFunctionalGroupMappingId;
+	}
+
+    
 }

@@ -64,4 +64,13 @@ public class ResponseFilterEntity {
     @ApiModelProperty(notes = "hard delete.", example = "1 | 0")
     private int hardDelete;
 
+	public Long getResponseFilterId() {
+		return responseFilterId;
+	}
+
+	public void setResponseFilterId(Long responseFilterId) {
+		this.responseFilterId = responseFilterId;
+	}
+
+    
 }

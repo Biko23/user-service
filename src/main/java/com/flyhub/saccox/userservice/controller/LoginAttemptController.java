@@ -22,7 +22,7 @@ public class LoginAttemptController {
 
     @PostMapping("")
     public ResponseEntity<LoginAttemptEntity> saveLoginAttempt(@RequestBody LoginAttemptEntity loginAttemptEntity) {
-        log.info("Inside saveLoginAttempt method of LoginAttemptController");
+//        log.info("Inside saveLoginAttempt method of LoginAttemptController");
         try {
             LoginAttemptEntity _loginAttemptEntity = loginAttemptService.saveLoginAttempt(loginAttemptEntity);
             return new ResponseEntity<>(_loginAttemptEntity, HttpStatus.CREATED);
@@ -33,7 +33,7 @@ public class LoginAttemptController {
 
     @GetMapping("/{loginAttemptId}")
     public ResponseEntity<LoginAttemptEntity> findByLoginAttemptId(@PathVariable("loginAttemptId") Long loginAttemptId) {
-        log.info("Inside findByLoginAttemptId method of LoginAttemptController");
+//        log.info("Inside findByLoginAttemptId method of LoginAttemptController");
         Optional<LoginAttemptEntity> loginAttemptOptional = Optional.ofNullable(loginAttemptService.findByLoginAttemptId(loginAttemptId));
 
         if (loginAttemptOptional.isPresent()) {
@@ -45,7 +45,7 @@ public class LoginAttemptController {
 
     @GetMapping("")
     public ResponseEntity<List<LoginAttemptEntity>> findAllLoginAttempts() {
-        log.info("Inside findAllLoginAttempts method of LoginAttemptController");
+//        log.info("Inside findAllLoginAttempts method of LoginAttemptController");
         try {
             List<LoginAttemptEntity> loginAttempts = new ArrayList<LoginAttemptEntity>();
             loginAttempts.addAll(loginAttemptService.listAllLoginAttempts());
@@ -62,7 +62,7 @@ public class LoginAttemptController {
 
     @PutMapping("/{loginAttemptId}")
     public ResponseEntity<LoginAttemptEntity> fullUpdateLoginAttempt(@PathVariable("loginAttemptId") Long loginAttemptId, @RequestBody LoginAttemptEntity loginAttemptEntity) {
-        log.info("Inside fullUpdateLoginAttempt method of LoginAttemptController");
+//        log.info("Inside fullUpdateLoginAttempt method of LoginAttemptController");
         Optional<LoginAttemptEntity> loginAttemptOptional = Optional.ofNullable(loginAttemptService.findByLoginAttemptId(loginAttemptId));
 
         if (loginAttemptOptional.isPresent()) {
@@ -75,7 +75,7 @@ public class LoginAttemptController {
 
     @PatchMapping("/{loginAttemptId}")
     public ResponseEntity<LoginAttemptEntity> partialUpdateLoginAttempt(@PathVariable("loginAttemptId") Long loginAttemptId, @RequestBody LoginAttemptEntity loginAttemptEntity) {
-        log.info("Inside partialUpdateLoginAttempt method of LoginAttemptController");
+//        log.info("Inside partialUpdateLoginAttempt method of LoginAttemptController");
         Optional<LoginAttemptEntity> loginAttemptOptional = Optional.ofNullable(loginAttemptService.findByLoginAttemptId(loginAttemptId));
 
         if (loginAttemptOptional.isPresent()) {
@@ -88,7 +88,7 @@ public class LoginAttemptController {
 
     @DeleteMapping("/{loginAttemptId}")
     public ResponseEntity<HttpStatus> deleteLoginAttempt(@PathVariable("loginAttemptId") Long loginAttemptId) {
-        log.info("Inside deleteLoginAttempt method of LoginAttemptController");
+//        log.info("Inside deleteLoginAttempt method of LoginAttemptController");
         try {
             loginAttemptService.deleteLoginAttempt(loginAttemptId);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -99,7 +99,7 @@ public class LoginAttemptController {
 
     @DeleteMapping("")
     public ResponseEntity<HttpStatus> deleteAllLoginAttempts() {
-        log.info("Inside deleteAllLoginAttempts method of LoginAttemptController");
+//        log.info("Inside deleteAllLoginAttempts method of LoginAttemptController");
         try {
             loginAttemptService.deleteAllLoginAttempts();
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);

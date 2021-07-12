@@ -22,7 +22,7 @@ public class ResponseFilterController {
 
     @PostMapping("")
     public ResponseEntity<ResponseFilterEntity> saveResponseFilter(@RequestBody ResponseFilterEntity responseFilterEntity) {
-        log.info("Inside saveResponseFilter method of ResponseFilterController");
+//        log.info("Inside saveResponseFilter method of ResponseFilterController");
         try {
             ResponseFilterEntity _responseFilterEntity = responseFilterService.saveResponseFilter(responseFilterEntity);
             return new ResponseEntity<>(_responseFilterEntity, HttpStatus.CREATED);
@@ -33,7 +33,7 @@ public class ResponseFilterController {
 
     @GetMapping("/{responseFilterId}")
     public ResponseEntity<ResponseFilterEntity> findByResponseFilterId(@PathVariable("responseFilterId") Long responseFilterId) {
-        log.info("Inside findByResponseFilterId method of ResponseFilterController");
+//        log.info("Inside findByResponseFilterId method of ResponseFilterController");
         Optional<ResponseFilterEntity> responseFilterOptional = Optional.ofNullable(responseFilterService.findByResponseFilterId(responseFilterId));
 
         if (responseFilterOptional.isPresent()) {
@@ -45,7 +45,7 @@ public class ResponseFilterController {
 
     @GetMapping("")
     public ResponseEntity<List<ResponseFilterEntity>> findAllResponseFilters() {
-        log.info("Inside findAllResponseFilters method of ResponseFilterController");
+//        log.info("Inside findAllResponseFilters method of ResponseFilterController");
         try {
             List<ResponseFilterEntity> responseFilters = new ArrayList<ResponseFilterEntity>();
             responseFilters.addAll(responseFilterService.listAllResponseFilters());
@@ -62,7 +62,7 @@ public class ResponseFilterController {
 
     @PutMapping("/{responseFilterId}")
     public ResponseEntity<ResponseFilterEntity> fullUpdateResponseFilter(@PathVariable("responseFilterId") Long responseFilterId, @RequestBody ResponseFilterEntity responseFilterEntity) {
-        log.info("Inside fullUpdateResponseFilter method of ResponseFilterController");
+//        log.info("Inside fullUpdateResponseFilter method of ResponseFilterController");
         Optional<ResponseFilterEntity> responseFilterOptional = Optional.ofNullable(responseFilterService.findByResponseFilterId(responseFilterId));
 
         if (responseFilterOptional.isPresent()) {
@@ -75,7 +75,7 @@ public class ResponseFilterController {
 
     @PatchMapping("/{responseFilterId}")
     public ResponseEntity<ResponseFilterEntity> partialUpdateResponseFilter(@PathVariable("responseFilterId") Long responseFilterId, @RequestBody ResponseFilterEntity responseFilterEntity) {
-        log.info("Inside partialUpdateResponseFilter method of ResponseFilterController");
+//        log.info("Inside partialUpdateResponseFilter method of ResponseFilterController");
         Optional<ResponseFilterEntity> responseFilterOptional = Optional.ofNullable(responseFilterService.findByResponseFilterId(responseFilterId));
 
         if (responseFilterOptional.isPresent()) {
@@ -88,7 +88,7 @@ public class ResponseFilterController {
 
     @DeleteMapping("/{responseFilterId}")
     public ResponseEntity<HttpStatus> deleteResponseFilter(@PathVariable("responseFilterId") Long responseFilterId) {
-        log.info("Inside deleteResponseFilter method of ResponseFilterController");
+//        log.info("Inside deleteResponseFilter method of ResponseFilterController");
         try {
             responseFilterService.deleteResponseFilter(responseFilterId);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -99,7 +99,7 @@ public class ResponseFilterController {
 
     @DeleteMapping("")
     public ResponseEntity<HttpStatus> deleteAllResponseFilters() {
-        log.info("Inside deleteAllResponseFilters method of ResponseFilterController");
+//        log.info("Inside deleteAllResponseFilters method of ResponseFilterController");
         try {
             responseFilterService.deleteAllResponseFilters();
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
