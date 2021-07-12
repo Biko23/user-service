@@ -22,13 +22,21 @@ public class FunctionalGroupEntity {
     @ApiModelProperty(notes = "Unique identifier of a functional group entity. Auto generated.", example = "1")
     private Long functionalGroupId;
 
-    @JsonProperty("functional_group_name")
-    @ApiModelProperty(notes = "Functional group name.", example = "1")
-    private String functionalGroupName;
+    @JsonProperty("tenant_id")
+    @ApiModelProperty(notes = "Tenant foreign key.", example = "1")
+    private Long tenantId;
 
-    @JsonProperty("functional_group_active")
+    @JsonProperty("branch_id")
+    @ApiModelProperty(notes = "Branch foreign key.", example = "1")
+    private Long branchId;
+
+    @JsonProperty("name")
+    @ApiModelProperty(notes = "Functional group name.", example = "1")
+    private String name;
+
+    @JsonProperty("is_active")
     @ApiModelProperty(notes = "Functional group active.", example = "1 | 0")
-    private int functionalGroupActive;
+    private int isActive;
 
     @JsonProperty("created_on")
     @ApiModelProperty(notes = "Record created date.", example = "2021-05-01")

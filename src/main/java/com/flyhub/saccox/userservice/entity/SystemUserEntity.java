@@ -13,7 +13,7 @@ import java.sql.Date;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "system_user_type")
+@Table(name = "system_user")
 public class SystemUserEntity {
 
     @Id
@@ -22,19 +22,29 @@ public class SystemUserEntity {
     @ApiModelProperty(notes = "Unique identifier of a system user type entity. Auto generated.", example = "1")
     private Long systemUserId;
 
-    @JsonProperty("system_user_type_id_fk")
-    @ApiModelProperty(notes = "System user type foreign key.", example = "1", required = true)
-    @ManyToOne
-    @JoinColumn(name="system_user_type_id_fk", nullable=false)
-    private SystemUserTypeEntity systemUserTypeEntity;
+    @JsonProperty("first_name")
+    @ApiModelProperty(notes = "System user first name.", example = "John")
+    private String firstName;
 
-    @JsonProperty("system_user_username")
-    @ApiModelProperty(notes = "System user username.", example = "John")
-    private String systemUserUserName;
+    @JsonProperty("last_name")
+    @ApiModelProperty(notes = "System user last name.", example = "Doe")
+    private String lastName;
 
-    @JsonProperty("system_user_active")
+    @JsonProperty("username")
+    @ApiModelProperty(notes = "System user username.", example = "John | 256700000000")
+    private String userName;
+
+    @JsonProperty("contact")
+    @ApiModelProperty(notes = "System user contact.", example = "256700000000")
+    private String contact;
+
+    @JsonProperty("is_active")
     @ApiModelProperty(notes = "System user active.", example = "1 | 0")
-    private int systemUserActive;
+    private int isActive;
+
+    @JsonProperty("is_system_admin")
+    @ApiModelProperty(notes = "System admin.", example = "1 | 0")
+    private int isSystemAdmin;
 
     @JsonProperty("created_on")
     @ApiModelProperty(notes = "Record created date.", example = "2021-05-01")

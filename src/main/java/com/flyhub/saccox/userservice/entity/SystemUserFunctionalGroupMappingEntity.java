@@ -22,16 +22,16 @@ public class SystemUserFunctionalGroupMappingEntity {
     @ApiModelProperty(notes = "Unique identifier of a system user functional group mapping entity. Auto generated.", example = "1")
     private Long systemUserFunctionalGroupMappingId;
 
-    @JsonProperty("system_user_id_fk")
+    @JsonProperty("system_user_id")
     @ApiModelProperty(notes = "System user foreign key.", example = "1")
     @ManyToOne
-    @JoinColumn(name="system_user_id_fk", nullable=false)
+    @JoinColumn(name="system_user_id", nullable=false)
     private SystemUserEntity systemUserEntity;
 
-    @JsonProperty("functional_group_id_fk")
+    @JsonProperty("functional_group_id")
     @ApiModelProperty(notes = "Functional group foreign key.", example = "1")
     @ManyToOne
-    @JoinColumn(name="functional_group_id_fk", nullable=false)
+    @JoinColumn(name="functional_group_id", nullable=false)
     private FunctionalGroupEntity functionalGroupEntity;
 
     @JsonProperty("created_on")
