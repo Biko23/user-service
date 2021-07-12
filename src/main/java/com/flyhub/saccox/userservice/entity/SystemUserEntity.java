@@ -22,6 +22,10 @@ public class SystemUserEntity {
     @ApiModelProperty(notes = "Unique identifier of a system user type entity. Auto generated.", example = "1")
     private Long systemUserId;
 
+    @JsonProperty("tenant_id")
+    @ApiModelProperty(notes = "Tenant foreign key.", example = "1")
+    private Long tenantId;
+
     @JsonProperty("first_name")
     @ApiModelProperty(notes = "System user first name.", example = "John")
     private String firstName;
