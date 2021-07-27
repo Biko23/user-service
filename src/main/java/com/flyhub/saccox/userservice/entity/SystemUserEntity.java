@@ -21,54 +21,94 @@ public class SystemUserEntity {
     @JsonProperty("system_user_id")
     @ApiModelProperty(notes = "Unique identifier of a system user type entity. Auto generated.", example = "1")
     private Long systemUserId;
-
+    
     @OneToOne(mappedBy = "systemUserEntity")
     private PasswordEntity passwordEntity;
 
     @JsonProperty("system_user_type_id_fk")
     @ApiModelProperty(notes = "System user username.", example = "John")
     private Integer systemUserTypeIdFk;
-
-
-    @JsonProperty("system_user_first_name")
-    @ApiModelProperty(notes = "System user username.", example = "John")
-    private String systemUserFirstName;
-
-    @JsonProperty("system_user_middle_name")
-    @ApiModelProperty(notes = "System user username.", example = "John")
-    private String systemUserMiddleName;
-
-    @JsonProperty("system_user_last_name")
-    @ApiModelProperty(notes = "System user username.", example = "John")
-    private String systemUserLastName;
-
-    @JsonProperty("system_user_email")
-    @ApiModelProperty(notes = "System user username.", example = "John@gmail.com")
-    private String systemUserEmail;
-
-    @JsonProperty("system_user_mobile")
-    @ApiModelProperty(notes = "System user username.", example = "0781258963")
-    private String systemUserMobile;
     
     @JsonProperty("tenant_id")
     @ApiModelProperty(notes = "Tenant foreign key.", example = "1")
     private Long tenantId;
+    
+	@JsonProperty("tenant_global_uuid")
+	@ApiModelProperty(notes="Unique identifier of a tenant. Auto generated")
+	private String tenantGlobalUuid;
+	
+
+//    first_name: '',
+//    middle_name: '',
+//    last_name: '',
+//    other_name: '',
+//    phone_1: '',
+//    phone_2: '',
+//    email_1: '',
+//    email_2: '',
+//    dob: '',
+//    village: '',
+//    district: '',
+//    country: '',
+//    is_staff: 1,
+//    user_status: '',
+//    employment_date: '',
+//    employment_year: '',
+//    termination_date: '',
+//    termination_year: '',
+//    termination_reason: '',
 
     @JsonProperty("first_name")
     @ApiModelProperty(notes = "System user first name.", example = "John")
     private String firstName;
 
+    @JsonProperty("middle_name")
+    @ApiModelProperty(notes = "System user first name.", example = "John")
+    private String middleName;
+
     @JsonProperty("last_name")
     @ApiModelProperty(notes = "System user last name.", example = "Doe")
     private String lastName;
+
+    @JsonProperty("other_name")
+    @ApiModelProperty(notes = "System user other name.", example = "Malkovic")
+    private String otherName;
 
     @JsonProperty("username")
     @ApiModelProperty(notes = "System user username.", example = "John | 256700000000")
     private String userName;
 
-    @JsonProperty("contact")
-    @ApiModelProperty(notes = "System user contact.", example = "256700000000")
-    private String contact;
+    @JsonProperty("phone_1")
+    @ApiModelProperty(notes = "System user primary phone.", example = "256700000000")
+    private String phone1;
+
+    @JsonProperty("phone_2")
+    @ApiModelProperty(notes = "System user secondary phone.", example = "256700000000")
+    private String phone2;
+
+    @JsonProperty("email_1")
+    @ApiModelProperty(notes = "System user primary email.", example = "john@gmaoil.com")
+    private String email1;
+
+    @JsonProperty("email_2")
+    @ApiModelProperty(notes = "System user secondary email.", example = "a@gmail.com")
+    private String email2;
+
+    @JsonProperty("dob")
+    @ApiModelProperty(notes = "System user date of birth.", example = "12-12-21")
+    private Date dob;
+
+    @JsonProperty("village")
+    @ApiModelProperty(notes = "System user village.", example = "Kigongi")
+    private String village;
+
+    @JsonProperty("district")
+    @ApiModelProperty(notes = "System user district.", example = "Kabale")
+    private String district;
+
+    @JsonProperty("country")
+    @ApiModelProperty(notes = "System user country.", example = "Uganda")
+    private String country;
 
     @JsonProperty("is_active")
     @ApiModelProperty(notes = "System user active.", example = "1 | 0")
@@ -77,6 +117,30 @@ public class SystemUserEntity {
     @JsonProperty("is_system_admin")
     @ApiModelProperty(notes = "System admin.", example = "1 | 0")
     private int isSystemAdmin;
+
+    @JsonProperty("is_staff")
+    @ApiModelProperty(notes = "Is Tenant staff.", example = "1 | 0")
+    private int isStaff;
+
+    @JsonProperty("employment_date")
+    @ApiModelProperty(notes = "System user date of employment.", example = "12-12-21")
+    private Date employmentDate;
+
+    @JsonProperty("employment_year")
+    @ApiModelProperty(notes = "System user year of employment.", example = "12-12-21")
+    private String employmentYear;
+
+    @JsonProperty("termination_date")
+    @ApiModelProperty(notes = "System user date of termination.", example = "12-12-21")
+    private Date terminationDate;
+
+    @JsonProperty("termination_year")
+    @ApiModelProperty(notes = "System user year of termination.", example = "12-12-21")
+    private String terminationYear;
+
+    @JsonProperty("termination_reason")
+    @ApiModelProperty(notes = "System user reason for termination.", example = "12-12-21")
+    private String terminationReason;
 
     @JsonProperty("created_on")
     @ApiModelProperty(notes = "Record created date.", example = "2021-05-01")
@@ -117,32 +181,16 @@ public class SystemUserEntity {
 	public void setSystemUserTypeIdFk(Integer systemUserTypeIdFk) {
 		this.systemUserTypeIdFk = systemUserTypeIdFk;
 	}
-	
-	
 
-	public SystemUserEntity() {
-	}
-
-	public SystemUserEntity(Long systemUserId, Integer systemUserTypeIdFk, String systemUserFirstName,
-			String systemUserMiddleName, String systemUserLastName, String systemUserEmail, String systemUserMobile,
-			String systemUserUserName, int systemUserActive, Date createdOn, Date updatedOn, Long createdBy,
-			Long modifiedBy, int softDelete, int hardDelete) {
-		this.systemUserId = systemUserId;
-		this.systemUserTypeIdFk = systemUserTypeIdFk;
-		this.systemUserFirstName = systemUserFirstName;
-		this.systemUserMiddleName = systemUserMiddleName;
-		this.systemUserLastName = systemUserLastName;
-		this.systemUserEmail = systemUserEmail;
-		this.systemUserMobile = systemUserMobile;
-		this.createdOn = createdOn;
-		this.updatedOn = updatedOn;
-		this.createdBy = createdBy;
-		this.modifiedBy = modifiedBy;
-		this.softDelete = softDelete;
-		this.hardDelete = hardDelete;
+	public String getTenantGlobalUuid() {
+		return tenantGlobalUuid;
 	}
 	
-	
-	
+	public void setTenantGlobalUuid(String tenantGlobalUuid) {
+		this.tenantGlobalUuid = tenantGlobalUuid;
+	}
 
+	
+	
+	
 }

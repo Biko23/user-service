@@ -27,9 +27,6 @@ public class PasswordEntity {
     @OneToOne
     @JoinColumn(name="system_user_id", nullable=false)
     private SystemUserEntity systemUserEntity;
-//    @JsonProperty("system_user_id_fk")
-//    @ApiModelProperty(notes = "foreign key referencing system user", example = "1")
-//    private Long systemUserIdFk;
     
 
     @JsonProperty("password")

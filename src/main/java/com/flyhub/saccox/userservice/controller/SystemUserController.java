@@ -1,6 +1,7 @@
 package com.flyhub.saccox.userservice.controller;
 
 import com.flyhub.saccox.userservice.entity.SystemUserEntity;
+import com.flyhub.saccox.userservice.microserviceconnect.UserTenant;
 import com.flyhub.saccox.userservice.service.SystemUserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,18 +31,23 @@ public class SystemUserController {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
+    
     @GetMapping("/{systemUserId}")
-    public ResponseEntity<SystemUserEntity> findBySystemUserId(@PathVariable("systemUserId") Long systemUserId) {
-//        log.info("Inside findBySystemUserId method of SystemUserController");
-        Optional<SystemUserEntity> systemUserOptional = Optional.ofNullable(systemUserService.findBySystemUserId(systemUserId));
-
-        if (systemUserOptional.isPresent()) {
-            return new ResponseEntity<>(systemUserOptional.get(), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    public UserTenant getUserBelongsToTenant(@PathVariable("systemUserId") Long systemUserId) {
+    	return systemUserService.getUserBelongsToTenant(systemUserId);
     }
+
+//    @GetMapping("/{systemUserId}")
+//    public ResponseEntity<SystemUserEntity> findBySystemUserId(@PathVariable("systemUserId") Long systemUserId) {
+//        log.info("Inside findBySystemUserId method of SystemUserController");
+//        Optional<SystemUserEntity> systemUserOptional = Optional.ofNullable(systemUserService.findBySystemUserId(systemUserId));
+//
+//        if (systemUserOptional.isPresent()) {
+//            return new ResponseEntity<>(systemUserOptional.get(), HttpStatus.OK);
+//        } else {
+//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//        }
+//    }
 
     @GetMapping("")
     public ResponseEntity<List<SystemUserEntity>> findAllSystemUsers() {

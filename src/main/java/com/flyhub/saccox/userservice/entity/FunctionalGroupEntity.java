@@ -21,6 +21,10 @@ public class FunctionalGroupEntity {
     @JsonProperty("functional_group_id")
     @ApiModelProperty(notes = "Unique identifier of a functional group entity. Auto generated.", example = "1")
     private Long functionalGroupId;
+    
+	@JsonProperty("functional_group_name")
+    @ApiModelProperty(notes = "Functional group name.", example = "1")
+    private String name;
 
     @JsonProperty("tenant_id")
     @ApiModelProperty(notes = "Tenant foreign key.", example = "1")
@@ -30,10 +34,6 @@ public class FunctionalGroupEntity {
     @ApiModelProperty(notes = "Branch foreign key.", example = "1")
     private Long branchId;
     
-	@JsonProperty("functional_group_name")
-    @ApiModelProperty(notes = "Functional group name.", example = "1")
-    private String name;
-
     @JsonProperty("is_active")
     @ApiModelProperty(notes = "Functional group active.", example = "1 | 0")
     private int isActive;
