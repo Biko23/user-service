@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.sql.Date;
-import java.util.Set;
 
 @Entity
 @Data
@@ -28,8 +27,8 @@ public class SystemUserEntity {
 //    @ManyToOne
 //    @JoinColumn(name="system_user_type_id_fk", nullable=false)
 //    private SystemUserTypeEntity systemUserTypeEntity;
-    @OneToMany(mappedBy = "systemUserEntity")
-    private Set<PasswordEntity> passwordEntitySet;
+    @OneToOne(mappedBy = "systemUserEntity")
+    private PasswordEntity passwordEntity;
 
     @JsonProperty("system_user_type_id_fk")
     @ApiModelProperty(notes = "System user username.", example = "John")
@@ -59,6 +58,31 @@ public class SystemUserEntity {
     @JsonProperty("tenant_id")
     @ApiModelProperty(notes = "Tenant foreign key.", example = "1")
     private Long tenantId;
+    
+	@JsonProperty("tenant_global_uuid")
+	@ApiModelProperty(notes="Unique identifier of a tenant. Auto generated")
+	private String tenantGlobalUuid;
+	
+
+//    first_name: '',
+//    middle_name: '',
+//    last_name: '',
+//    other_name: '',
+//    phone_1: '',
+//    phone_2: '',
+//    email_1: '',
+//    email_2: '',
+//    dob: '',
+//    village: '',
+//    district: '',
+//    country: '',
+//    is_staff: 1,
+//    user_status: '',
+//    employment_date: '',
+//    employment_year: '',
+//    termination_date: '',
+//    termination_year: '',
+//    termination_reason: '',
 
     @JsonProperty("first_name")
     @ApiModelProperty(notes = "System user first name.", example = "John")
@@ -123,5 +147,15 @@ public class SystemUserEntity {
 	public void setSystemUserTypeIdFk(Integer systemUserTypeIdFk) {
 		this.systemUserTypeIdFk = systemUserTypeIdFk;
 	}
+
+	public String getTenantGlobalUuid() {
+		return tenantGlobalUuid;
+	}
+
+	public void setTenantGlobalUuid(String tenantGlobalUuid) {
+		this.tenantGlobalUuid = tenantGlobalUuid;
+	}
+	
+	
 	
 }

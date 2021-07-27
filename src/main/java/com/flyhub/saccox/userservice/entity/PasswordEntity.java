@@ -22,10 +22,10 @@ public class PasswordEntity {
     @ApiModelProperty(notes = "Unique identifier of a password entity. Auto generated.", example = "1")
     private Long passwordId;
 
-    @ManyToOne
-    @JsonProperty("system_user_id_fk")
+    @OneToOne
+    @JsonProperty("system_user_id")
     @ApiModelProperty(notes = "foreign key referencing system user", example = "1")
-    private Long systemUserIdFk;
+    private SystemUserEntity systemUserEntity;
     
 
     @JsonProperty("password")
