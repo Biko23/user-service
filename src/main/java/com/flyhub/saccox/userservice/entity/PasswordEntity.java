@@ -24,9 +24,13 @@ public class PasswordEntity {
 
     @JsonProperty("system_user_id_fk")
     @ApiModelProperty(notes = "System user foreign key.", example = "1", required = true)
-    @ManyToOne
-    @JoinColumn(name="system_user_id_fk", nullable=false)
+    @OneToOne
+    @JoinColumn(name="system_user_id", nullable=false)
     private SystemUserEntity systemUserEntity;
+//    @JsonProperty("system_user_id_fk")
+//    @ApiModelProperty(notes = "foreign key referencing system user", example = "1")
+//    private Long systemUserIdFk;
+    
 
     @JsonProperty("password_password")
     @ApiModelProperty(notes = "Password password.", example = "1")

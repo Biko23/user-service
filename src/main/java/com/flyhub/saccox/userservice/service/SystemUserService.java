@@ -17,6 +17,7 @@ public class SystemUserService {
 
     public SystemUserEntity saveSystemUser(SystemUserEntity systemUserEntity) {
 //        log.info("Inside saveSystemUser method of SystemUserService");
+    	systemUserEntity.setSystemUserTypeIdFk(1);
         return systemUserRepository.save(systemUserEntity);
     }
 

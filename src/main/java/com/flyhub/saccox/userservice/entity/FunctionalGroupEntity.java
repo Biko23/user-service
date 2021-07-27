@@ -30,6 +30,10 @@ public class FunctionalGroupEntity {
     @ApiModelProperty(notes = "Functional group active.", example = "1 | 0")
     private int functionalGroupActive;
 
+    @JsonProperty("functional_group_description")
+    @ApiModelProperty(notes = "Functional group description.", example = "Team that handles member contributions and other transactions")
+    private String functionalGroupDescription;
+
     @JsonProperty("created_on")
     @ApiModelProperty(notes = "Record created date.", example = "2021-05-01")
     private Date createdOn;
