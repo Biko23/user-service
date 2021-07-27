@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.util.Set;
 
 @Entity
 @Data
@@ -21,14 +22,14 @@ public class SystemUserEntity {
     @JsonProperty("system_user_id")
     @ApiModelProperty(notes = "Unique identifier of a system user type entity. Auto generated.", example = "1")
     private Long systemUserId;
-
-//    @JsonProperty("system_user_type_id_fk")
+    
+    //    @JsonProperty("system_user_type_id_fk")
 //    @ApiModelProperty(notes = "System user type foreign key.", example = "1", required = true)
 //    @ManyToOne
 //    @JoinColumn(name="system_user_type_id_fk", nullable=false)
 //    private SystemUserTypeEntity systemUserTypeEntity;
-    @OneToOne(mappedBy = "systemUserEntity")
-    private PasswordEntity passwordEntity;
+    @OneToMany(mappedBy = "systemUserEntity")
+    private Set<PasswordEntity> passwordEntitySet;
 
     @JsonProperty("system_user_type_id_fk")
     @ApiModelProperty(notes = "System user username.", example = "John")
@@ -54,14 +55,34 @@ public class SystemUserEntity {
     @JsonProperty("system_user_mobile")
     @ApiModelProperty(notes = "System user username.", example = "0781258963")
     private String systemUserMobile;
+    
+    @JsonProperty("tenant_id")
+    @ApiModelProperty(notes = "Tenant foreign key.", example = "1")
+    private Long tenantId;
 
-    @JsonProperty("system_user_username")
-    @ApiModelProperty(notes = "System user username.", example = "John")
-    private String systemUserUserName;
+    @JsonProperty("first_name")
+    @ApiModelProperty(notes = "System user first name.", example = "John")
+    private String firstName;
 
-    @JsonProperty("system_user_active")
+    @JsonProperty("last_name")
+    @ApiModelProperty(notes = "System user last name.", example = "Doe")
+    private String lastName;
+
+    @JsonProperty("username")
+    @ApiModelProperty(notes = "System user username.", example = "John | 256700000000")
+    private String userName;
+
+    @JsonProperty("contact")
+    @ApiModelProperty(notes = "System user contact.", example = "256700000000")
+    private String contact;
+
+    @JsonProperty("is_active")
     @ApiModelProperty(notes = "System user active.", example = "1 | 0")
-    private int systemUserActive;
+    private int isActive;
+
+    @JsonProperty("is_system_admin")
+    @ApiModelProperty(notes = "System admin.", example = "1 | 0")
+    private int isSystemAdmin;
 
     @JsonProperty("created_on")
     @ApiModelProperty(notes = "Record created date.", example = "2021-05-01")
@@ -103,33 +124,4 @@ public class SystemUserEntity {
 		this.systemUserTypeIdFk = systemUserTypeIdFk;
 	}
 	
-	
-
-	public SystemUserEntity() {
-	}
-
-	public SystemUserEntity(Long systemUserId, Integer systemUserTypeIdFk, String systemUserFirstName,
-			String systemUserMiddleName, String systemUserLastName, String systemUserEmail, String systemUserMobile,
-			String systemUserUserName, int systemUserActive, Date createdOn, Date updatedOn, Long createdBy,
-			Long modifiedBy, int softDelete, int hardDelete) {
-		this.systemUserId = systemUserId;
-		this.systemUserTypeIdFk = systemUserTypeIdFk;
-		this.systemUserFirstName = systemUserFirstName;
-		this.systemUserMiddleName = systemUserMiddleName;
-		this.systemUserLastName = systemUserLastName;
-		this.systemUserEmail = systemUserEmail;
-		this.systemUserMobile = systemUserMobile;
-		this.systemUserUserName = systemUserUserName;
-		this.systemUserActive = systemUserActive;
-		this.createdOn = createdOn;
-		this.updatedOn = updatedOn;
-		this.createdBy = createdBy;
-		this.modifiedBy = modifiedBy;
-		this.softDelete = softDelete;
-		this.hardDelete = hardDelete;
-	}
-	
-	
-	
-
 }

@@ -22,31 +22,27 @@ public class PasswordEntity {
     @ApiModelProperty(notes = "Unique identifier of a password entity. Auto generated.", example = "1")
     private Long passwordId;
 
+    @ManyToOne
     @JsonProperty("system_user_id_fk")
-    @ApiModelProperty(notes = "System user foreign key.", example = "1", required = true)
-    @OneToOne
-    @JoinColumn(name="system_user_id", nullable=false)
-    private SystemUserEntity systemUserEntity;
-//    @JsonProperty("system_user_id_fk")
-//    @ApiModelProperty(notes = "foreign key referencing system user", example = "1")
-//    private Long systemUserIdFk;
+    @ApiModelProperty(notes = "foreign key referencing system user", example = "1")
+    private Long systemUserIdFk;
     
 
-    @JsonProperty("password_password")
+    @JsonProperty("password")
     @ApiModelProperty(notes = "Password password.", example = "1")
-    private String passwordPassword;
+    private String password;
 
-    @JsonProperty("password_question")
+    @JsonProperty("question")
     @ApiModelProperty(notes = "Password question.", example = "Place of birth?")
-    private String passwordQuestion;
+    private String question;
 
-    @JsonProperty("password_answer")
+    @JsonProperty("answer")
     @ApiModelProperty(notes = "Password answer.", example = "12345678")
-    private String passwordAnswer;
+    private String answer;
 
-    @JsonProperty("password_active")
+    @JsonProperty("is_active")
     @ApiModelProperty(notes = "Password active.", example = "1 | 0")
-    private int systemUserActive;
+    private int isActive;
 
     @JsonProperty("created_on")
     @ApiModelProperty(notes = "Record created date.", example = "2021-05-01")

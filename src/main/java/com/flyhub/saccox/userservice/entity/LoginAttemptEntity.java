@@ -22,27 +22,27 @@ public class LoginAttemptEntity {
     @ApiModelProperty(notes = "Unique identifier of a login attempt entity. Auto generated.", example = "1")
     private Long loginAttemptId;
 
-    @JsonProperty("system_user_id_fk")
+    @JsonProperty("system_user_id")
     @ApiModelProperty(notes = "System user foreign key.", example = "1", required = true)
     @ManyToOne
-    @JoinColumn(name="system_user_id_fk", nullable=false)
+    @JoinColumn(name="system_user_id", nullable=false)
     private SystemUserEntity systemUserEntity;
 
-    @JsonProperty("login_attempt_password")
+    @JsonProperty("password")
     @ApiModelProperty(notes = "Login attempt password.", example = "12345678")
-    private String loginAttemptPassword;
+    private String password;
 
-    @JsonProperty("login_attempt_ip_number")
+    @JsonProperty("ip_number")
     @ApiModelProperty(notes = "Login attempt ip number.", example = "192.168.1.1")
-    private String loginAttemptIPNumber;
+    private String iPNumber;
 
-    @JsonProperty("login_attempt_browser_type")
+    @JsonProperty("browser_type")
     @ApiModelProperty(notes = "Login attempt type browser.", example = "Chrome | Firefox")
-    private String loginAttemptBrowserType;
+    private String browserType;
 
-    @JsonProperty("login_attempt_success")
+    @JsonProperty("is_success")
     @ApiModelProperty(notes = "Login attempt success.", example = "1 | 0")
-    private int loginAttemptSuccess;
+    private int isSuccess;
 
     @JsonProperty("created_on")
     @ApiModelProperty(notes = "Record created date.", example = "2021-05-01")

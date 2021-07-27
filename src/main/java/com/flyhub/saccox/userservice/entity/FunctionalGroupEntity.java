@@ -24,11 +24,19 @@ public class FunctionalGroupEntity {
     
 	@JsonProperty("functional_group_name")
     @ApiModelProperty(notes = "Functional group name.", example = "1")
-    private String functionalGroupName;
+    private String name;
 
-    @JsonProperty("functional_group_active")
+    @JsonProperty("tenant_id")
+    @ApiModelProperty(notes = "Tenant foreign key.", example = "1")
+    private Long tenantId;
+
+    @JsonProperty("branch_id")
+    @ApiModelProperty(notes = "Branch foreign key.", example = "1")
+    private Long branchId;
+
+    @JsonProperty("is_active")
     @ApiModelProperty(notes = "Functional group active.", example = "1 | 0")
-    private int functionalGroupActive;
+    private int isActive;
 
     @JsonProperty("functional_group_description")
     @ApiModelProperty(notes = "Functional group description.", example = "Team that handles member contributions and other transactions")
