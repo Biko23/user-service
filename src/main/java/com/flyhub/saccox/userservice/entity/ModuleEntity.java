@@ -22,25 +22,21 @@ public class ModuleEntity {
     @ApiModelProperty(notes = "Unique identifier of a module entity. Auto generated.", example = "1")
     private Long moduleId;
 
-    @JsonProperty("module_parent_id")
-    @ApiModelProperty(notes = "Parent ID.", example = "1")
-    private Long moduleParentId;
-
-    @JsonProperty("module_name")
+    @JsonProperty("name")
     @ApiModelProperty(notes = "Module name.", example = "Finance | Payrol")
-    private String moduleName;
+    private String name;
 
-    @JsonProperty("module_active")
+    @JsonProperty("is_active")
     @ApiModelProperty(notes = "Module active.", example = "1 | 0")
-    private int moduleActive;
+    private int isActive;
 
-    @JsonProperty("module_access_location")
+    @JsonProperty("access_location")
     @ApiModelProperty(notes = "Access location.", example = " - ")
-    private String moduleAccessLocation;
+    private String accessLocation;
 
-    @JsonProperty("module_working_time")
+    @JsonProperty("working_time")
     @ApiModelProperty(notes = "Working time.", example = " - ")
-    private String moduleWorkingTime;
+    private String workingTime;
 
     @JsonProperty("created_on")
     @ApiModelProperty(notes = "Record created date.", example = "2021-05-01")
