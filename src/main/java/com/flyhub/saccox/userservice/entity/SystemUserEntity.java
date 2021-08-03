@@ -98,6 +98,10 @@ public class SystemUserEntity {
     @ApiModelProperty(notes = "System user date of birth.", example = "12-12-21")
     private Date dob;
 
+    @JsonProperty("gender")
+    @ApiModelProperty(notes = "System user date of birth.", example = "12-12-21")
+    private String gender;
+
     @JsonProperty("village")
     @ApiModelProperty(notes = "System user village.", example = "Kigongi")
     private String village;
