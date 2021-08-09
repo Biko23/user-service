@@ -22,11 +22,11 @@ public class PasswordEntity {
     @ApiModelProperty(notes = "Unique identifier of a password entity. Auto generated.", example = "1")
     private Long passwordId;
 
-    @JsonProperty("system_user_id")
-    @ApiModelProperty(notes = "System user foreign key.", example = "1", required = true)
-    @OneToOne
-    @JoinColumn(name="system_user_id", nullable=false)
-    private SystemUserEntity systemUserEntity;
+//    @JsonProperty("system_user_id")
+//    @ApiModelProperty(notes = "System user foreign key.", example = "1", required = true)
+//    @OneToOne
+//    @JoinColumn(name="system_user_id", nullable=false)
+//    private SystemUserEntity systemUserEntity;
     
 
     @JsonProperty("password")
