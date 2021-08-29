@@ -7,7 +7,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+
+import org.hibernate.annotations.GenericGenerator;
+
 import java.sql.Date;
+import java.util.UUID;
 
 @Entity
 @Data
@@ -17,10 +21,11 @@ import java.sql.Date;
 public class FunctionalGroupEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @JsonProperty("functional_group_id")
+	@GeneratedValue(generator = "uuid")
+	@GenericGenerator(name = "uuid", strategy = "uuid2")
+    @JsonProperty("functional_group_uuid")
     @ApiModelProperty(notes = "Unique identifier of a functional group entity. Auto generated.", example = "1")
-    private Long functionalGroupId;
+    private UUID functionalGroupUuid;
     
 	@JsonProperty("functional_group_name")
     @ApiModelProperty(notes = "Functional group name.", example = "1")
@@ -66,12 +71,12 @@ public class FunctionalGroupEntity {
     @ApiModelProperty(notes = "hard delete.", example = "1 | 0")
     private int hardDelete;
 
-	public Long getFunctionalGroupId() {
-		return functionalGroupId;
+	public UUID getFunctionalGroupUuid() {
+		return functionalGroupUuid;
 	}
 
-	public void setFunctionalGroupId(Long functionalGroupId) {
-		this.functionalGroupId = functionalGroupId;
+	public void setFunctionalGroupUuid(UUID functionalGroupUuid) {
+		this.functionalGroupUuid = functionalGroupUuid;
 	}
 
 

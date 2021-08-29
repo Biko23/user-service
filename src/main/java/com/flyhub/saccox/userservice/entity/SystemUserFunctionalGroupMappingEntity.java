@@ -7,7 +7,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+
+import org.hibernate.annotations.GenericGenerator;
+
 import java.sql.Date;
+import java.util.UUID;
 
 @Entity
 @Data
@@ -17,10 +21,11 @@ import java.sql.Date;
 public class SystemUserFunctionalGroupMappingEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @JsonProperty("system_user_functional_group_mapping_id")
+	@GeneratedValue(generator = "uuid")
+	@GenericGenerator(name = "uuid", strategy = "uuid2")
+    @JsonProperty("system_user_functional_group_mapping_uuid")
     @ApiModelProperty(notes = "Unique identifier of a system user functional group mapping entity. Auto generated.", example = "1")
-    private Long systemUserFunctionalGroupMappingId;
+    private UUID systemUserFunctionalGroupMappingUuid;
 
     @JsonProperty("system_user_id")
     @ApiModelProperty(notes = "System user foreign key.", example = "1")
@@ -58,12 +63,12 @@ public class SystemUserFunctionalGroupMappingEntity {
     @ApiModelProperty(notes = "hard delete.", example = "1 | 0")
     private int hardDelete;
 
-	public Long getSystemUserFunctionalGroupMappingId() {
-		return systemUserFunctionalGroupMappingId;
+	public UUID getSystemUserFunctionalGroupMappingUuid() {
+		return systemUserFunctionalGroupMappingUuid;
 	}
 
-	public void setSystemUserFunctionalGroupMappingId(Long systemUserFunctionalGroupMappingId) {
-		this.systemUserFunctionalGroupMappingId = systemUserFunctionalGroupMappingId;
+	public void setSystemUserFunctionalGroupMappingUuid(UUID systemUserFunctionalGroupMappingUuid) {
+		this.systemUserFunctionalGroupMappingUuid = systemUserFunctionalGroupMappingUuid;
 	}
 
 }

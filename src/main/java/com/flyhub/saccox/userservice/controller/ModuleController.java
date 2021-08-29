@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/user/modules")
@@ -31,10 +32,10 @@ public class ModuleController {
         }
     }
 
-    @GetMapping("/{moduleId}")
-    public ResponseEntity<ModuleEntity> findByModuleId(@PathVariable("moduleId") Long moduleId) {
+    @GetMapping("/{moduleUuid}")
+    public ResponseEntity<ModuleEntity> findByModuleId(@PathVariable("moduleUuid") UUID moduleUuid) {
 //        log.info("Inside findByModuleId method of ModuleController");
-        Optional<ModuleEntity> moduleOptional = Optional.ofNullable(moduleService.findByModuleId(moduleId));
+        Optional<ModuleEntity> moduleOptional = Optional.ofNullable(moduleService.findByModuleId(moduleUuid));
 
         if (moduleOptional.isPresent()) {
             return new ResponseEntity<>(moduleOptional.get(), HttpStatus.OK);
@@ -60,37 +61,37 @@ public class ModuleController {
         }
     }
 
-    @PutMapping("/{moduleId}")
-    public ResponseEntity<ModuleEntity> fullUpdateModule(@PathVariable("moduleId") Long moduleId, @RequestBody ModuleEntity moduleEntity) {
+    @PutMapping("/{moduleUuid}")
+    public ResponseEntity<ModuleEntity> fullUpdateModule(@PathVariable("moduleUuid") UUID moduleUuid, @RequestBody ModuleEntity moduleEntity) {
 //        log.info("Inside fullUpdateModule method of ModuleController");
-        Optional<ModuleEntity> moduleOptional = Optional.ofNullable(moduleService.findByModuleId(moduleId));
+        Optional<ModuleEntity> moduleOptional = Optional.ofNullable(moduleService.findByModuleId(moduleUuid));
 
         if (moduleOptional.isPresent()) {
-            moduleEntity.setModuleId(moduleId);
+            moduleEntity.setModuleId(moduleUuid);
             return new ResponseEntity<>(moduleService.saveModule(moduleEntity), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
-    @PatchMapping("/{moduleId}")
-    public ResponseEntity<ModuleEntity> partialUpdateModule(@PathVariable("moduleId") Long moduleId, @RequestBody ModuleEntity moduleEntity) {
+    @PatchMapping("/{moduleUuid}")
+    public ResponseEntity<ModuleEntity> partialUpdateModule(@PathVariable("moduleUuid") UUID moduleUuid, @RequestBody ModuleEntity moduleEntity) {
 //        log.info("Inside partialUpdateModule method of ModuleController");
-        Optional<ModuleEntity> moduleOptional = Optional.ofNullable(moduleService.findByModuleId(moduleId));
+        Optional<ModuleEntity> moduleOptional = Optional.ofNullable(moduleService.findByModuleId(moduleUuid));
 
         if (moduleOptional.isPresent()) {
-            moduleEntity.setModuleId(moduleId);
+            moduleEntity.setModuleId(moduleUuid);
             return new ResponseEntity<>(moduleService.saveModule(moduleEntity), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
-    @DeleteMapping("/{moduleId}")
-    public ResponseEntity<HttpStatus> deleteModule(@PathVariable("moduleId") Long moduleId) {
+    @DeleteMapping("/{moduleUuid}")
+    public ResponseEntity<HttpStatus> deleteModule(@PathVariable("moduleUuid") UUID moduleUuid) {
 //        log.info("Inside deleteModule method of ModuleController");
         try {
-            moduleService.deleteModule(moduleId);
+            moduleService.deleteModule(moduleUuid);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

@@ -7,7 +7,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+
+import org.hibernate.annotations.GenericGenerator;
+
 import java.sql.Date;
+import java.util.UUID;
 
 @Entity
 @Data
@@ -17,10 +21,11 @@ import java.sql.Date;
 public class FunctionalGroupModuleMappingEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @JsonProperty("functional_group_module_mapping_id")
+	@GeneratedValue(generator = "uuid")
+	@GenericGenerator(name = "uuid", strategy = "uuid2")
+    @JsonProperty("functional_group_module_mapping_uuid")
     @ApiModelProperty(notes = "Unique identifier of a functional group module mapping entity. Auto generated.", example = "1")
-    private Long functionalGroupModuleMappingId;
+    private UUID functionalGroupModuleMappingUuid;
 
     @JsonProperty("functional_group_id")
     @ApiModelProperty(notes = "Functional group foreign key.", example = "1", required = true)
@@ -98,12 +103,12 @@ public class FunctionalGroupModuleMappingEntity {
     @ApiModelProperty(notes = "hard delete.", example = "1 | 0")
     private int hardDelete;
 
-	public Long getFunctionalGroupModuleMappingId() {
-		return functionalGroupModuleMappingId;
+	public UUID getFunctionalGroupModuleMappingUuid() {
+		return functionalGroupModuleMappingUuid;
 	}
 
-	public void setFunctionalGroupModuleMappingId(Long functionalGroupModuleMappingId) {
-		this.functionalGroupModuleMappingId = functionalGroupModuleMappingId;
+	public void setFunctionalGroupModuleMappingUuid(UUID functionalGroupModuleMappingUuid) {
+		this.functionalGroupModuleMappingUuid = functionalGroupModuleMappingUuid;
 	}
 
 }

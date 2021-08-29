@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @Slf4j
@@ -21,9 +22,9 @@ public class SystemUserFunctionalGroupMappingService {
         return systemUserFunctionalGroupMappingRepository.save(systemUserFunctionalGroupMappingEntity);
     }
 
-    public SystemUserFunctionalGroupMappingEntity findBySystemUserFunctionalGroupMappingId(Long systemUserFunctionalGroupMappingEntity) {
+    public SystemUserFunctionalGroupMappingEntity findBySystemUserFunctionalGroupMappingId(UUID systemUserFunctionalGroupMappingUuid) {
 //        log.info("Inside findBySystemUserFunctionalGroupMappingId method of SystemUserFunctionalGroupMappingService");
-        return systemUserFunctionalGroupMappingRepository.findBySystemUserFunctionalGroupMappingId(systemUserFunctionalGroupMappingEntity);
+        return systemUserFunctionalGroupMappingRepository.findBySystemUserFunctionalGroupMappingUuid(systemUserFunctionalGroupMappingUuid);
     }
 
     public List<SystemUserFunctionalGroupMappingEntity> listAllSystemUserFunctionalGroupMappings() {
@@ -31,9 +32,9 @@ public class SystemUserFunctionalGroupMappingService {
         return systemUserFunctionalGroupMappingRepository.findAll();
     }
 
-    public void deleteSystemUserFunctionalGroupMapping(Long systemUserFunctionalGroupMappingEntity) {
+    public void deleteSystemUserFunctionalGroupMapping(UUID systemUserFunctionalGroupMappingUuid) {
 //        log.info("Inside deleteSystemUserFunctionalGroupMapping method of SystemUserFunctionalGroupMappingService");
-        systemUserFunctionalGroupMappingRepository.deleteById(systemUserFunctionalGroupMappingEntity);
+        systemUserFunctionalGroupMappingRepository.deleteById(systemUserFunctionalGroupMappingUuid);
     }
 
     public void deleteAllSystemUserFunctionalGroupMappings() {

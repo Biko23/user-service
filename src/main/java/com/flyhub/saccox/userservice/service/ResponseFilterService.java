@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @Slf4j
@@ -21,9 +22,9 @@ public class ResponseFilterService {
         return responseFilterRepository.save(responseFilterEntity);
     }
 
-    public ResponseFilterEntity findByResponseFilterId(Long responseFilterId) {
+    public ResponseFilterEntity findByResponseFilterId(UUID responseFilterUuid) {
 //        log.info("Inside findByResponseId method of ResponseService");
-        return responseFilterRepository.findByResponseFilterId(responseFilterId);
+        return responseFilterRepository.findByResponseFilterUuid(responseFilterUuid);
     }
 
     public List<ResponseFilterEntity> listAllResponseFilters() {
@@ -31,9 +32,9 @@ public class ResponseFilterService {
         return responseFilterRepository.findAll();
     }
 
-    public void deleteResponseFilter(Long responseFilterId) {
+    public void deleteResponseFilter(UUID responseFilterUuid) {
 //        log.info("Inside deleteResponse method of ResponseService");
-        responseFilterRepository.deleteById(responseFilterId);
+        responseFilterRepository.deleteById(responseFilterUuid);
     }
 
     public void deleteAllResponseFilters() {

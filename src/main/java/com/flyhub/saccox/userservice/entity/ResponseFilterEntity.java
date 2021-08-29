@@ -7,7 +7,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+
+import org.hibernate.annotations.GenericGenerator;
+
 import java.sql.Date;
+import java.util.UUID;
 
 @Entity
 @Data
@@ -17,10 +21,11 @@ import java.sql.Date;
 public class ResponseFilterEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @JsonProperty("response_filter_id")
+	@GeneratedValue(generator = "uuid")
+	@GenericGenerator(name = "uuid", strategy = "uuid2")
+    @JsonProperty("response_filter_uuid")
     @ApiModelProperty(notes = "Unique identifier of a response filter entity. Auto generated.", example = "1")
-    private Long responseFilterId;
+    private UUID responseFilterUuid;
 
     @JsonProperty("functional_group_id")
     @ApiModelProperty(notes = "Functional group foreign key.", example = "1", required = true)
@@ -64,12 +69,12 @@ public class ResponseFilterEntity {
     @ApiModelProperty(notes = "hard delete.", example = "1 | 0")
     private int hardDelete;
 
-	public Long getResponseFilterId() {
-		return responseFilterId;
+	public UUID getResponseFilterUuid() {
+		return responseFilterUuid;
 	}
 
-	public void setResponseFilterId(Long responseFilterId) {
-		this.responseFilterId = responseFilterId;
+	public void setResponseFilterUuid(UUID responseFilterUuid) {
+		this.responseFilterUuid = responseFilterUuid;
 	}
 
 }

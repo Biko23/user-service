@@ -7,7 +7,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+
+import org.hibernate.annotations.GenericGenerator;
+
 import java.sql.Date;
+import java.util.UUID;
 
 @Entity
 @Data
@@ -17,13 +21,11 @@ import java.sql.Date;
 public class SystemUserEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @JsonProperty("system_user_id")
+	@GeneratedValue(generator = "uuid")
+	@GenericGenerator(name = "uuid", strategy = "uuid2")
+    @JsonProperty("system_user_uuid")
     @ApiModelProperty(notes = "Unique identifier of a system user type entity. Auto generated.", example = "1")
-    private Long systemUserId;
-    
-    @OneToOne(mappedBy = "systemUserEntity")
-    private PasswordEntity passwordEntity;
+    private UUID systemUserUuid;
 
     @JsonProperty("system_user_type_id_fk")
     @ApiModelProperty(notes = "System user username.", example = "John")
@@ -170,12 +172,12 @@ public class SystemUserEntity {
     @ApiModelProperty(notes = "hard delete.", example = "1 | 0")
     private int hardDelete;
 
-	public Long getSystemUserId() {
-		return systemUserId;
+	public UUID getSystemUserUuid() {
+		return systemUserUuid;
 	}
 
-	public void setSystemUserId(Long systemUserId) {
-		this.systemUserId = systemUserId;
+	public void setSystemUserUuid(UUID systemUserUuid) {
+		this.systemUserUuid = systemUserUuid;
 	}
 
 	public Integer getSystemUserTypeIdFk() {
@@ -193,6 +195,10 @@ public class SystemUserEntity {
 	public void setTenantGlobalUuid(String tenantGlobalUuid) {
 		this.tenantGlobalUuid = tenantGlobalUuid;
 	}
+	
+    
+    @OneToOne(mappedBy = "systemUserEntity")
+    private PasswordEntity passwordEntity;
 
 	
 	

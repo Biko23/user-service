@@ -7,7 +7,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+
+import org.hibernate.annotations.GenericGenerator;
+
 import java.sql.Date;
+import java.util.UUID;
 
 @Entity
 @Data
@@ -17,10 +21,11 @@ import java.sql.Date;
 public class ModuleEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @JsonProperty("module_id")
+	@GeneratedValue(generator = "uuid")
+	@GenericGenerator(name = "uuid", strategy = "uuid2")
+    @JsonProperty("module_uuid")
     @ApiModelProperty(notes = "Unique identifier of a module entity. Auto generated.", example = "1")
-    private Long moduleId;
+    private UUID moduleUuid;
 
     @JsonProperty("name")
     @ApiModelProperty(notes = "Module name.", example = "Finance | Payrol")
@@ -62,12 +67,12 @@ public class ModuleEntity {
     @ApiModelProperty(notes = "hard delete.", example = "1 | 0")
     private int hardDelete;
 
-	public Long getModuleId() {
-		return moduleId;
+	public UUID getModuleId() {
+		return moduleUuid;
 	}
 
-	public void setModuleId(Long moduleId) {
-		this.moduleId = moduleId;
+	public void setModuleId(UUID moduleUuid) {
+		this.moduleUuid = moduleUuid;
 	}
 
 }

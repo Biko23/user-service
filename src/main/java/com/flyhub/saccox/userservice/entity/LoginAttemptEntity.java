@@ -7,7 +7,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+
+import org.hibernate.annotations.GenericGenerator;
+
 import java.sql.Date;
+import java.util.UUID;
 
 @Entity
 @Data
@@ -17,10 +21,11 @@ import java.sql.Date;
 public class LoginAttemptEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @JsonProperty("login_attempt_id")
+	@GeneratedValue(generator = "uuid")
+	@GenericGenerator(name = "uuid", strategy = "uuid2")
+    @JsonProperty("login_attempt_uuid")
     @ApiModelProperty(notes = "Unique identifier of a login attempt entity. Auto generated.", example = "1")
-    private Long loginAttemptId;
+    private UUID loginAttemptUuid;
 
     @JsonProperty("system_user_id")
     @ApiModelProperty(notes = "System user foreign key.", example = "1", required = true)
@@ -56,12 +61,12 @@ public class LoginAttemptEntity {
     @ApiModelProperty(notes = "hard delete.", example = "1 | 0")
     private int hardDelete;
 
-	public Long getLoginAttemptId() {
-		return loginAttemptId;
+	public UUID getLoginAttemptId() {
+		return loginAttemptUuid;
 	}
 
-	public void setLoginAttemptId(Long loginAttemptId) {
-		this.loginAttemptId = loginAttemptId;
+	public void setLoginAttemptId(UUID loginAttemptUuid) {
+		this.loginAttemptUuid = loginAttemptUuid;
 	}
 
 }
