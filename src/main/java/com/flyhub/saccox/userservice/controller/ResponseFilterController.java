@@ -1,7 +1,13 @@
 package com.flyhub.saccox.userservice.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.flyhub.library.apiresponse.ApiResponseFormat;
+import com.flyhub.saccox.userservice.entity.ResponseFilterEntity;
 import com.flyhub.saccox.userservice.entity.ResponseFilterEntity;
 import com.flyhub.saccox.userservice.service.ResponseFilterService;
+import com.github.fge.jsonpatch.JsonPatch;
+import com.github.fge.jsonpatch.JsonPatchException;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,92 +28,49 @@ public class ResponseFilterController {
     private ResponseFilterService responseFilterService;
 
     @PostMapping("")
-    public ResponseEntity<ResponseFilterEntity> saveResponseFilter(@RequestBody ResponseFilterEntity responseFilterEntity) {
+    public ResponseEntity<?> saveResponseFilter(@RequestBody ResponseFilterEntity responseFilterEntity) {
 //        log.info("Inside saveResponseFilter method of ResponseFilterController");
-        try {
-            ResponseFilterEntity _responseFilterEntity = responseFilterService.saveResponseFilter(responseFilterEntity);
-            return new ResponseEntity<>(_responseFilterEntity, HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        ResponseFilterEntity _responseFilter = responseFilterService.saveResponseFilter(responseFilterEntity);
+        return new ResponseEntity<>(new ApiResponseFormat(true, null, "ResponseFilter created.", _responseFilter), HttpStatus.CREATED);
     }
-
+    
     @GetMapping("/{responseFilterUuid}")
-    public ResponseEntity<ResponseFilterEntity> findByResponseFilterId(@PathVariable("responseFilterUuid") UUID responseFilterUuid) {
-//        log.info("Inside findByResponseFilterId method of ResponseFilterController");
-        Optional<ResponseFilterEntity> responseFilterOptional = Optional.ofNullable(responseFilterService.findByResponseFilterId(responseFilterUuid));
-
-        if (responseFilterOptional.isPresent()) {
-            return new ResponseEntity<>(responseFilterOptional.get(), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    public ResponseEntity<?> findByResponseFilterId(@PathVariable("responseFilterUuid") UUID responseFilterUuid) {
+//      log.info("Inside findByResponseFilterId method of ResponseFilterController");
+    	ResponseFilterEntity responseFilter = responseFilterService.findByResponseFilterId(responseFilterUuid);
+      return new ResponseEntity<>(new ApiResponseFormat(true, null, "ResponseFilter found.", responseFilter), HttpStatus.OK);
     }
-
+    
     @GetMapping("")
-    public ResponseEntity<List<ResponseFilterEntity>> findAllResponseFilters() {
+    public ResponseEntity<?> findAllResponseFilters() {
 //        log.info("Inside findAllResponseFilters method of ResponseFilterController");
-        try {
-            List<ResponseFilterEntity> responseFilters = new ArrayList<ResponseFilterEntity>();
-            responseFilters.addAll(responseFilterService.listAllResponseFilters());
-
-            if (responseFilters.isEmpty()) {
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            }
-
-            return new ResponseEntity<>(responseFilters, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        return new ResponseEntity<>(new ApiResponseFormat(true, null, "ResponseFilter(s) found.", responseFilterService.findAllResponseFilters()), HttpStatus.OK);
     }
 
-    @PutMapping("/{responseFilterUuid}")
-    public ResponseEntity<ResponseFilterEntity> fullUpdateResponseFilter(@PathVariable("responseFilterUuid") UUID responseFilterUuid, @RequestBody ResponseFilterEntity responseFilterEntity) {
-//        log.info("Inside fullUpdateResponseFilter method of ResponseFilterController");
-        Optional<ResponseFilterEntity> responseFilterOptional = Optional.ofNullable(responseFilterService.findByResponseFilterId(responseFilterUuid));
+//    @PutMapping("/{globalResponseFilterID}")
+//    public ResponseEntity<?> updateResponseFilter(@PathVariable("globalResponseFilterID") UUID globalResponseFilterID, @RequestBody ResponseFilterEntity responseFilterEntity) {
+////        log.info("Inside fullUpdateResponseFilter method of ResponseFilterController");
+//        return new ResponseEntity<>(new ApiResponseFormat(true, null, "ResponseFilter updated.", responseFilterService.updateResponseFilter(globalResponseFilterID, responseFilterEntity)), HttpStatus.OK);
+//    }
 
-        if (responseFilterOptional.isPresent()) {
-            responseFilterEntity.setResponseFilterUuid(responseFilterUuid);
-            return new ResponseEntity<>(responseFilterService.saveResponseFilter(responseFilterEntity), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    }
-
-    @PatchMapping("/{responseFilterUuid}")
-    public ResponseEntity<ResponseFilterEntity> partialUpdateResponseFilter(@PathVariable("responseFilterUuid") UUID responseFilterUuid, @RequestBody ResponseFilterEntity responseFilterEntity) {
+    @PatchMapping(path = "/{responseFilterUuid}", consumes = "application/json-patch+json")
+    public ResponseEntity<?> patchResponseFilter(@PathVariable("responseFilterUuid") UUID responseFilterUuid, @RequestBody JsonPatch jsonPatch) throws JsonPatchException, JsonProcessingException {
 //        log.info("Inside partialUpdateResponseFilter method of ResponseFilterController");
-        Optional<ResponseFilterEntity> responseFilterOptional = Optional.ofNullable(responseFilterService.findByResponseFilterId(responseFilterUuid));
-
-        if (responseFilterOptional.isPresent()) {
-            responseFilterEntity.setResponseFilterUuid(responseFilterUuid);
-            return new ResponseEntity<>(responseFilterService.saveResponseFilter(responseFilterEntity), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        return new ResponseEntity<>(new ApiResponseFormat(true, null, "ResponseFilter updated.", responseFilterService.patchResponseFilter(responseFilterUuid, jsonPatch)), HttpStatus.OK);
     }
 
     @DeleteMapping("/{responseFilterUuid}")
-    public ResponseEntity<HttpStatus> deleteResponseFilter(@PathVariable("responseFilterUuid") UUID responseFilterUuid) {
-//        log.info("Inside deleteResponseFilter method of ResponseFilterController");
-        try {
-            responseFilterService.deleteResponseFilter(responseFilterUuid);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    public ResponseEntity<?> deleteByResponseFilterId(@PathVariable("responseFilterUuid") UUID responseFilterUuid) {
+//        log.info("Inside deleteByResponseFilterId method of ResponseFilterController");
+        responseFilterService.deleteByResponseFilterId(responseFilterUuid);
+        return new ResponseEntity<>(new ApiResponseFormat(true, null, "ResponseFilter deleted.", null), HttpStatus.OK);
     }
 
     @DeleteMapping("")
-    public ResponseEntity<HttpStatus> deleteAllResponseFilters() {
+    public ResponseEntity<?> deleteAllResponseFilters() {
 //        log.info("Inside deleteAllResponseFilters method of ResponseFilterController");
-        try {
-            responseFilterService.deleteAllResponseFilters();
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-
+        responseFilterService.deleteAllResponseFilters();
+        return new ResponseEntity<>(new ApiResponseFormat(true, null, "ResponseFilters deleted.", null), HttpStatus.OK);
     }
 
 }

@@ -1,7 +1,14 @@
 package com.flyhub.saccox.userservice.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.flyhub.library.apiresponse.ApiResponseFormat;
 import com.flyhub.saccox.userservice.entity.FunctionalGroupEntity;
 import com.flyhub.saccox.userservice.service.FunctionalGroupService;
+import com.flyhub.saccox.userservice.entity.FunctionalGroupEntity;
+import com.flyhub.saccox.userservice.service.FunctionalGroupService;
+import com.github.fge.jsonpatch.JsonPatch;
+import com.github.fge.jsonpatch.JsonPatchException;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,97 +24,53 @@ import java.util.UUID;
 @RequestMapping("/api/v1/user/functional-groups")
 @Slf4j
 public class FunctionalGroupController {
-
-    @Autowired
-    private FunctionalGroupService functionalGroupService;
+	
+	@Autowired
+	private FunctionalGroupService functionalGroupService;
 
     @PostMapping("")
-    public ResponseEntity<FunctionalGroupEntity> saveFunctionalGroup(@RequestBody FunctionalGroupEntity functionalGroupEntity) {
+    public ResponseEntity<?> saveFunctionalGroup(@RequestBody FunctionalGroupEntity functionalGroupEntity) {
 //        log.info("Inside saveFunctionalGroup method of FunctionalGroupController");
-        try {
-            FunctionalGroupEntity _functionalGroupEntity = functionalGroupService.saveFunctionalGroup(functionalGroupEntity);
-            return new ResponseEntity<>(_functionalGroupEntity, HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        FunctionalGroupEntity _functionalGroup = functionalGroupService.saveFunctionalGroup(functionalGroupEntity);
+        return new ResponseEntity<>(new ApiResponseFormat(true, null, "FunctionalGroup created.", _functionalGroup), HttpStatus.CREATED);
     }
-
+    
     @GetMapping("/{functionalGroupUuid}")
-    public ResponseEntity<FunctionalGroupEntity> findByFunctionalGroupId(@PathVariable("functionalGroupUuid") UUID functionalGroupUuid) {
-//        log.info("Inside findByFunctionalGroupId method of FunctionalGroupController");
-        Optional<FunctionalGroupEntity> functionalGroupOptional = Optional.ofNullable(functionalGroupService.findByFunctionalGroupId(functionalGroupUuid));
-
-        if (functionalGroupOptional.isPresent()) {
-            return new ResponseEntity<>(functionalGroupOptional.get(), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    public ResponseEntity<?> findByFunctionalGroupId(@PathVariable("functionalGroupUuid") UUID functionalGroupUuid) {
+//      log.info("Inside findByFunctionalGroupId method of FunctionalGroupController");
+    	FunctionalGroupEntity functionalGroup = functionalGroupService.findByFunctionalGroupId(functionalGroupUuid);
+      return new ResponseEntity<>(new ApiResponseFormat(true, null, "FunctionalGroup found.", functionalGroup), HttpStatus.OK);
     }
-
+    
     @GetMapping("")
-    public ResponseEntity<List<FunctionalGroupEntity>> findAllFunctionalGroups() {
+    public ResponseEntity<?> findAllFunctionalGroups() {
 //        log.info("Inside findAllFunctionalGroups method of FunctionalGroupController");
-        try {
-            List<FunctionalGroupEntity> functionalGroups = new ArrayList<FunctionalGroupEntity>();
-            functionalGroups.addAll(functionalGroupService.listAllFunctionalGroups());
-
-            if (functionalGroups.isEmpty()) {
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            }
-
-            return new ResponseEntity<>(functionalGroups, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        return new ResponseEntity<>(new ApiResponseFormat(true, null, "FunctionalGroup(s) found.", functionalGroupService.findAllFunctionalGroups()), HttpStatus.OK);
     }
 
-    @PutMapping("/{functionalGroupUuid}")
-    public ResponseEntity<FunctionalGroupEntity> fullUpdateFunctionalGroup(@PathVariable("functionalGroupUuid") UUID functionalGroupUuid, @RequestBody FunctionalGroupEntity functionalGroupEntity) {
-//        log.info("Inside fullUpdateFunctionalGroup method of FunctionalGroupController");
-        Optional<FunctionalGroupEntity> functionalGroupOptional = Optional.ofNullable(functionalGroupService.findByFunctionalGroupId(functionalGroupUuid));
+//    @PutMapping("/{globalFunctionalGroupID}")
+//    public ResponseEntity<?> updateFunctionalGroup(@PathVariable("globalFunctionalGroupID") UUID globalFunctionalGroupID, @RequestBody FunctionalGroupEntity functionalGroupEntity) {
+////        log.info("Inside fullUpdateFunctionalGroup method of FunctionalGroupController");
+//        return new ResponseEntity<>(new ApiResponseFormat(true, null, "FunctionalGroup updated.", functionalGroupService.updateFunctionalGroup(globalFunctionalGroupID, functionalGroupEntity)), HttpStatus.OK);
+//    }
 
-        if (functionalGroupOptional.isPresent()) {
-            functionalGroupEntity.setFunctionalGroupUuid(functionalGroupUuid);
-            return new ResponseEntity<>(functionalGroupService.saveFunctionalGroup(functionalGroupEntity), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    }
-
-    @PatchMapping("/{functionalGroupUuid}")
-    public ResponseEntity<FunctionalGroupEntity> partialUpdateFunctionalGroup(@PathVariable("functionalGroupUuid") UUID functionalGroupUuid, @RequestBody FunctionalGroupEntity functionalGroupEntity) {
+    @PatchMapping(path = "/{functionalGroupUuid}", consumes = "application/json-patch+json")
+    public ResponseEntity<?> patchFunctionalGroup(@PathVariable("functionalGroupUuid") UUID functionalGroupUuid, @RequestBody JsonPatch jsonPatch) throws JsonPatchException, JsonProcessingException {
 //        log.info("Inside partialUpdateFunctionalGroup method of FunctionalGroupController");
-        Optional<FunctionalGroupEntity> functionalGroupOptional = Optional.ofNullable(functionalGroupService.findByFunctionalGroupId(functionalGroupUuid));
-
-        if (functionalGroupOptional.isPresent()) {
-            functionalGroupEntity.setFunctionalGroupUuid(functionalGroupUuid);
-            return new ResponseEntity<>(functionalGroupService.saveFunctionalGroup(functionalGroupEntity), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        return new ResponseEntity<>(new ApiResponseFormat(true, null, "FunctionalGroup updated.", functionalGroupService.patchFunctionalGroup(functionalGroupUuid, jsonPatch)), HttpStatus.OK);
     }
 
     @DeleteMapping("/{functionalGroupUuid}")
-    public ResponseEntity<HttpStatus> deleteFunctionalGroup(@PathVariable("functionalGroupUuid") UUID functionalGroupUuid) {
-//        log.info("Inside deleteFunctionalGroup method of FunctionalGroupController");
-        try {
-            functionalGroupService.deleteFunctionalGroup(functionalGroupUuid);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    public ResponseEntity<?> deleteByFunctionalGroupId(@PathVariable("functionalGroupUuid") UUID functionalGroupUuid) {
+//        log.info("Inside deleteByFunctionalGroupId method of FunctionalGroupController");
+        functionalGroupService.deleteByFunctionalGroupId(functionalGroupUuid);
+        return new ResponseEntity<>(new ApiResponseFormat(true, null, "FunctionalGroup deleted.", null), HttpStatus.OK);
     }
 
     @DeleteMapping("")
-    public ResponseEntity<HttpStatus> deleteAllFunctionalGroups() {
+    public ResponseEntity<?> deleteAllFunctionalGroups() {
 //        log.info("Inside deleteAllFunctionalGroups method of FunctionalGroupController");
-        try {
-            functionalGroupService.deleteAllFunctionalGroups();
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-
+        functionalGroupService.deleteAllFunctionalGroups();
+        return new ResponseEntity<>(new ApiResponseFormat(true, null, "FunctionalGroups deleted.", null), HttpStatus.OK);
     }
-
 }

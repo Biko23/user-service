@@ -9,5 +9,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ModuleRepository extends JpaRepository<ModuleEntity, UUID> {
-    ModuleEntity findByModuleUuid(UUID moduleUuid);
+    ModuleEntity findByModuleId(UUID moduleUuid);
 }

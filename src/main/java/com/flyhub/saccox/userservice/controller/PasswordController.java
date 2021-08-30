@@ -1,7 +1,13 @@
 package com.flyhub.saccox.userservice.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.flyhub.library.apiresponse.ApiResponseFormat;
+import com.flyhub.saccox.userservice.entity.PasswordEntity;
 import com.flyhub.saccox.userservice.entity.PasswordEntity;
 import com.flyhub.saccox.userservice.service.PasswordService;
+import com.github.fge.jsonpatch.JsonPatch;
+import com.github.fge.jsonpatch.JsonPatchException;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,92 +28,50 @@ public class PasswordController {
     private PasswordService passwordService;
 
     @PostMapping("")
-    public ResponseEntity<PasswordEntity> savePassword(@RequestBody PasswordEntity passwordEntity) {
+    public ResponseEntity<?> savePassword(@RequestBody PasswordEntity passwordEntity) {
 //        log.info("Inside savePassword method of PasswordController");
-        try {
-            PasswordEntity _passwordEntity = passwordService.savePassword(passwordEntity);
-            return new ResponseEntity<>(_passwordEntity, HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        PasswordEntity _password = passwordService.savePassword(passwordEntity);
+        return new ResponseEntity<>(new ApiResponseFormat(true, null, "Password created.", _password), HttpStatus.CREATED);
     }
-
+    
     @GetMapping("/{passwordUuid}")
-    public ResponseEntity<PasswordEntity> findByPasswordId(@PathVariable("passwordUuid") UUID passwordUuid) {
-//        log.info("Inside findByPasswordId method of PasswordController");
-        Optional<PasswordEntity> passwordOptional = Optional.ofNullable(passwordService.findByPasswordId(passwordUuid));
-
-        if (passwordOptional.isPresent()) {
-            return new ResponseEntity<>(passwordOptional.get(), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    public ResponseEntity<?> findByPasswordId(@PathVariable("passwordUuid") UUID passwordUuid) {
+//      log.info("Inside findByPasswordId method of PasswordController");
+    	PasswordEntity password = passwordService.findByPasswordId(passwordUuid);
+      return new ResponseEntity<>(new ApiResponseFormat(true, null, "Password found.", password), HttpStatus.OK);
     }
-
+    
     @GetMapping("")
-    public ResponseEntity<List<PasswordEntity>> findAllPasswords() {
+    public ResponseEntity<?> findAllPasswords() {
 //        log.info("Inside findAllPasswords method of PasswordController");
-        try {
-            List<PasswordEntity> passwords = new ArrayList<PasswordEntity>();
-            passwords.addAll(passwordService.listAllPasswords());
-
-            if (passwords.isEmpty()) {
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            }
-
-            return new ResponseEntity<>(passwords, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        return new ResponseEntity<>(new ApiResponseFormat(true, null, "Password(s) found.", passwordService.findAllPasswords()), HttpStatus.OK);
     }
 
-    @PutMapping("/{passwordUuid}")
-    public ResponseEntity<PasswordEntity> fullUpdatePassword(@PathVariable("passwordUuid") UUID passwordUuid, @RequestBody PasswordEntity passwordEntity) {
-//        log.info("Inside fullUpdatePassword method of PasswordController");
-        Optional<PasswordEntity> passwordOptional = Optional.ofNullable(passwordService.findByPasswordId(passwordUuid));
+//    @PutMapping("/{globalPasswordID}")
+//    public ResponseEntity<?> updatePassword(@PathVariable("globalPasswordID") UUID globalPasswordID, @RequestBody PasswordEntity passwordEntity) {
+////        log.info("Inside fullUpdatePassword method of PasswordController");
+//        return new ResponseEntity<>(new ApiResponseFormat(true, null, "Password updated.", passwordService.updatePassword(globalPasswordID, passwordEntity)), HttpStatus.OK);
+//    }
 
-        if (passwordOptional.isPresent()) {
-            passwordEntity.setPasswordUuid(passwordUuid);
-            return new ResponseEntity<>(passwordService.savePassword(passwordEntity), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    }
-
-    @PatchMapping("/{passwordUuid}")
-    public ResponseEntity<PasswordEntity> partialUpdatePassword(@PathVariable("passwordUuid") UUID passwordUuid, @RequestBody PasswordEntity passwordEntity) {
+    @PatchMapping(path = "/{passwordUuid}", consumes = "application/json-patch+json")
+    public ResponseEntity<?> patchPassword(@PathVariable("passwordUuid") UUID passwordUuid, @RequestBody JsonPatch jsonPatch) throws JsonPatchException, JsonProcessingException {
 //        log.info("Inside partialUpdatePassword method of PasswordController");
-        Optional<PasswordEntity> passwordOptional = Optional.ofNullable(passwordService.findByPasswordId(passwordUuid));
-
-        if (passwordOptional.isPresent()) {
-            passwordEntity.setPasswordUuid(passwordUuid);
-            return new ResponseEntity<>(passwordService.savePassword(passwordEntity), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        return new ResponseEntity<>(new ApiResponseFormat(true, null, "Password updated.", passwordService.patchPassword(passwordUuid, jsonPatch)), HttpStatus.OK);
     }
 
-    @DeleteMapping("/{passwordId}")
-    public ResponseEntity<HttpStatus> deletePassword(@PathVariable("passwordId") UUID passwordId) {
-//        log.info("Inside deletePassword method of PasswordController");
-        try {
-            passwordService.deletePassword(passwordId);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    @DeleteMapping("/{passwordUuid}")
+    public ResponseEntity<?> deleteByPasswordId(@PathVariable("passwordUuid") UUID passwordUuid) {
+//        log.info("Inside deleteByPasswordId method of PasswordController");
+        passwordService.deleteByPasswordId(passwordUuid);
+        return new ResponseEntity<>(new ApiResponseFormat(true, null, "Password deleted.", null), HttpStatus.OK);
     }
 
     @DeleteMapping("")
-    public ResponseEntity<HttpStatus> deleteAllPasswords() {
+    public ResponseEntity<?> deleteAllPasswords() {
 //        log.info("Inside deleteAllPasswords method of PasswordController");
-        try {
-            passwordService.deleteAllPasswords();
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-
+        passwordService.deleteAllPasswords();
+        return new ResponseEntity<>(new ApiResponseFormat(true, null, "Passwords deleted.", null), HttpStatus.OK);
     }
 
+//    
 }

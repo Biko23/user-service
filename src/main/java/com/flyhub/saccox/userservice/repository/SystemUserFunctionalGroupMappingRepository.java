@@ -9,5 +9,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface SystemUserFunctionalGroupMappingRepository extends JpaRepository<SystemUserFunctionalGroupMappingEntity, UUID> {
-	SystemUserFunctionalGroupMappingEntity findBySystemUserFunctionalGroupMappingUuid(UUID systemUserFunctionalGroupMappingUuid);
+	SystemUserFunctionalGroupMappingEntity findBySystemUserFunctionalGroupMappingId(UUID systemUserFunctionalGroupMappingUuid);
 }

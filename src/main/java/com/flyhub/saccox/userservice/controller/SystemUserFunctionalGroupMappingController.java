@@ -1,7 +1,14 @@
 package com.flyhub.saccox.userservice.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.flyhub.library.apiresponse.ApiResponseFormat;
+import com.flyhub.saccox.userservice.entity.SystemUserFunctionalGroupMappingEntity;
 import com.flyhub.saccox.userservice.entity.SystemUserFunctionalGroupMappingEntity;
 import com.flyhub.saccox.userservice.service.SystemUserFunctionalGroupMappingService;
+import com.flyhub.saccox.userservice.service.SystemUserFunctionalGroupMappingService;
+import com.github.fge.jsonpatch.JsonPatch;
+import com.github.fge.jsonpatch.JsonPatchException;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,95 +26,54 @@ import java.util.UUID;
 public class SystemUserFunctionalGroupMappingController {
 
     @Autowired
-    private SystemUserFunctionalGroupMappingService systemUserFunctionalGroupMapping;
+    private SystemUserFunctionalGroupMappingService systemUserFunctionalGroupMappingService;
 
     @PostMapping("")
-    public ResponseEntity<SystemUserFunctionalGroupMappingEntity> saveSystemUserFunctionalGroupMapping(@RequestBody SystemUserFunctionalGroupMappingEntity systemUserFunctionalGroupMappingEntity) {
+    public ResponseEntity<?> saveSystemUserFunctionalGroupMapping(@RequestBody SystemUserFunctionalGroupMappingEntity systemUserFunctionalGroupMappingEntity) {
 //        log.info("Inside saveSystemUserFunctionalGroupMapping method of SystemUserFunctionalGroupMappingController");
-        try {
-            SystemUserFunctionalGroupMappingEntity _systemUserFunctionalGroupMappingEntity = systemUserFunctionalGroupMapping.saveSystemUserFunctionalGroupMapping(systemUserFunctionalGroupMappingEntity);
-            return new ResponseEntity<>(_systemUserFunctionalGroupMappingEntity, HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        SystemUserFunctionalGroupMappingEntity _systemUserFunctionalGroupMapping = systemUserFunctionalGroupMappingService.saveSystemUserFunctionalGroupMapping(systemUserFunctionalGroupMappingEntity);
+        return new ResponseEntity<>(new ApiResponseFormat(true, null, "SystemUserFunctionalGroupMapping created.", _systemUserFunctionalGroupMapping), HttpStatus.CREATED);
     }
-
+    
     @GetMapping("/{systemUserFunctionalGroupMappingUuid}")
-    public ResponseEntity<SystemUserFunctionalGroupMappingEntity> findBySystemUserFunctionalGroupMappingId(@PathVariable("systemUserFunctionalGroupMappingId") UUID systemUserFunctionalGroupMappingUuid) {
-//        log.info("Inside findBySystemUserFunctionalGroupMappingId method of SystemUserFunctionalGroupMappingController");
-        Optional<SystemUserFunctionalGroupMappingEntity> systemUserFunctionalGroupMappingOptional = Optional.ofNullable(systemUserFunctionalGroupMapping.findBySystemUserFunctionalGroupMappingId(systemUserFunctionalGroupMappingUuid));
-
-        if (systemUserFunctionalGroupMappingOptional.isPresent()) {
-            return new ResponseEntity<>(systemUserFunctionalGroupMappingOptional.get(), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    public ResponseEntity<?> findBySystemUserFunctionalGroupMappingId(@PathVariable("systemUserFunctionalGroupMappingUuid") UUID systemUserFunctionalGroupMappingUuid) {
+//      log.info("Inside findBySystemUserFunctionalGroupMappingId method of SystemUserFunctionalGroupMappingController");
+    	SystemUserFunctionalGroupMappingEntity systemUserFunctionalGroupMapping = systemUserFunctionalGroupMappingService.findBySystemUserFunctionalGroupMappingId(systemUserFunctionalGroupMappingUuid);
+      return new ResponseEntity<>(new ApiResponseFormat(true, null, "SystemUserFunctionalGroupMapping found.", systemUserFunctionalGroupMapping), HttpStatus.OK);
     }
-
+    
     @GetMapping("")
-    public ResponseEntity<List<SystemUserFunctionalGroupMappingEntity>> findAllSystemUserFunctionalGroupMappings() {
+    public ResponseEntity<?> findAllSystemUserFunctionalGroupMappings() {
 //        log.info("Inside findAllSystemUserFunctionalGroupMappings method of SystemUserFunctionalGroupMappingController");
-        try {
-            List<SystemUserFunctionalGroupMappingEntity> systemUserFunctionalGroupMappings = new ArrayList<SystemUserFunctionalGroupMappingEntity>();
-            systemUserFunctionalGroupMappings.addAll(systemUserFunctionalGroupMapping.listAllSystemUserFunctionalGroupMappings());
-
-            if (systemUserFunctionalGroupMappings.isEmpty()) {
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            }
-
-            return new ResponseEntity<>(systemUserFunctionalGroupMappings, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        return new ResponseEntity<>(new ApiResponseFormat(true, null, "SystemUserFunctionalGroupMapping(s) found.", systemUserFunctionalGroupMappingService.findAllSystemUserFunctionalGroupMappings()), HttpStatus.OK);
     }
 
-    @PutMapping("/{systemUserFunctionalGroupMappingUuid}")
-    public ResponseEntity<SystemUserFunctionalGroupMappingEntity> fullUpdateSystemUserFunctionalGroupMapping(@PathVariable("systemUserFunctionalGroupMappingUuid") UUID systemUserFunctionalGroupMappingUuid, @RequestBody SystemUserFunctionalGroupMappingEntity systemUserFunctionalGroupMappingEntity) {
-//        log.info("Inside fullUpdateSystemUserFunctionalGroupMapping method of SystemUserFunctionalGroupMappingController");
-        Optional<SystemUserFunctionalGroupMappingEntity> systemUserFunctionalGroupMappingOptional = Optional.ofNullable(systemUserFunctionalGroupMapping.findBySystemUserFunctionalGroupMappingId(systemUserFunctionalGroupMappingUuid));
+//    @PutMapping("/{globalSystemUserFunctionalGroupMappingID}")
+//    public ResponseEntity<?> updateSystemUserFunctionalGroupMapping(@PathVariable("globalSystemUserFunctionalGroupMappingID") UUID globalSystemUserFunctionalGroupMappingID, @RequestBody SystemUserFunctionalGroupMappingEntity systemUserFunctionalGroupMappingEntity) {
+////        log.info("Inside fullUpdateSystemUserFunctionalGroupMapping method of SystemUserFunctionalGroupMappingController");
+//        return new ResponseEntity<>(new ApiResponseFormat(true, null, "SystemUserFunctionalGroupMapping updated.", systemUserFunctionalGroupMappingService.updateSystemUserFunctionalGroupMapping(globalSystemUserFunctionalGroupMappingID, systemUserFunctionalGroupMappingEntity)), HttpStatus.OK);
+//    }
 
-        if (systemUserFunctionalGroupMappingOptional.isPresent()) {
-            systemUserFunctionalGroupMappingEntity.setSystemUserFunctionalGroupMappingUuid(systemUserFunctionalGroupMappingUuid);
-            return new ResponseEntity<>(systemUserFunctionalGroupMapping.saveSystemUserFunctionalGroupMapping(systemUserFunctionalGroupMappingEntity), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    }
-
-    @PatchMapping("/{systemUserFunctionalGroupMappingUuid}")
-    public ResponseEntity<SystemUserFunctionalGroupMappingEntity> partialUpdateSystemUserFunctionalGroupMapping(@PathVariable("systemUserFunctionalGroupMappingUuid") UUID systemUserFunctionalGroupMappingUuid, @RequestBody SystemUserFunctionalGroupMappingEntity systemUserFunctionalGroupMappingEntity) {
+    @PatchMapping(path = "/{systemUserFunctionalGroupMappingUuid}", consumes = "application/json-patch+json")
+    public ResponseEntity<?> patchSystemUserFunctionalGroupMapping(@PathVariable("systemUserFunctionalGroupMappingUuid") UUID systemUserFunctionalGroupMappingUuid, @RequestBody JsonPatch jsonPatch) throws JsonPatchException, JsonProcessingException {
 //        log.info("Inside partialUpdateSystemUserFunctionalGroupMapping method of SystemUserFunctionalGroupMappingController");
-        Optional<SystemUserFunctionalGroupMappingEntity> systemUserFunctionalGroupMappingOptional = Optional.ofNullable(systemUserFunctionalGroupMapping.findBySystemUserFunctionalGroupMappingId(systemUserFunctionalGroupMappingUuid));
-
-        if (systemUserFunctionalGroupMappingOptional.isPresent()) {
-            systemUserFunctionalGroupMappingEntity.setSystemUserFunctionalGroupMappingUuid(systemUserFunctionalGroupMappingUuid);
-            return new ResponseEntity<>(systemUserFunctionalGroupMapping.saveSystemUserFunctionalGroupMapping(systemUserFunctionalGroupMappingEntity), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        return new ResponseEntity<>(new ApiResponseFormat(true, null, "SystemUserFunctionalGroupMapping updated.", systemUserFunctionalGroupMappingService.patchSystemUserFunctionalGroupMapping(systemUserFunctionalGroupMappingUuid, jsonPatch)), HttpStatus.OK);
     }
 
     @DeleteMapping("/{systemUserFunctionalGroupMappingUuid}")
-    public ResponseEntity<HttpStatus> deleteSystemUserFunctionalGroupMapping(@PathVariable("systemUserFunctionalGroupMappingUuid") UUID systemUserFunctionalGroupMappingUuid) {
-//        log.info("Inside deleteSystemUserFunctionalGroupMapping method of SystemUserFunctionalGroupMappingController");
-        try {
-            systemUserFunctionalGroupMapping.deleteSystemUserFunctionalGroupMapping(systemUserFunctionalGroupMappingUuid);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    public ResponseEntity<?> deleteBySystemUserFunctionalGroupMappingId(@PathVariable("systemUserFunctionalGroupMappingUuid") UUID systemUserFunctionalGroupMappingUuid) {
+//        log.info("Inside deleteBySystemUserFunctionalGroupMappingId method of SystemUserFunctionalGroupMappingController");
+    	systemUserFunctionalGroupMappingService.deleteBySystemUserFunctionalGroupMappingId(systemUserFunctionalGroupMappingUuid);
+        return new ResponseEntity<>(new ApiResponseFormat(true, null, "SystemUserFunctionalGroupMapping deleted.", null), HttpStatus.OK);
     }
 
     @DeleteMapping("")
-    public ResponseEntity<HttpStatus> deleteAllSystemUserFunctionalGroupMappings() {
+    public ResponseEntity<?> deleteAllSystemUserFunctionalGroupMappings() {
 //        log.info("Inside deleteAllSystemUserFunctionalGroupMappings method of SystemUserFunctionalGroupMappingController");
-        try {
-            systemUserFunctionalGroupMapping.deleteAllSystemUserFunctionalGroupMappings();
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-
+    	systemUserFunctionalGroupMappingService.deleteAllSystemUserFunctionalGroupMappings();
+        return new ResponseEntity<>(new ApiResponseFormat(true, null, "SystemUserFunctionalGroupMappings deleted.", null), HttpStatus.OK);
     }
+
+
 
 }

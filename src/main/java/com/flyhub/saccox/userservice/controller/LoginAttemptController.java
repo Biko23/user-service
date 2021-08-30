@@ -1,7 +1,13 @@
 package com.flyhub.saccox.userservice.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.flyhub.library.apiresponse.ApiResponseFormat;
+import com.flyhub.saccox.userservice.entity.LoginAttemptEntity;
 import com.flyhub.saccox.userservice.entity.LoginAttemptEntity;
 import com.flyhub.saccox.userservice.service.LoginAttemptService;
+import com.github.fge.jsonpatch.JsonPatch;
+import com.github.fge.jsonpatch.JsonPatchException;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,92 +28,49 @@ public class LoginAttemptController {
     private LoginAttemptService loginAttemptService;
 
     @PostMapping("")
-    public ResponseEntity<LoginAttemptEntity> saveLoginAttempt(@RequestBody LoginAttemptEntity loginAttemptEntity) {
+    public ResponseEntity<?> saveLoginAttempt(@RequestBody LoginAttemptEntity loginAttemptEntity) {
 //        log.info("Inside saveLoginAttempt method of LoginAttemptController");
-        try {
-            LoginAttemptEntity _loginAttemptEntity = loginAttemptService.saveLoginAttempt(loginAttemptEntity);
-            return new ResponseEntity<>(_loginAttemptEntity, HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        LoginAttemptEntity _loginAttempt = loginAttemptService.saveLoginAttempt(loginAttemptEntity);
+        return new ResponseEntity<>(new ApiResponseFormat(true, null, "LoginAttempt created.", _loginAttempt), HttpStatus.CREATED);
     }
-
+    
     @GetMapping("/{loginAttemptUuid}")
-    public ResponseEntity<LoginAttemptEntity> findByLoginAttemptId(@PathVariable("loginAttemptUuid") UUID loginAttemptUuid) {
-//        log.info("Inside findByLoginAttemptId method of LoginAttemptController");
-        Optional<LoginAttemptEntity> loginAttemptOptional = Optional.ofNullable(loginAttemptService.findByLoginAttemptId(loginAttemptUuid));
-
-        if (loginAttemptOptional.isPresent()) {
-            return new ResponseEntity<>(loginAttemptOptional.get(), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    public ResponseEntity<?> findByLoginAttemptId(@PathVariable("loginAttemptUuid") UUID loginAttemptUuid) {
+//      log.info("Inside findByLoginAttemptId method of LoginAttemptController");
+    	LoginAttemptEntity loginAttempt = loginAttemptService.findByLoginAttemptId(loginAttemptUuid);
+      return new ResponseEntity<>(new ApiResponseFormat(true, null, "LoginAttempt found.", loginAttempt), HttpStatus.OK);
     }
-
+    
     @GetMapping("")
-    public ResponseEntity<List<LoginAttemptEntity>> findAllLoginAttempts() {
+    public ResponseEntity<?> findAllLoginAttempts() {
 //        log.info("Inside findAllLoginAttempts method of LoginAttemptController");
-        try {
-            List<LoginAttemptEntity> loginAttempts = new ArrayList<LoginAttemptEntity>();
-            loginAttempts.addAll(loginAttemptService.listAllLoginAttempts());
-
-            if (loginAttempts.isEmpty()) {
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            }
-
-            return new ResponseEntity<>(loginAttempts, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        return new ResponseEntity<>(new ApiResponseFormat(true, null, "LoginAttempt(s) found.", loginAttemptService.findAllLoginAttempts()), HttpStatus.OK);
     }
 
-    @PutMapping("/{loginAttemptUuid}")
-    public ResponseEntity<LoginAttemptEntity> fullUpdateLoginAttempt(@PathVariable("loginAttemptUuid") UUID loginAttemptUuid, @RequestBody LoginAttemptEntity loginAttemptEntity) {
-//        log.info("Inside fullUpdateLoginAttempt method of LoginAttemptController");
-        Optional<LoginAttemptEntity> loginAttemptOptional = Optional.ofNullable(loginAttemptService.findByLoginAttemptId(loginAttemptUuid));
+//    @PutMapping("/{globalLoginAttemptID}")
+//    public ResponseEntity<?> updateLoginAttempt(@PathVariable("globalLoginAttemptID") UUID globalLoginAttemptID, @RequestBody LoginAttemptEntity loginAttemptEntity) {
+////        log.info("Inside fullUpdateLoginAttempt method of LoginAttemptController");
+//        return new ResponseEntity<>(new ApiResponseFormat(true, null, "LoginAttempt updated.", loginAttemptService.updateLoginAttempt(globalLoginAttemptID, loginAttemptEntity)), HttpStatus.OK);
+//    }
 
-        if (loginAttemptOptional.isPresent()) {
-            loginAttemptEntity.setLoginAttemptId(loginAttemptUuid);
-            return new ResponseEntity<>(loginAttemptService.saveLoginAttempt(loginAttemptEntity), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    }
-
-    @PatchMapping("/{loginAttemptUuid}")
-    public ResponseEntity<LoginAttemptEntity> partialUpdateLoginAttempt(@PathVariable("loginAttemptUuid") UUID loginAttemptUuid, @RequestBody LoginAttemptEntity loginAttemptEntity) {
+    @PatchMapping(path = "/{loginAttemptUuid}", consumes = "application/json-patch+json")
+    public ResponseEntity<?> patchLoginAttempt(@PathVariable("loginAttemptUuid") UUID loginAttemptUuid, @RequestBody JsonPatch jsonPatch) throws JsonPatchException, JsonProcessingException {
 //        log.info("Inside partialUpdateLoginAttempt method of LoginAttemptController");
-        Optional<LoginAttemptEntity> loginAttemptOptional = Optional.ofNullable(loginAttemptService.findByLoginAttemptId(loginAttemptUuid));
-
-        if (loginAttemptOptional.isPresent()) {
-            loginAttemptEntity.setLoginAttemptId(loginAttemptUuid);
-            return new ResponseEntity<>(loginAttemptService.saveLoginAttempt(loginAttemptEntity), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        return new ResponseEntity<>(new ApiResponseFormat(true, null, "LoginAttempt updated.", loginAttemptService.patchLoginAttempt(loginAttemptUuid, jsonPatch)), HttpStatus.OK);
     }
 
     @DeleteMapping("/{loginAttemptUuid}")
-    public ResponseEntity<HttpStatus> deleteLoginAttempt(@PathVariable("loginAttemptUuid") UUID loginAttemptUuid) {
-//        log.info("Inside deleteLoginAttempt method of LoginAttemptController");
-        try {
-            loginAttemptService.deleteLoginAttempt(loginAttemptUuid);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    public ResponseEntity<?> deleteByLoginAttemptId(@PathVariable("loginAttemptUuid") UUID loginAttemptUuid) {
+//        log.info("Inside deleteByLoginAttemptId method of LoginAttemptController");
+        loginAttemptService.deleteByLoginAttemptId(loginAttemptUuid);
+        return new ResponseEntity<>(new ApiResponseFormat(true, null, "LoginAttempt deleted.", null), HttpStatus.OK);
     }
 
     @DeleteMapping("")
-    public ResponseEntity<HttpStatus> deleteAllLoginAttempts() {
+    public ResponseEntity<?> deleteAllLoginAttempts() {
 //        log.info("Inside deleteAllLoginAttempts method of LoginAttemptController");
-        try {
-            loginAttemptService.deleteAllLoginAttempts();
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-
+        loginAttemptService.deleteAllLoginAttempts();
+        return new ResponseEntity<>(new ApiResponseFormat(true, null, "LoginAttempts deleted.", null), HttpStatus.OK);
     }
 
 }

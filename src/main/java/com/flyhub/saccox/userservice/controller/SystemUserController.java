@@ -1,8 +1,14 @@
 package com.flyhub.saccox.userservice.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.flyhub.library.apiresponse.ApiResponseFormat;
+import com.flyhub.saccox.userservice.entity.SystemUserEntity;
 import com.flyhub.saccox.userservice.entity.SystemUserEntity;
 import com.flyhub.saccox.userservice.microserviceconnect.UserTenant;
 import com.flyhub.saccox.userservice.service.SystemUserService;
+import com.github.fge.jsonpatch.JsonPatch;
+import com.github.fge.jsonpatch.JsonPatchException;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,97 +29,51 @@ public class SystemUserController {
     private SystemUserService systemUserService;
 
     @PostMapping("")
-    public ResponseEntity<SystemUserEntity> saveSystemUser(@RequestBody SystemUserEntity systemUserEntity) {
+    public ResponseEntity<?> saveSystemUser(@RequestBody SystemUserEntity systemUserEntity) {
 //        log.info("Inside saveSystemUser method of SystemUserController");
-        try {
-            SystemUserEntity _systemUserEntity = systemUserService.saveSystemUser(systemUserEntity);
-            return new ResponseEntity<>(_systemUserEntity, HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        SystemUserEntity _systemUser = systemUserService.saveSystemUser(systemUserEntity);
+        return new ResponseEntity<>(new ApiResponseFormat(true, null, "SystemUser created.", _systemUser), HttpStatus.CREATED);
     }
     
-//    @GetMapping("/{systemUserUuid}")
-//    public UserTenant getUserBelongsToTenant(@PathVariable("systemUserUuid") UUID systemUserUuid) {
-//    	return systemUserService.getUserBelongsToTenant(systemUserUuid);
-//    }
-
-//    @GetMapping("/{systemUserId}")
-//    public ResponseEntity<SystemUserEntity> findBySystemUserId(@PathVariable("systemUserId") Long systemUserId) {
-//        log.info("Inside findBySystemUserId method of SystemUserController");
-//        Optional<SystemUserEntity> systemUserOptional = Optional.ofNullable(systemUserService.findBySystemUserId(systemUserId));
-//
-//        if (systemUserOptional.isPresent()) {
-//            return new ResponseEntity<>(systemUserOptional.get(), HttpStatus.OK);
-//        } else {
-//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-//        }
-//    }
-
+    @GetMapping("/{systemUserUuid}")
+    public ResponseEntity<?> findBySystemUserId(@PathVariable("systemUserUuid") UUID systemUserUuid) {
+//      log.info("Inside findBySystemUserId method of SystemUserController");
+    	SystemUserEntity systemUser = systemUserService.findBySystemUserId(systemUserUuid);
+      return new ResponseEntity<>(new ApiResponseFormat(true, null, "SystemUser found.", systemUser), HttpStatus.OK);
+    }
+    
     @GetMapping("")
-    public ResponseEntity<List<SystemUserEntity>> findAllSystemUsers() {
+    public ResponseEntity<?> findAllSystemUsers() {
 //        log.info("Inside findAllSystemUsers method of SystemUserController");
-        try {
-            List<SystemUserEntity> systemUsers = new ArrayList<SystemUserEntity>();
-            systemUsers.addAll(systemUserService.listAllSystemUsers());
-
-            if (systemUsers.isEmpty()) {
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            }
-
-            return new ResponseEntity<>(systemUsers, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        return new ResponseEntity<>(new ApiResponseFormat(true, null, "SystemUser(s) found.", systemUserService.findAllSystemUsers()), HttpStatus.OK);
     }
 
-    @PutMapping("/{systemUserUuid}")
-    public ResponseEntity<SystemUserEntity> fullUpdateSystemUser(@PathVariable("systemUserUuid") UUID systemUserUuid, @RequestBody SystemUserEntity systemUserEntity) {
-//        log.info("Inside fullUpdateSystemUser method of SystemUserController");
-        Optional<SystemUserEntity> systemUserOptional = Optional.ofNullable(systemUserService.findBySystemUserId(systemUserUuid));
+//    @PutMapping("/{globalSystemUserID}")
+//    public ResponseEntity<?> updateSystemUser(@PathVariable("globalSystemUserID") UUID globalSystemUserID, @RequestBody SystemUserEntity systemUserEntity) {
+////        log.info("Inside fullUpdateSystemUser method of SystemUserController");
+//        return new ResponseEntity<>(new ApiResponseFormat(true, null, "SystemUser updated.", systemUserService.updateSystemUser(globalSystemUserID, systemUserEntity)), HttpStatus.OK);
+//    }
 
-        if (systemUserOptional.isPresent()) {
-            systemUserEntity.setSystemUserUuid(systemUserUuid);
-            return new ResponseEntity<>(systemUserService.saveSystemUser(systemUserEntity), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    }
-
-    @PatchMapping("/{systemUserUuid}")
-    public ResponseEntity<SystemUserEntity> partialUpdateSystemUser(@PathVariable("systemUserUuid") UUID systemUserUuid, @RequestBody SystemUserEntity systemUserEntity) {
+    @PatchMapping(path = "/{systemUserUuid}", consumes = "application/json-patch+json")
+    public ResponseEntity<?> patchSystemUser(@PathVariable("systemUserUuid") UUID systemUserUuid, @RequestBody JsonPatch jsonPatch) throws JsonPatchException, JsonProcessingException {
 //        log.info("Inside partialUpdateSystemUser method of SystemUserController");
-        Optional<SystemUserEntity> systemUserOptional = Optional.ofNullable(systemUserService.findBySystemUserId(systemUserUuid));
-
-        if (systemUserOptional.isPresent()) {
-            systemUserEntity.setSystemUserUuid(systemUserUuid);
-            return new ResponseEntity<>(systemUserService.saveSystemUser(systemUserEntity), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        return new ResponseEntity<>(new ApiResponseFormat(true, null, "SystemUser updated.", systemUserService.patchSystemUser(systemUserUuid, jsonPatch)), HttpStatus.OK);
     }
 
-    @DeleteMapping("/{systemUserId}")
-    public ResponseEntity<HttpStatus> deleteSystemUser(@PathVariable("systemUserId") UUID systemUserUuid) {
-//        log.info("Inside deleteSystemUser method of SystemUserController");
-        try {
-            systemUserService.deleteSystemUser(systemUserUuid);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    @DeleteMapping("/{systemUserUuid}")
+    public ResponseEntity<?> deleteBySystemUserId(@PathVariable("systemUserUuid") UUID systemUserUuid) {
+//        log.info("Inside deleteBySystemUserId method of SystemUserController");
+        systemUserService.deleteBySystemUserId(systemUserUuid);
+        return new ResponseEntity<>(new ApiResponseFormat(true, null, "SystemUser deleted.", null), HttpStatus.OK);
     }
 
     @DeleteMapping("")
-    public ResponseEntity<HttpStatus> deleteAllSystemUsers() {
+    public ResponseEntity<?> deleteAllSystemUsers() {
 //        log.info("Inside deleteAllSystemUsers method of SystemUserController");
-        try {
-            systemUserService.deleteAllSystemUsers();
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-
+        systemUserService.deleteAllSystemUsers();
+        return new ResponseEntity<>(new ApiResponseFormat(true, null, "SystemUsers deleted.", null), HttpStatus.OK);
     }
 
+
+//   
 }

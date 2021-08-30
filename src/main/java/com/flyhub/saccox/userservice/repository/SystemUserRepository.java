@@ -9,5 +9,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface SystemUserRepository extends JpaRepository<SystemUserEntity, UUID> {
-    SystemUserEntity findBySystemUserUuid(UUID systemUserUuid);
+    SystemUserEntity findBySystemUserId(UUID systemUserUuid);
 }
