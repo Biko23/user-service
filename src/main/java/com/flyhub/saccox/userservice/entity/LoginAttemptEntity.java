@@ -7,7 +7,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+
+import org.hibernate.annotations.GenericGenerator;
+
 import java.sql.Date;
+import java.util.UUID;
 
 @Entity
 @Data
@@ -17,32 +21,33 @@ import java.sql.Date;
 public class LoginAttemptEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @JsonProperty("login_attempt_id")
+	@GeneratedValue(generator = "uuid")
+	@GenericGenerator(name = "uuid", strategy = "uuid2")
+    @JsonProperty("login_attempt_uuid")
     @ApiModelProperty(notes = "Unique identifier of a login attempt entity. Auto generated.", example = "1")
-    private Long loginAttemptId;
+    private UUID loginAttemptUuid;
 
-    @JsonProperty("system_user_id_fk")
+    @JsonProperty("system_user_id")
     @ApiModelProperty(notes = "System user foreign key.", example = "1", required = true)
     @ManyToOne
-    @JoinColumn(name="system_user_id_fk", nullable=false)
+    @JoinColumn(name="system_user_id", nullable=false)
     private SystemUserEntity systemUserEntity;
 
-    @JsonProperty("login_attempt_password")
+    @JsonProperty("password")
     @ApiModelProperty(notes = "Login attempt password.", example = "12345678")
-    private String loginAttemptPassword;
+    private String password;
 
-    @JsonProperty("login_attempt_ip_number")
+    @JsonProperty("ip_number")
     @ApiModelProperty(notes = "Login attempt ip number.", example = "192.168.1.1")
-    private String loginAttemptIPNumber;
+    private String iPNumber;
 
-    @JsonProperty("login_attempt_browser_type")
+    @JsonProperty("browser_type")
     @ApiModelProperty(notes = "Login attempt type browser.", example = "Chrome | Firefox")
-    private String loginAttemptBrowserType;
+    private String browserType;
 
-    @JsonProperty("login_attempt_success")
+    @JsonProperty("is_success")
     @ApiModelProperty(notes = "Login attempt success.", example = "1 | 0")
-    private int loginAttemptSuccess;
+    private int isSuccess;
 
     @JsonProperty("created_on")
     @ApiModelProperty(notes = "Record created date.", example = "2021-05-01")
@@ -56,13 +61,12 @@ public class LoginAttemptEntity {
     @ApiModelProperty(notes = "hard delete.", example = "1 | 0")
     private int hardDelete;
 
-	public Long getLoginAttemptId() {
-		return loginAttemptId;
+	public UUID getLoginAttemptId() {
+		return loginAttemptUuid;
 	}
 
-	public void setLoginAttemptId(Long loginAttemptId) {
-		this.loginAttemptId = loginAttemptId;
+	public void setLoginAttemptId(UUID loginAttemptUuid) {
+		this.loginAttemptUuid = loginAttemptUuid;
 	}
 
-    
 }

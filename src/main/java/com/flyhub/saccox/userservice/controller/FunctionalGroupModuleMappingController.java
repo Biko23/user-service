@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/user/functional-group-module-mappings")
@@ -31,10 +32,10 @@ public class FunctionalGroupModuleMappingController {
         }
     }
 
-    @GetMapping("/{functionalGroupModuleMappingId}")
-    public ResponseEntity<FunctionalGroupModuleMappingEntity> findByFunctionalGroupModuleMappingId(@PathVariable("functionalGroupModuleMappingId") Long functionalGroupModuleMappingId) {
+    @GetMapping("/{functionalGroupModuleMappingUuid}")
+    public ResponseEntity<FunctionalGroupModuleMappingEntity> findByFunctionalGroupModuleMappingId(@PathVariable("functionalGroupModuleMappingUuid") UUID functionalGroupModuleMappingUuid) {
 //        log.info("Inside findByFunctionalGroupModuleMappingId method of FunctionalGroupModuleMappingController");
-        Optional<FunctionalGroupModuleMappingEntity> functionalGroupModuleMappingOptional = Optional.ofNullable(functionalGroupModuleMappingService.findByFunctionalGroupModuleMappingId(functionalGroupModuleMappingId));
+        Optional<FunctionalGroupModuleMappingEntity> functionalGroupModuleMappingOptional = Optional.ofNullable(functionalGroupModuleMappingService.findByFunctionalGroupModuleMappingId(functionalGroupModuleMappingUuid));
 
         if (functionalGroupModuleMappingOptional.isPresent()) {
             return new ResponseEntity<>(functionalGroupModuleMappingOptional.get(), HttpStatus.OK);
@@ -60,37 +61,37 @@ public class FunctionalGroupModuleMappingController {
         }
     }
 
-    @PutMapping("/{functionalGroupModuleMappingId}")
-    public ResponseEntity<FunctionalGroupModuleMappingEntity> fullUpdateFunctionalGroupModuleMapping(@PathVariable("functionalGroupModuleMappingId") Long functionalGroupModuleMappingId, @RequestBody FunctionalGroupModuleMappingEntity functionalGroupModuleMappingEntity) {
+    @PutMapping("/{functionalGroupModuleMappingUuid}")
+    public ResponseEntity<FunctionalGroupModuleMappingEntity> fullUpdateFunctionalGroupModuleMapping(@PathVariable("functionalGroupModuleMappingUuid") UUID functionalGroupModuleMappingUuid, @RequestBody FunctionalGroupModuleMappingEntity functionalGroupModuleMappingEntity) {
 //        log.info("Inside fullUpdateFunctionalGroupModuleMapping method of FunctionalGroupModuleMappingController");
-        Optional<FunctionalGroupModuleMappingEntity> functionalGroupModuleMappingOptional = Optional.ofNullable(functionalGroupModuleMappingService.findByFunctionalGroupModuleMappingId(functionalGroupModuleMappingId));
+        Optional<FunctionalGroupModuleMappingEntity> functionalGroupModuleMappingOptional = Optional.ofNullable(functionalGroupModuleMappingService.findByFunctionalGroupModuleMappingId(functionalGroupModuleMappingUuid));
 
         if (functionalGroupModuleMappingOptional.isPresent()) {
-            functionalGroupModuleMappingEntity.setFunctionalGroupModuleMappingId(functionalGroupModuleMappingId);
+            functionalGroupModuleMappingEntity.setFunctionalGroupModuleMappingUuid(functionalGroupModuleMappingUuid);
             return new ResponseEntity<>(functionalGroupModuleMappingService.saveFunctionalGroupModuleMapping(functionalGroupModuleMappingEntity), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
-    @PatchMapping("/{functionalGroupModuleMappingId}")
-    public ResponseEntity<FunctionalGroupModuleMappingEntity> partialUpdateFunctionalGroupModuleMapping(@PathVariable("functionalGroupModuleMappingId") Long functionalGroupModuleMappingId, @RequestBody FunctionalGroupModuleMappingEntity functionalGroupModuleMappingEntity) {
+    @PatchMapping("/{functionalGroupModuleMappingUuid}")
+    public ResponseEntity<FunctionalGroupModuleMappingEntity> partialUpdateFunctionalGroupModuleMapping(@PathVariable("functionalGroupModuleMappingUuid") UUID functionalGroupModuleMappingUuid, @RequestBody FunctionalGroupModuleMappingEntity functionalGroupModuleMappingEntity) {
 //        log.info("Inside partialUpdateFunctionalGroupModuleMapping method of FunctionalGroupModuleMappingController");
-        Optional<FunctionalGroupModuleMappingEntity> functionalGroupModuleMappingOptional = Optional.ofNullable(functionalGroupModuleMappingService.findByFunctionalGroupModuleMappingId(functionalGroupModuleMappingId));
+        Optional<FunctionalGroupModuleMappingEntity> functionalGroupModuleMappingOptional = Optional.ofNullable(functionalGroupModuleMappingService.findByFunctionalGroupModuleMappingId(functionalGroupModuleMappingUuid));
 
         if (functionalGroupModuleMappingOptional.isPresent()) {
-            functionalGroupModuleMappingEntity.setFunctionalGroupModuleMappingId(functionalGroupModuleMappingId);
+            functionalGroupModuleMappingEntity.setFunctionalGroupModuleMappingUuid(functionalGroupModuleMappingUuid);
             return new ResponseEntity<>(functionalGroupModuleMappingService.saveFunctionalGroupModuleMapping(functionalGroupModuleMappingEntity), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
-    @DeleteMapping("/{functionalGroupModuleMappingId}")
-    public ResponseEntity<HttpStatus> deleteFunctionalGroupModuleMapping(@PathVariable("functionalGroupModuleMappingId") Long functionalGroupModuleMappingId) {
+    @DeleteMapping("/{functionalGroupModuleMappingUuid}")
+    public ResponseEntity<HttpStatus> deleteFunctionalGroupModuleMapping(@PathVariable("functionalGroupModuleMappingUuid") UUID functionalGroupModuleMappingUuid) {
 //        log.info("Inside deleteFunctionalGroupModuleMapping method of FunctionalGroupModuleMappingController");
         try {
-            functionalGroupModuleMappingService.deleteFunctionalGroupModuleMapping(functionalGroupModuleMappingId);
+            functionalGroupModuleMappingService.deleteFunctionalGroupModuleMapping(functionalGroupModuleMappingUuid);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

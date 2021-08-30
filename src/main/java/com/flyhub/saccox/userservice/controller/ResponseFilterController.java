@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/user/response-filters")
@@ -31,10 +32,10 @@ public class ResponseFilterController {
         }
     }
 
-    @GetMapping("/{responseFilterId}")
-    public ResponseEntity<ResponseFilterEntity> findByResponseFilterId(@PathVariable("responseFilterId") Long responseFilterId) {
+    @GetMapping("/{responseFilterUuid}")
+    public ResponseEntity<ResponseFilterEntity> findByResponseFilterId(@PathVariable("responseFilterUuid") UUID responseFilterUuid) {
 //        log.info("Inside findByResponseFilterId method of ResponseFilterController");
-        Optional<ResponseFilterEntity> responseFilterOptional = Optional.ofNullable(responseFilterService.findByResponseFilterId(responseFilterId));
+        Optional<ResponseFilterEntity> responseFilterOptional = Optional.ofNullable(responseFilterService.findByResponseFilterId(responseFilterUuid));
 
         if (responseFilterOptional.isPresent()) {
             return new ResponseEntity<>(responseFilterOptional.get(), HttpStatus.OK);
@@ -60,37 +61,37 @@ public class ResponseFilterController {
         }
     }
 
-    @PutMapping("/{responseFilterId}")
-    public ResponseEntity<ResponseFilterEntity> fullUpdateResponseFilter(@PathVariable("responseFilterId") Long responseFilterId, @RequestBody ResponseFilterEntity responseFilterEntity) {
+    @PutMapping("/{responseFilterUuid}")
+    public ResponseEntity<ResponseFilterEntity> fullUpdateResponseFilter(@PathVariable("responseFilterUuid") UUID responseFilterUuid, @RequestBody ResponseFilterEntity responseFilterEntity) {
 //        log.info("Inside fullUpdateResponseFilter method of ResponseFilterController");
-        Optional<ResponseFilterEntity> responseFilterOptional = Optional.ofNullable(responseFilterService.findByResponseFilterId(responseFilterId));
+        Optional<ResponseFilterEntity> responseFilterOptional = Optional.ofNullable(responseFilterService.findByResponseFilterId(responseFilterUuid));
 
         if (responseFilterOptional.isPresent()) {
-            responseFilterEntity.setResponseFilterId(responseFilterId);
+            responseFilterEntity.setResponseFilterUuid(responseFilterUuid);
             return new ResponseEntity<>(responseFilterService.saveResponseFilter(responseFilterEntity), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
-    @PatchMapping("/{responseFilterId}")
-    public ResponseEntity<ResponseFilterEntity> partialUpdateResponseFilter(@PathVariable("responseFilterId") Long responseFilterId, @RequestBody ResponseFilterEntity responseFilterEntity) {
+    @PatchMapping("/{responseFilterUuid}")
+    public ResponseEntity<ResponseFilterEntity> partialUpdateResponseFilter(@PathVariable("responseFilterUuid") UUID responseFilterUuid, @RequestBody ResponseFilterEntity responseFilterEntity) {
 //        log.info("Inside partialUpdateResponseFilter method of ResponseFilterController");
-        Optional<ResponseFilterEntity> responseFilterOptional = Optional.ofNullable(responseFilterService.findByResponseFilterId(responseFilterId));
+        Optional<ResponseFilterEntity> responseFilterOptional = Optional.ofNullable(responseFilterService.findByResponseFilterId(responseFilterUuid));
 
         if (responseFilterOptional.isPresent()) {
-            responseFilterEntity.setResponseFilterId(responseFilterId);
+            responseFilterEntity.setResponseFilterUuid(responseFilterUuid);
             return new ResponseEntity<>(responseFilterService.saveResponseFilter(responseFilterEntity), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
-    @DeleteMapping("/{responseFilterId}")
-    public ResponseEntity<HttpStatus> deleteResponseFilter(@PathVariable("responseFilterId") Long responseFilterId) {
+    @DeleteMapping("/{responseFilterUuid}")
+    public ResponseEntity<HttpStatus> deleteResponseFilter(@PathVariable("responseFilterUuid") UUID responseFilterUuid) {
 //        log.info("Inside deleteResponseFilter method of ResponseFilterController");
         try {
-            responseFilterService.deleteResponseFilter(responseFilterId);
+            responseFilterService.deleteResponseFilter(responseFilterUuid);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

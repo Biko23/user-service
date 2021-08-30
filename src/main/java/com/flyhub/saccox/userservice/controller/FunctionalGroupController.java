@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/user/functional-groups")
@@ -31,10 +32,10 @@ public class FunctionalGroupController {
         }
     }
 
-    @GetMapping("/{functionalGroupId}")
-    public ResponseEntity<FunctionalGroupEntity> findByFunctionalGroupId(@PathVariable("functionalGroupId") Long functionalGroupId) {
+    @GetMapping("/{functionalGroupUuid}")
+    public ResponseEntity<FunctionalGroupEntity> findByFunctionalGroupId(@PathVariable("functionalGroupUuid") UUID functionalGroupUuid) {
 //        log.info("Inside findByFunctionalGroupId method of FunctionalGroupController");
-        Optional<FunctionalGroupEntity> functionalGroupOptional = Optional.ofNullable(functionalGroupService.findByFunctionalGroupId(functionalGroupId));
+        Optional<FunctionalGroupEntity> functionalGroupOptional = Optional.ofNullable(functionalGroupService.findByFunctionalGroupId(functionalGroupUuid));
 
         if (functionalGroupOptional.isPresent()) {
             return new ResponseEntity<>(functionalGroupOptional.get(), HttpStatus.OK);
@@ -60,37 +61,37 @@ public class FunctionalGroupController {
         }
     }
 
-    @PutMapping("/{functionalGroupId}")
-    public ResponseEntity<FunctionalGroupEntity> fullUpdateFunctionalGroup(@PathVariable("functionalGroupId") Long functionalGroupId, @RequestBody FunctionalGroupEntity functionalGroupEntity) {
+    @PutMapping("/{functionalGroupUuid}")
+    public ResponseEntity<FunctionalGroupEntity> fullUpdateFunctionalGroup(@PathVariable("functionalGroupUuid") UUID functionalGroupUuid, @RequestBody FunctionalGroupEntity functionalGroupEntity) {
 //        log.info("Inside fullUpdateFunctionalGroup method of FunctionalGroupController");
-        Optional<FunctionalGroupEntity> functionalGroupOptional = Optional.ofNullable(functionalGroupService.findByFunctionalGroupId(functionalGroupId));
+        Optional<FunctionalGroupEntity> functionalGroupOptional = Optional.ofNullable(functionalGroupService.findByFunctionalGroupId(functionalGroupUuid));
 
         if (functionalGroupOptional.isPresent()) {
-            functionalGroupEntity.setFunctionalGroupId(functionalGroupId);
+            functionalGroupEntity.setFunctionalGroupUuid(functionalGroupUuid);
             return new ResponseEntity<>(functionalGroupService.saveFunctionalGroup(functionalGroupEntity), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
-    @PatchMapping("/{functionalGroupId}")
-    public ResponseEntity<FunctionalGroupEntity> partialUpdateFunctionalGroup(@PathVariable("functionalGroupId") Long functionalGroupId, @RequestBody FunctionalGroupEntity functionalGroupEntity) {
+    @PatchMapping("/{functionalGroupUuid}")
+    public ResponseEntity<FunctionalGroupEntity> partialUpdateFunctionalGroup(@PathVariable("functionalGroupUuid") UUID functionalGroupUuid, @RequestBody FunctionalGroupEntity functionalGroupEntity) {
 //        log.info("Inside partialUpdateFunctionalGroup method of FunctionalGroupController");
-        Optional<FunctionalGroupEntity> functionalGroupOptional = Optional.ofNullable(functionalGroupService.findByFunctionalGroupId(functionalGroupId));
+        Optional<FunctionalGroupEntity> functionalGroupOptional = Optional.ofNullable(functionalGroupService.findByFunctionalGroupId(functionalGroupUuid));
 
         if (functionalGroupOptional.isPresent()) {
-            functionalGroupEntity.setFunctionalGroupId(functionalGroupId);
+            functionalGroupEntity.setFunctionalGroupUuid(functionalGroupUuid);
             return new ResponseEntity<>(functionalGroupService.saveFunctionalGroup(functionalGroupEntity), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
-    @DeleteMapping("/{functionalGroupId}")
-    public ResponseEntity<HttpStatus> deleteFunctionalGroup(@PathVariable("functionalGroupId") Long functionalGroupId) {
+    @DeleteMapping("/{functionalGroupUuid}")
+    public ResponseEntity<HttpStatus> deleteFunctionalGroup(@PathVariable("functionalGroupUuid") UUID functionalGroupUuid) {
 //        log.info("Inside deleteFunctionalGroup method of FunctionalGroupController");
         try {
-            functionalGroupService.deleteFunctionalGroup(functionalGroupId);
+            functionalGroupService.deleteFunctionalGroup(functionalGroupUuid);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

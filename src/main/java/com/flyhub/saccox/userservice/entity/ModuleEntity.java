@@ -7,7 +7,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+
+import org.hibernate.annotations.GenericGenerator;
+
 import java.sql.Date;
+import java.util.UUID;
 
 @Entity
 @Data
@@ -17,30 +21,27 @@ import java.sql.Date;
 public class ModuleEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @JsonProperty("module_id")
+	@GeneratedValue(generator = "uuid")
+	@GenericGenerator(name = "uuid", strategy = "uuid2")
+    @JsonProperty("module_uuid")
     @ApiModelProperty(notes = "Unique identifier of a module entity. Auto generated.", example = "1")
-    private Long moduleId;
+    private UUID moduleUuid;
 
-    @JsonProperty("module_parent_id")
-    @ApiModelProperty(notes = "Parent ID.", example = "1")
-    private Long moduleParentId;
-
-    @JsonProperty("module_name")
+    @JsonProperty("name")
     @ApiModelProperty(notes = "Module name.", example = "Finance | Payrol")
-    private String moduleName;
+    private String name;
 
-    @JsonProperty("module_active")
+    @JsonProperty("is_active")
     @ApiModelProperty(notes = "Module active.", example = "1 | 0")
-    private int moduleActive;
+    private int isActive;
 
-    @JsonProperty("module_access_location")
+    @JsonProperty("access_location")
     @ApiModelProperty(notes = "Access location.", example = " - ")
-    private String moduleAccessLocation;
+    private String accessLocation;
 
-    @JsonProperty("module_working_time")
+    @JsonProperty("working_time")
     @ApiModelProperty(notes = "Working time.", example = " - ")
-    private String moduleWorkingTime;
+    private String workingTime;
 
     @JsonProperty("created_on")
     @ApiModelProperty(notes = "Record created date.", example = "2021-05-01")
@@ -66,13 +67,12 @@ public class ModuleEntity {
     @ApiModelProperty(notes = "hard delete.", example = "1 | 0")
     private int hardDelete;
 
-	public Long getModuleId() {
-		return moduleId;
+	public UUID getModuleId() {
+		return moduleUuid;
 	}
 
-	public void setModuleId(Long moduleId) {
-		this.moduleId = moduleId;
+	public void setModuleId(UUID moduleUuid) {
+		this.moduleUuid = moduleUuid;
 	}
 
-    
 }

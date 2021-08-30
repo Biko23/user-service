@@ -2,11 +2,13 @@ package com.flyhub.saccox.userservice.service;
 
 import com.flyhub.saccox.userservice.entity.PasswordEntity;
 import com.flyhub.saccox.userservice.repository.PasswordRepository;
+import com.flyhub.saccox.userservice.exception.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @Slf4j
@@ -20,9 +22,9 @@ public class PasswordService {
         return passwordRepository.save(passwordEntity);
     }
 
-    public PasswordEntity findByPasswordId(Long passwordId) {
+    public PasswordEntity findByPasswordId(UUID passwordUuid) {
 //        log.info("Inside findByPasswordId method of PasswordService");
-        return passwordRepository.findByPasswordId(passwordId);
+        return passwordRepository.findByPasswordUuid(passwordUuid);
     }
 
     public List<PasswordEntity> listAllPasswords() {
@@ -30,9 +32,9 @@ public class PasswordService {
         return passwordRepository.findAll();
     }
 
-    public void deletePassword(Long passwordId) {
+    public void deletePassword(UUID passwordUuid) {
 //        log.info("Inside deletePassword method of PasswordService");
-        passwordRepository.deleteById(passwordId);
+        passwordRepository.deleteById(passwordUuid);
     }
 
     public void deleteAllPasswords() {

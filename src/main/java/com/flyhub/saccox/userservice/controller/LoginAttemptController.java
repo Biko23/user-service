@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/user/login-attempt")
@@ -31,10 +32,10 @@ public class LoginAttemptController {
         }
     }
 
-    @GetMapping("/{loginAttemptId}")
-    public ResponseEntity<LoginAttemptEntity> findByLoginAttemptId(@PathVariable("loginAttemptId") Long loginAttemptId) {
+    @GetMapping("/{loginAttemptUuid}")
+    public ResponseEntity<LoginAttemptEntity> findByLoginAttemptId(@PathVariable("loginAttemptUuid") UUID loginAttemptUuid) {
 //        log.info("Inside findByLoginAttemptId method of LoginAttemptController");
-        Optional<LoginAttemptEntity> loginAttemptOptional = Optional.ofNullable(loginAttemptService.findByLoginAttemptId(loginAttemptId));
+        Optional<LoginAttemptEntity> loginAttemptOptional = Optional.ofNullable(loginAttemptService.findByLoginAttemptId(loginAttemptUuid));
 
         if (loginAttemptOptional.isPresent()) {
             return new ResponseEntity<>(loginAttemptOptional.get(), HttpStatus.OK);
@@ -60,37 +61,37 @@ public class LoginAttemptController {
         }
     }
 
-    @PutMapping("/{loginAttemptId}")
-    public ResponseEntity<LoginAttemptEntity> fullUpdateLoginAttempt(@PathVariable("loginAttemptId") Long loginAttemptId, @RequestBody LoginAttemptEntity loginAttemptEntity) {
+    @PutMapping("/{loginAttemptUuid}")
+    public ResponseEntity<LoginAttemptEntity> fullUpdateLoginAttempt(@PathVariable("loginAttemptUuid") UUID loginAttemptUuid, @RequestBody LoginAttemptEntity loginAttemptEntity) {
 //        log.info("Inside fullUpdateLoginAttempt method of LoginAttemptController");
-        Optional<LoginAttemptEntity> loginAttemptOptional = Optional.ofNullable(loginAttemptService.findByLoginAttemptId(loginAttemptId));
+        Optional<LoginAttemptEntity> loginAttemptOptional = Optional.ofNullable(loginAttemptService.findByLoginAttemptId(loginAttemptUuid));
 
         if (loginAttemptOptional.isPresent()) {
-            loginAttemptEntity.setLoginAttemptId(loginAttemptId);
+            loginAttemptEntity.setLoginAttemptId(loginAttemptUuid);
             return new ResponseEntity<>(loginAttemptService.saveLoginAttempt(loginAttemptEntity), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
-    @PatchMapping("/{loginAttemptId}")
-    public ResponseEntity<LoginAttemptEntity> partialUpdateLoginAttempt(@PathVariable("loginAttemptId") Long loginAttemptId, @RequestBody LoginAttemptEntity loginAttemptEntity) {
+    @PatchMapping("/{loginAttemptUuid}")
+    public ResponseEntity<LoginAttemptEntity> partialUpdateLoginAttempt(@PathVariable("loginAttemptUuid") UUID loginAttemptUuid, @RequestBody LoginAttemptEntity loginAttemptEntity) {
 //        log.info("Inside partialUpdateLoginAttempt method of LoginAttemptController");
-        Optional<LoginAttemptEntity> loginAttemptOptional = Optional.ofNullable(loginAttemptService.findByLoginAttemptId(loginAttemptId));
+        Optional<LoginAttemptEntity> loginAttemptOptional = Optional.ofNullable(loginAttemptService.findByLoginAttemptId(loginAttemptUuid));
 
         if (loginAttemptOptional.isPresent()) {
-            loginAttemptEntity.setLoginAttemptId(loginAttemptId);
+            loginAttemptEntity.setLoginAttemptId(loginAttemptUuid);
             return new ResponseEntity<>(loginAttemptService.saveLoginAttempt(loginAttemptEntity), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
-    @DeleteMapping("/{loginAttemptId}")
-    public ResponseEntity<HttpStatus> deleteLoginAttempt(@PathVariable("loginAttemptId") Long loginAttemptId) {
+    @DeleteMapping("/{loginAttemptUuid}")
+    public ResponseEntity<HttpStatus> deleteLoginAttempt(@PathVariable("loginAttemptUuid") UUID loginAttemptUuid) {
 //        log.info("Inside deleteLoginAttempt method of LoginAttemptController");
         try {
-            loginAttemptService.deleteLoginAttempt(loginAttemptId);
+            loginAttemptService.deleteLoginAttempt(loginAttemptUuid);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

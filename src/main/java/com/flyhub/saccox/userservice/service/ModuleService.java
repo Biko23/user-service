@@ -2,11 +2,13 @@ package com.flyhub.saccox.userservice.service;
 
 import com.flyhub.saccox.userservice.entity.ModuleEntity;
 import com.flyhub.saccox.userservice.repository.ModuleRepository;
+import com.flyhub.saccox.userservice.exception.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @Slf4j
@@ -20,9 +22,9 @@ public class ModuleService {
         return moduleRepository.save(adminLookupAddressTypeEntity);
     }
 
-    public ModuleEntity findByModuleId(Long moduleId) {
+    public ModuleEntity findByModuleId(UUID moduleUuid) {
 //        log.info("Inside findByModuleId method of ModuleService");
-        return moduleRepository.findByModuleId(moduleId);
+        return moduleRepository.findByModuleUuid(moduleUuid);
     }
 
     public List<ModuleEntity> listAllModules() {
@@ -30,9 +32,9 @@ public class ModuleService {
         return moduleRepository.findAll();
     }
 
-    public void deleteModule(Long moduleId) {
+    public void deleteModule(UUID moduleUuid) {
 //        log.info("Inside deleteModule method of ModuleService");
-        moduleRepository.deleteById(moduleId);
+        moduleRepository.deleteById(moduleUuid);
     }
 
     public void deleteAllModules() {

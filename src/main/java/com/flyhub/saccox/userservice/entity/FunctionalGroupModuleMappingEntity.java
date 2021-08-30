@@ -7,7 +7,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+
+import org.hibernate.annotations.GenericGenerator;
+
 import java.sql.Date;
+import java.util.UUID;
 
 @Entity
 @Data
@@ -17,32 +21,27 @@ import java.sql.Date;
 public class FunctionalGroupModuleMappingEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @JsonProperty("functional_group_module_mapping_id")
+	@GeneratedValue(generator = "uuid")
+	@GenericGenerator(name = "uuid", strategy = "uuid2")
+    @JsonProperty("functional_group_module_mapping_uuid")
     @ApiModelProperty(notes = "Unique identifier of a functional group module mapping entity. Auto generated.", example = "1")
-    private Long functionalGroupModuleMappingId;
+    private UUID functionalGroupModuleMappingUuid;
 
-    @JsonProperty("functional_group_id_fk")
+    @JsonProperty("functional_group_id")
     @ApiModelProperty(notes = "Functional group foreign key.", example = "1", required = true)
     @ManyToOne
-    @JoinColumn(name="functional_group_id_fk", nullable=false)
+    @JoinColumn(name="functional_group_id", nullable=false)
     private FunctionalGroupEntity functionalGroupEntity;
 
-    @JsonProperty("module_id_fk")
+    @JsonProperty("module_id")
     @ApiModelProperty(notes = "Module foreign key.", example = "1", required = true)
     @ManyToOne
-    @JoinColumn(name="module_id_fk", nullable=false)
+    @JoinColumn(name="module_id", nullable=false)
     private ModuleEntity moduleEntity;
 
-    @JsonProperty("functional_group_module_type_id_fk")
-    @ApiModelProperty(notes = "Functional group module type foreign key.", example = "1", required = true)
-    @ManyToOne
-    @JoinColumn(name="functional_group_module_type_id_fk", nullable=false)
-    private FunctionalGroupModuleTypeEntity functionalGroupModuleTypeEntity;
-
-    @JsonProperty("functional_group_module_mapping_active")
+    @JsonProperty("is_active")
     @ApiModelProperty(notes = "Functional group module mapping active.", example = "1 | 0")
-    private int functionalGroupModuleMappingActive;
+    private int isActive;
 
     @JsonProperty("mapping_name")
     @ApiModelProperty(notes = "Functional group module mapping name.", example = "")
@@ -52,41 +51,42 @@ public class FunctionalGroupModuleMappingEntity {
     @ApiModelProperty(notes = "Functional group module mapping description.", example = "")
     private String description;
     
-    @JsonProperty("functional_group_module_mapping_search")
+
+    @JsonProperty("can_search")
     @ApiModelProperty(notes = "Functional group module mapping search.", example = "1 | 0")
-    private int functionalGroupModuleMappingSearch;
+    private int canSearch;
 
-    @JsonProperty("functional_group_module_mapping_create")
+    @JsonProperty("can_create")
     @ApiModelProperty(notes = "Functional group module mapping create.", example = "1 | 0")
-    private int functionalGroupModuleMappingCreate;
+    private int canCreate;
 
-    @JsonProperty("functional_group_module_mapping_retrieve")
+    @JsonProperty("can_retrieve")
     @ApiModelProperty(notes = "Functional group module mapping retrieve.", example = "1 | 0")
-    private int functionalGroupModuleMappingRetrieve;
+    private int canRetrieve;
 
-    @JsonProperty("functional_group_module_mapping_update")
+    @JsonProperty("can_update")
     @ApiModelProperty(notes = "Functional group module mapping update.", example = "1 | 0")
-    private int functionalGroupModuleMappingUpdate;
+    private int canUpdate;
 
-    @JsonProperty("functional_group_module_mapping_soft_delete")
+    @JsonProperty("can_soft_delete")
     @ApiModelProperty(notes = "Functional group module mapping soft delete.", example = "1 | 0")
-    private int functionalGroupModuleMappingSoftDelete;
+    private int canSoftDelete;
 
-    @JsonProperty("functional_group_module_mapping_hard_delete")
+    @JsonProperty("can_hard_delete")
     @ApiModelProperty(notes = "Functional group module mapping hard delete.", example = "1 | 0")
-    private int functionalGroupModuleMappingHardDelete;
+    private int canHardDelete;
 
-    @JsonProperty("functional_group_module_mapping_print")
+    @JsonProperty("can_print")
     @ApiModelProperty(notes = "Functional group module mapping print.", example = "1 | 0")
-    private int functionalGroupModuleMappingPrint;
+    private int canPrint;
 
-    @JsonProperty("functional_group_module_mapping_sms")
+    @JsonProperty("can_sms")
     @ApiModelProperty(notes = "Functional group module mapping sms.", example = "1 | 0")
-    private int functionalGroupModuleMappingSMS;
+    private int canSMS;
 
-    @JsonProperty("functional_group_module_mapping_email")
+    @JsonProperty("can_email")
     @ApiModelProperty(notes = "Functional group module mapping email.", example = "1 | 0")
-    private int functionalGroupModuleMappingEmail;
+    private int canEmail;
 
     @JsonProperty("created_on")
     @ApiModelProperty(notes = "Record created date.", example = "2021-05-01")
@@ -112,13 +112,12 @@ public class FunctionalGroupModuleMappingEntity {
     @ApiModelProperty(notes = "hard delete.", example = "1 | 0")
     private int hardDelete;
 
-	public Long getFunctionalGroupModuleMappingId() {
-		return functionalGroupModuleMappingId;
+	public UUID getFunctionalGroupModuleMappingUuid() {
+		return functionalGroupModuleMappingUuid;
 	}
 
-	public void setFunctionalGroupModuleMappingId(Long functionalGroupModuleMappingId) {
-		this.functionalGroupModuleMappingId = functionalGroupModuleMappingId;
+	public void setFunctionalGroupModuleMappingUuid(UUID functionalGroupModuleMappingUuid) {
+		this.functionalGroupModuleMappingUuid = functionalGroupModuleMappingUuid;
 	}
 
-    
 }

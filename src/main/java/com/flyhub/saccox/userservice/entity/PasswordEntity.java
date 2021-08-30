@@ -7,7 +7,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+
+import org.hibernate.annotations.GenericGenerator;
+
 import java.sql.Date;
+import java.util.UUID;
 
 @Entity
 @Data
@@ -17,32 +21,38 @@ import java.sql.Date;
 public class PasswordEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @JsonProperty("password_id")
+	@GeneratedValue(generator = "uuid")
+	@GenericGenerator(name = "uuid", strategy = "uuid2")
+    @JsonProperty("password_uuid")
     @ApiModelProperty(notes = "Unique identifier of a password entity. Auto generated.", example = "1")
-    private Long passwordId;
+    private UUID passwordUuid;
 
-    @JsonProperty("system_user_id_fk")
-    @ApiModelProperty(notes = "System user foreign key.", example = "1", required = true)
-    @ManyToOne
-    @JoinColumn(name="system_user_id_fk", nullable=false)
-    private SystemUserEntity systemUserEntity;
+//    @JsonProperty("system_user_id")
+//    @ApiModelProperty(notes = "System user foreign key.", example = "1", required = true)
+//    @OneToOne
+//    @JoinColumn(name="system_user_id", nullable=false)
+//    private SystemUserEntity systemUserEntity;
+    
 
-    @JsonProperty("password_password")
+    @JsonProperty("password")
     @ApiModelProperty(notes = "Password password.", example = "1")
-    private String passwordPassword;
+    private String password;    
 
-    @JsonProperty("password_question")
+    @JsonProperty("system_user_uuid")
+    @ApiModelProperty(notes = "Unique identifier of user the password belongs to", example = "1")
+    private UUID system_user_uuid;    
+
+    @JsonProperty("question")
     @ApiModelProperty(notes = "Password question.", example = "Place of birth?")
-    private String passwordQuestion;
+    private String question;
 
-    @JsonProperty("password_answer")
+    @JsonProperty("answer")
     @ApiModelProperty(notes = "Password answer.", example = "12345678")
-    private String passwordAnswer;
+    private String answer;
 
-    @JsonProperty("password_active")
+    @JsonProperty("is_active")
     @ApiModelProperty(notes = "Password active.", example = "1 | 0")
-    private int systemUserActive;
+    private int isActive;
 
     @JsonProperty("created_on")
     @ApiModelProperty(notes = "Record created date.", example = "2021-05-01")
@@ -68,13 +78,16 @@ public class PasswordEntity {
     @ApiModelProperty(notes = "hard delete.", example = "1 | 0")
     private int hardDelete;
 
-	public Long getPasswordId() {
-		return passwordId;
+	public UUID getPasswordUuid() {
+		return passwordUuid;
 	}
 
-	public void setPasswordId(Long passwordId) {
-		this.passwordId = passwordId;
+	public void setPasswordUuid(UUID passwordId) {
+		this.passwordUuid = passwordId;
 	}
-
     
+    @OneToOne
+    @JoinColumn(name = "system_user_uuid", insertable = false, updatable = false)
+    private SystemUserEntity systemUserEntity;
+
 }
