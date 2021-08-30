@@ -44,6 +44,14 @@ public class FunctionalGroupModuleMappingEntity {
     @ApiModelProperty(notes = "Functional group module mapping active.", example = "1 | 0")
     private int functionalGroupModuleMappingActive;
 
+    @JsonProperty("mapping_name")
+    @ApiModelProperty(notes = "Functional group module mapping name.", example = "")
+    private String mappingName;
+    
+    @JsonProperty("description")
+    @ApiModelProperty(notes = "Functional group module mapping description.", example = "")
+    private String description;
+    
     @JsonProperty("functional_group_module_mapping_search")
     @ApiModelProperty(notes = "Functional group module mapping search.", example = "1 | 0")
     private int functionalGroupModuleMappingSearch;

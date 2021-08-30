@@ -13,7 +13,7 @@ import java.sql.Date;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "system_user_type")
+@Table(name = "system_user")
 public class SystemUserEntity {
 
     @Id
