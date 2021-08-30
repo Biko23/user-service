@@ -35,18 +35,18 @@ public class FunctionalGroupEntity {
     @ApiModelProperty(notes = "Tenant foreign key.", example = "1")
     private Long tenantId;
 
-    @JsonProperty("branch_id")
-    @ApiModelProperty(notes = "Branch foreign key.", example = "1")
-    private Long branchId;
-    
     @JsonProperty("is_active")
     @ApiModelProperty(notes = "Functional group active.", example = "1 | 0")
     private int isActive;
 
+    @JsonProperty("branch_id")
+    @ApiModelProperty(notes = "Branch foreign key.", example = "1")
+    private Long branchId;
+
     @JsonProperty("functional_group_description")
     @ApiModelProperty(notes = "Functional group description.", example = "Team that handles member contributions and other transactions")
     private String functionalGroupDescription;
-
+    
     @JsonProperty("created_on")
     @ApiModelProperty(notes = "Record created date.", example = "2021-05-01")
     private Date createdOn;
