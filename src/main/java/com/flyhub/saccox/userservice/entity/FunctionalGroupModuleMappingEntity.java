@@ -23,9 +23,9 @@ public class FunctionalGroupModuleMappingEntity {
     @Id
 	@GeneratedValue(generator = "uuid")
 	@GenericGenerator(name = "uuid", strategy = "uuid2")
-    @JsonProperty("functional_group_module_mapping_uuid")
+    @JsonProperty("functional_group_module_mapping_id")
     @ApiModelProperty(notes = "Unique identifier of a functional group module mapping entity. Auto generated.", example = "1")
-    private UUID functionalGroupModuleMappingUuid;
+    private UUID functionalGroupModuleMappingId;
 
     @JsonProperty("functional_group_id")
     @ApiModelProperty(notes = "Functional group foreign key.", example = "1", required = true)
@@ -112,12 +112,12 @@ public class FunctionalGroupModuleMappingEntity {
     @ApiModelProperty(notes = "hard delete.", example = "1 | 0")
     private int hardDelete;
 
-	public UUID getFunctionalGroupModuleMappingUuid() {
-		return functionalGroupModuleMappingUuid;
+	public UUID getFunctionalGroupModuleMappingId() {
+		return functionalGroupModuleMappingId;
 	}
 
-	public void setFunctionalGroupModuleMappingUuid(UUID functionalGroupModuleMappingUuid) {
-		this.functionalGroupModuleMappingUuid = functionalGroupModuleMappingUuid;
+	public void setFunctionalGroupModuleMappingId(UUID functionalGroupModuleMappingId) {
+		this.functionalGroupModuleMappingId = functionalGroupModuleMappingId;
 	}
 
 }

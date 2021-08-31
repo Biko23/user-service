@@ -33,13 +33,13 @@ public class PasswordService {
 			return passwordRepository.save(passwordEntity);
 	}
 	
-	public PasswordEntity findByPasswordId(UUID passwordUuid) {
-		PasswordEntity login = passwordRepository.findByPasswordId(passwordUuid);
+	public PasswordEntity findByPasswordId(UUID passwordId) {
+		PasswordEntity login = passwordRepository.findByPasswordId(passwordId);
 		if (login != null) {
 			return login;
 		}
 		else {
-			throw new CustomNotFoundException("Password - " + passwordUuid + " - not found");
+			throw new CustomNotFoundException("Password - " + passwordId + " - not found");
 		}
 	}
 
@@ -54,30 +54,30 @@ public class PasswordService {
 		return passwords;
 	}
 
-	public PasswordEntity patchPassword(UUID passwordUuid, JsonPatch jsonPatch)
+	public PasswordEntity patchPassword(UUID passwordId, JsonPatch jsonPatch)
 			throws JsonPatchException, JsonProcessingException {
 //        log.info("Inside patchPassword method of FunctionalGroupService");
-		if (passwordUuid.equals(0L)) {
-			throw new CustomInvalidInputException("Password id - " + passwordUuid + " - is not valid");
+		if (passwordId.equals(0L)) {
+			throw new CustomInvalidInputException("Password id - " + passwordId + " - is not valid");
 		}
 
-		Optional<PasswordEntity> login = Optional.ofNullable(passwordRepository.findByPasswordId(passwordUuid));
+		Optional<PasswordEntity> login = Optional.ofNullable(passwordRepository.findByPasswordId(passwordId));
 
 		if (login.isPresent()) {
 			PasswordEntity loginEntity = this.applyPatchToPasswordEntity(jsonPatch, login.get());
 			return passwordRepository.save(loginEntity);
 		} else {
-			throw new CustomNotFoundException("FunctionalGroup with id - " + passwordUuid + " - not found");
+			throw new CustomNotFoundException("FunctionalGroup with id - " + passwordId + " - not found");
 		}
 	}
 
-	public void deleteByPasswordId(UUID passwordUuid) {
+	public void deleteByPasswordId(UUID passwordId) {
 //      log.info("Inside deleteFunctionalGroupById method of FunctionalGroupService");
-		if (passwordUuid.equals(0L)) {
-			throw new CustomInvalidInputException("Password id - " + passwordUuid + " - is not valid");
+		if (passwordId.equals(0L)) {
+			throw new CustomInvalidInputException("Password id - " + passwordId + " - is not valid");
 		}
 
-		passwordRepository.deleteById(passwordUuid);
+		passwordRepository.deleteById(passwordId);
 	}
 
 	public void deleteAllPasswords() {
@@ -90,30 +90,5 @@ public class PasswordService {
 		JsonNode patched = jsonPatch.apply(objectMapper.convertValue(passwordEntity, JsonNode.class));
 		return objectMapper.treeToValue(patched, PasswordEntity.class);
 	}
-
-//    public PasswordEntity savePassword(PasswordEntity passwordEntity) {
-////        log.info("Inside savePassword method of PasswordService");
-//        return passwordRepository.save(passwordEntity);
-//    }
-//
-//    public PasswordEntity findByPasswordId(UUID passwordUuid) {
-////        log.info("Inside findByPasswordId method of PasswordService");
-//        return passwordRepository.findByPasswordUuid(passwordUuid);
-//    }
-//
-//    public List<PasswordEntity> listAllPasswords() {
-////        log.info("Inside listAllPasswords method of PasswordService");
-//        return passwordRepository.findAll();
-//    }
-//
-//    public void deletePassword(UUID passwordUuid) {
-////        log.info("Inside deletePassword method of PasswordService");
-//        passwordRepository.deleteById(passwordUuid);
-//    }
-//
-//    public void deleteAllPasswords() {
-////        log.info("Inside deleteAllPasswords method of PasswordService");
-//        passwordRepository.deleteAll();
-//    }
 
 }

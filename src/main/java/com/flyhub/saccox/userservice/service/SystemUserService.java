@@ -37,23 +37,34 @@ public class SystemUserService {
     
 
 
-	public SystemUserEntity saveSystemUser(SystemUserEntity systemUserEntity) {
+	public VisualObject saveSystemUser(SystemUserEntity systemUserEntity) {		
 //        log.info("Inside saveSystemUser method of SystemUserService");
     	systemUserEntity.setSystemUserTypeIdFk(1);
         SystemUserEntity systemUser = systemUserRepository.save(systemUserEntity);
-        ResponseEntity<SystemUserEntity> systemUserResponse = restTemplate.postForEntity("http://localhost:9100/api/v1/auth/system-users", systemUser, SystemUserEntity.class);
-
-        ResponseEntity<VisualObject> tokenResponse = restTemplate.postForEntity("http://localhost:9100/api/v1/auth/system-users", systemUserResponse, VisualObject.class);        
-        return systemUser;
+        
+        
+        ResponseEntity<VisualObject> systemUserResponse = restTemplate.postForEntity("http://localhost:9100/api/v1/auth/system-users", systemUser, VisualObject.class);
+        
+        SystemUserEntity tokenObject = new SystemUserEntity();
+        
+        tokenObject.setSystemUserId(systemUser.getSystemUserId());
+        
+        VisualObject tokenResponse = restTemplate.postForObject("http://localhost:9100/api/v1/auth/tokens",tokenObject, VisualObject.class);
+		
+        System.out.println("tokenResponse");
+        System.out.println(tokenResponse);
+               
+        
+        return tokenResponse;
     }
 	
-	public SystemUserEntity findBySystemUserId(UUID systemUserUuid) {
-		SystemUserEntity login = systemUserRepository.findBySystemUserId(systemUserUuid);
+	public SystemUserEntity findBySystemUserId(UUID systemUserId) {
+		SystemUserEntity login = systemUserRepository.findBySystemUserId(systemUserId);
 		if (login != null) {
 			return login;
 		}
 		else {
-			throw new CustomNotFoundException("SystemUser - " + systemUserUuid + " - not found");
+			throw new CustomNotFoundException("SystemUser - " + systemUserId + " - not found");
 		}
 	}
 
@@ -68,30 +79,30 @@ public class SystemUserService {
 		return systemUsers;
 	}
 
-	public SystemUserEntity patchSystemUser(UUID systemUserUuid, JsonPatch jsonPatch)
+	public SystemUserEntity patchSystemUser(UUID systemUserId, JsonPatch jsonPatch)
 			throws JsonPatchException, JsonProcessingException {
 //        log.info("Inside patchSystemUser method of FunctionalGroupService");
-		if (systemUserUuid.equals(0L)) {
-			throw new CustomInvalidInputException("SystemUser id - " + systemUserUuid + " - is not valid");
+		if (systemUserId.equals(0L)) {
+			throw new CustomInvalidInputException("SystemUser id - " + systemUserId + " - is not valid");
 		}
 
-		Optional<SystemUserEntity> login = Optional.ofNullable(systemUserRepository.findBySystemUserId(systemUserUuid));
+		Optional<SystemUserEntity> login = Optional.ofNullable(systemUserRepository.findBySystemUserId(systemUserId));
 
 		if (login.isPresent()) {
 			SystemUserEntity loginEntity = this.applyPatchToSystemUserEntity(jsonPatch, login.get());
 			return systemUserRepository.save(loginEntity);
 		} else {
-			throw new CustomNotFoundException("FunctionalGroup with id - " + systemUserUuid + " - not found");
+			throw new CustomNotFoundException("FunctionalGroup with id - " + systemUserId + " - not found");
 		}
 	}
 
-	public void deleteBySystemUserId(UUID systemUserUuid) {
+	public void deleteBySystemUserId(UUID systemUserId) {
 //      log.info("Inside deleteFunctionalGroupById method of FunctionalGroupService");
-		if (systemUserUuid.equals(0L)) {
-			throw new CustomInvalidInputException("SystemUser id - " + systemUserUuid + " - is not valid");
+		if (systemUserId.equals(0L)) {
+			throw new CustomInvalidInputException("SystemUser id - " + systemUserId + " - is not valid");
 		}
 
-		systemUserRepository.deleteById(systemUserUuid);
+		systemUserRepository.deleteById(systemUserId);
 	}
 
 	public void deleteAllSystemUsers() {
@@ -105,17 +116,4 @@ public class SystemUserService {
 		return objectMapper.treeToValue(patched, SystemUserEntity.class);
 	}
     
-//    public UserTenant getUserBelongsToTenant(UUID systemUserUuid) {
-////      log.info("Inside findBySystemUserId method of SystemUserService");
-//    	UserTenant ut = new UserTenant();
-//    	SystemUserEntity user = systemUserRepository.findBySystemUserId(systemUserUuid);
-//    	
-//    	Tenant tenant = restTemplate.getForObject("http://localhost:9100/api/v1/tenants/tenants/" + user.getTenantGlobalUuid(), Tenant.class);
-//    	
-//    	ut.setSystemUserEntity(user);
-//    	ut.setTenant(tenant);
-//    	
-//    	return ut;
-//    	
-//    }
 }

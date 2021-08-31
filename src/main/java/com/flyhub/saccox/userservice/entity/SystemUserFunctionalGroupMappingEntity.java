@@ -23,9 +23,9 @@ public class SystemUserFunctionalGroupMappingEntity {
     @Id
 	@GeneratedValue(generator = "uuid")
 	@GenericGenerator(name = "uuid", strategy = "uuid2")
-    @JsonProperty("system_user_functional_group_mapping_uuid")
+    @JsonProperty("system_user_functional_group_mapping_id")
     @ApiModelProperty(notes = "Unique identifier of a system user functional group mapping entity. Auto generated.", example = "1")
-    private UUID systemUserFunctionalGroupMappingUuid;
+    private UUID systemUserFunctionalGroupMappingId;
 
     @JsonProperty("system_user_id")
     @ApiModelProperty(notes = "System user foreign key.", example = "1")
@@ -63,12 +63,12 @@ public class SystemUserFunctionalGroupMappingEntity {
     @ApiModelProperty(notes = "hard delete.", example = "1 | 0")
     private int hardDelete;
 
-	public UUID getSystemUserFunctionalGroupMappingUuid() {
-		return systemUserFunctionalGroupMappingUuid;
+	public UUID getSystemUserFunctionalGroupMappingId() {
+		return systemUserFunctionalGroupMappingId;
 	}
 
-	public void setSystemUserFunctionalGroupMappingUuid(UUID systemUserFunctionalGroupMappingUuid) {
-		this.systemUserFunctionalGroupMappingUuid = systemUserFunctionalGroupMappingUuid;
+	public void setSystemUserFunctionalGroupMappingId(UUID systemUserFunctionalGroupMappingId) {
+		this.systemUserFunctionalGroupMappingId = systemUserFunctionalGroupMappingId;
 	}
 
 }

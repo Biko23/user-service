@@ -9,5 +9,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ResponseFilterRepository extends JpaRepository<ResponseFilterEntity, UUID> {
-    ResponseFilterEntity findByResponseFilterId(UUID responseFilterUuid);
+    ResponseFilterEntity findByResponseFilterId(UUID responseFilterId);
 }

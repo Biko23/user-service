@@ -35,10 +35,10 @@ public class SystemUserFunctionalGroupMappingController {
         return new ResponseEntity<>(new ApiResponseFormat(true, null, "SystemUserFunctionalGroupMapping created.", _systemUserFunctionalGroupMapping), HttpStatus.CREATED);
     }
     
-    @GetMapping("/{systemUserFunctionalGroupMappingUuid}")
-    public ResponseEntity<?> findBySystemUserFunctionalGroupMappingId(@PathVariable("systemUserFunctionalGroupMappingUuid") UUID systemUserFunctionalGroupMappingUuid) {
+    @GetMapping("/{systemUserFunctionalGroupMappingId}")
+    public ResponseEntity<?> findBySystemUserFunctionalGroupMappingId(@PathVariable("systemUserFunctionalGroupMappingId") UUID systemUserFunctionalGroupMappingId) {
 //      log.info("Inside findBySystemUserFunctionalGroupMappingId method of SystemUserFunctionalGroupMappingController");
-    	SystemUserFunctionalGroupMappingEntity systemUserFunctionalGroupMapping = systemUserFunctionalGroupMappingService.findBySystemUserFunctionalGroupMappingId(systemUserFunctionalGroupMappingUuid);
+    	SystemUserFunctionalGroupMappingEntity systemUserFunctionalGroupMapping = systemUserFunctionalGroupMappingService.findBySystemUserFunctionalGroupMappingId(systemUserFunctionalGroupMappingId);
       return new ResponseEntity<>(new ApiResponseFormat(true, null, "SystemUserFunctionalGroupMapping found.", systemUserFunctionalGroupMapping), HttpStatus.OK);
     }
     
@@ -54,16 +54,16 @@ public class SystemUserFunctionalGroupMappingController {
 //        return new ResponseEntity<>(new ApiResponseFormat(true, null, "SystemUserFunctionalGroupMapping updated.", systemUserFunctionalGroupMappingService.updateSystemUserFunctionalGroupMapping(globalSystemUserFunctionalGroupMappingID, systemUserFunctionalGroupMappingEntity)), HttpStatus.OK);
 //    }
 
-    @PatchMapping(path = "/{systemUserFunctionalGroupMappingUuid}", consumes = "application/json-patch+json")
-    public ResponseEntity<?> patchSystemUserFunctionalGroupMapping(@PathVariable("systemUserFunctionalGroupMappingUuid") UUID systemUserFunctionalGroupMappingUuid, @RequestBody JsonPatch jsonPatch) throws JsonPatchException, JsonProcessingException {
+    @PatchMapping(path = "/{systemUserFunctionalGroupMappingId}", consumes = "application/json-patch+json")
+    public ResponseEntity<?> patchSystemUserFunctionalGroupMapping(@PathVariable("systemUserFunctionalGroupMappingId") UUID systemUserFunctionalGroupMappingId, @RequestBody JsonPatch jsonPatch) throws JsonPatchException, JsonProcessingException {
 //        log.info("Inside partialUpdateSystemUserFunctionalGroupMapping method of SystemUserFunctionalGroupMappingController");
-        return new ResponseEntity<>(new ApiResponseFormat(true, null, "SystemUserFunctionalGroupMapping updated.", systemUserFunctionalGroupMappingService.patchSystemUserFunctionalGroupMapping(systemUserFunctionalGroupMappingUuid, jsonPatch)), HttpStatus.OK);
+        return new ResponseEntity<>(new ApiResponseFormat(true, null, "SystemUserFunctionalGroupMapping updated.", systemUserFunctionalGroupMappingService.patchSystemUserFunctionalGroupMapping(systemUserFunctionalGroupMappingId, jsonPatch)), HttpStatus.OK);
     }
 
-    @DeleteMapping("/{systemUserFunctionalGroupMappingUuid}")
-    public ResponseEntity<?> deleteBySystemUserFunctionalGroupMappingId(@PathVariable("systemUserFunctionalGroupMappingUuid") UUID systemUserFunctionalGroupMappingUuid) {
+    @DeleteMapping("/{systemUserFunctionalGroupMappingId}")
+    public ResponseEntity<?> deleteBySystemUserFunctionalGroupMappingId(@PathVariable("systemUserFunctionalGroupMappingId") UUID systemUserFunctionalGroupMappingId) {
 //        log.info("Inside deleteBySystemUserFunctionalGroupMappingId method of SystemUserFunctionalGroupMappingController");
-    	systemUserFunctionalGroupMappingService.deleteBySystemUserFunctionalGroupMappingId(systemUserFunctionalGroupMappingUuid);
+    	systemUserFunctionalGroupMappingService.deleteBySystemUserFunctionalGroupMappingId(systemUserFunctionalGroupMappingId);
         return new ResponseEntity<>(new ApiResponseFormat(true, null, "SystemUserFunctionalGroupMapping deleted.", null), HttpStatus.OK);
     }
 

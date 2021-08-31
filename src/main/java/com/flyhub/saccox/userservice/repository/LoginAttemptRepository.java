@@ -9,5 +9,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface LoginAttemptRepository extends JpaRepository<LoginAttemptEntity, UUID> {
-    LoginAttemptEntity findByLoginAttemptId(UUID loginAttemptUuid);
+    LoginAttemptEntity findByLoginAttemptId(UUID loginAttemptId);
 }

@@ -23,9 +23,9 @@ public class ResponseFilterEntity {
     @Id
 	@GeneratedValue(generator = "uuid")
 	@GenericGenerator(name = "uuid", strategy = "uuid2")
-    @JsonProperty("response_filter_uuid")
+    @JsonProperty("response_filter_id")
     @ApiModelProperty(notes = "Unique identifier of a response filter entity. Auto generated.", example = "1")
-    private UUID responseFilterUuid;
+    private UUID responseFilterId;
 
     @JsonProperty("functional_group_id")
     @ApiModelProperty(notes = "Functional group foreign key.", example = "1", required = true)
@@ -69,12 +69,12 @@ public class ResponseFilterEntity {
     @ApiModelProperty(notes = "hard delete.", example = "1 | 0")
     private int hardDelete;
 
-	public UUID getResponseFilterUuid() {
-		return responseFilterUuid;
+	public UUID getResponseFilterId() {
+		return responseFilterId;
 	}
 
-	public void setResponseFilterUuid(UUID responseFilterUuid) {
-		this.responseFilterUuid = responseFilterUuid;
+	public void setResponseFilterId(UUID responseFilterId) {
+		this.responseFilterId = responseFilterId;
 	}
 
 }

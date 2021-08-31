@@ -33,13 +33,13 @@ public class ResponseFilterService {
 			return responseFilterRepository.save(responseFilterEntity);
 	}
 	
-	public ResponseFilterEntity findByResponseFilterId(UUID responseFilterUuid) {
-		ResponseFilterEntity login = responseFilterRepository.findByResponseFilterId(responseFilterUuid);
+	public ResponseFilterEntity findByResponseFilterId(UUID responseFilterId) {
+		ResponseFilterEntity login = responseFilterRepository.findByResponseFilterId(responseFilterId);
 		if (login != null) {
 			return login;
 		}
 		else {
-			throw new CustomNotFoundException("ResponseFilter - " + responseFilterUuid + " - not found");
+			throw new CustomNotFoundException("ResponseFilter - " + responseFilterId + " - not found");
 		}
 	}
 
@@ -54,30 +54,30 @@ public class ResponseFilterService {
 		return responseFilters;
 	}
 
-	public ResponseFilterEntity patchResponseFilter(UUID responseFilterUuid, JsonPatch jsonPatch)
+	public ResponseFilterEntity patchResponseFilter(UUID responseFilterId, JsonPatch jsonPatch)
 			throws JsonPatchException, JsonProcessingException {
 //        log.info("Inside patchResponseFilter method of FunctionalGroupService");
-		if (responseFilterUuid.equals(0L)) {
-			throw new CustomInvalidInputException("ResponseFilter id - " + responseFilterUuid + " - is not valid");
+		if (responseFilterId.equals(0L)) {
+			throw new CustomInvalidInputException("ResponseFilter id - " + responseFilterId + " - is not valid");
 		}
 
-		Optional<ResponseFilterEntity> login = Optional.ofNullable(responseFilterRepository.findByResponseFilterId(responseFilterUuid));
+		Optional<ResponseFilterEntity> login = Optional.ofNullable(responseFilterRepository.findByResponseFilterId(responseFilterId));
 
 		if (login.isPresent()) {
 			ResponseFilterEntity loginEntity = this.applyPatchToResponseFilterEntity(jsonPatch, login.get());
 			return responseFilterRepository.save(loginEntity);
 		} else {
-			throw new CustomNotFoundException("FunctionalGroup with id - " + responseFilterUuid + " - not found");
+			throw new CustomNotFoundException("FunctionalGroup with id - " + responseFilterId + " - not found");
 		}
 	}
 
-	public void deleteByResponseFilterId(UUID responseFilterUuid) {
+	public void deleteByResponseFilterId(UUID responseFilterId) {
 //      log.info("Inside deleteFunctionalGroupById method of FunctionalGroupService");
-		if (responseFilterUuid.equals(0L)) {
-			throw new CustomInvalidInputException("ResponseFilter id - " + responseFilterUuid + " - is not valid");
+		if (responseFilterId.equals(0L)) {
+			throw new CustomInvalidInputException("ResponseFilter id - " + responseFilterId + " - is not valid");
 		}
 
-		responseFilterRepository.deleteById(responseFilterUuid);
+		responseFilterRepository.deleteById(responseFilterId);
 	}
 
 	public void deleteAllResponseFilters() {
@@ -90,31 +90,5 @@ public class ResponseFilterService {
 		JsonNode patched = jsonPatch.apply(objectMapper.convertValue(responseFilterEntity, JsonNode.class));
 		return objectMapper.treeToValue(patched, ResponseFilterEntity.class);
 	}
-//
-//
-//    public ResponseFilterEntity saveResponseFilter(ResponseFilterEntity responseFilterEntity) {
-////        log.info("Inside saveResponse method of ResponseService");
-//        return responseFilterRepository.save(responseFilterEntity);
-//    }
-//
-//    public ResponseFilterEntity findByResponseFilterId(UUID responseFilterUuid) {
-////        log.info("Inside findByResponseId method of ResponseService");
-//        return responseFilterRepository.findByResponseFilterUuid(responseFilterUuid);
-//    }
-//
-//    public List<ResponseFilterEntity> listAllResponseFilters() {
-////        log.info("Inside listAllResponses method of ResponseService");
-//        return responseFilterRepository.findAll();
-//    }
-//
-//    public void deleteResponseFilter(UUID responseFilterUuid) {
-////        log.info("Inside deleteResponse method of ResponseService");
-//        responseFilterRepository.deleteById(responseFilterUuid);
-//    }
-//
-//    public void deleteAllResponseFilters() {
-////        log.info("Inside deleteAllResponses method of ResponseService");
-//        responseFilterRepository.deleteAll();
-//    }
 
 }

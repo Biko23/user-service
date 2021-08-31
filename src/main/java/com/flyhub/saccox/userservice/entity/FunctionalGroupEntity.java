@@ -23,9 +23,9 @@ public class FunctionalGroupEntity {
     @Id
 	@GeneratedValue(generator = "uuid")
 	@GenericGenerator(name = "uuid", strategy = "uuid2")
-    @JsonProperty("functional_group_uuid")
+    @JsonProperty("functional_group_id")
     @ApiModelProperty(notes = "Unique identifier of a functional group entity. Auto generated.", example = "1")
-    private UUID functionalGroupUuid;
+    private UUID functionalGroupId;
     
 	@JsonProperty("functional_group_name")
     @ApiModelProperty(notes = "Functional group name.", example = "1")
@@ -71,12 +71,12 @@ public class FunctionalGroupEntity {
     @ApiModelProperty(notes = "hard delete.", example = "1 | 0")
     private int hardDelete;
 
-	public UUID getFunctionalGroupUuid() {
-		return functionalGroupUuid;
+	public UUID getFunctionalGroupId() {
+		return functionalGroupId;
 	}
 
-	public void setFunctionalGroupUuid(UUID functionalGroupUuid) {
-		this.functionalGroupUuid = functionalGroupUuid;
+	public void setFunctionalGroupId(UUID functionalGroupId) {
+		this.functionalGroupId = functionalGroupId;
 	}
 
 

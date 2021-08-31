@@ -6,6 +6,7 @@ import com.flyhub.saccox.userservice.entity.SystemUserEntity;
 import com.flyhub.saccox.userservice.entity.SystemUserEntity;
 import com.flyhub.saccox.userservice.microserviceconnect.UserTenant;
 import com.flyhub.saccox.userservice.service.SystemUserService;
+import com.flyhub.saccox.userservice.visualobject.VisualObject;
 import com.github.fge.jsonpatch.JsonPatch;
 import com.github.fge.jsonpatch.JsonPatchException;
 
@@ -31,14 +32,14 @@ public class SystemUserController {
     @PostMapping("")
     public ResponseEntity<?> saveSystemUser(@RequestBody SystemUserEntity systemUserEntity) {
 //        log.info("Inside saveSystemUser method of SystemUserController");
-        SystemUserEntity _systemUser = systemUserService.saveSystemUser(systemUserEntity);
+        VisualObject _systemUser = systemUserService.saveSystemUser(systemUserEntity);
         return new ResponseEntity<>(new ApiResponseFormat(true, null, "SystemUser created.", _systemUser), HttpStatus.CREATED);
     }
     
-    @GetMapping("/{systemUserUuid}")
-    public ResponseEntity<?> findBySystemUserId(@PathVariable("systemUserUuid") UUID systemUserUuid) {
+    @GetMapping("/{systemUserId}")
+    public ResponseEntity<?> findBySystemUserId(@PathVariable("systemUserId") UUID systemUserId) {
 //      log.info("Inside findBySystemUserId method of SystemUserController");
-    	SystemUserEntity systemUser = systemUserService.findBySystemUserId(systemUserUuid);
+    	SystemUserEntity systemUser = systemUserService.findBySystemUserId(systemUserId);
       return new ResponseEntity<>(new ApiResponseFormat(true, null, "SystemUser found.", systemUser), HttpStatus.OK);
     }
     
@@ -54,16 +55,16 @@ public class SystemUserController {
 //        return new ResponseEntity<>(new ApiResponseFormat(true, null, "SystemUser updated.", systemUserService.updateSystemUser(globalSystemUserID, systemUserEntity)), HttpStatus.OK);
 //    }
 
-    @PatchMapping(path = "/{systemUserUuid}", consumes = "application/json-patch+json")
-    public ResponseEntity<?> patchSystemUser(@PathVariable("systemUserUuid") UUID systemUserUuid, @RequestBody JsonPatch jsonPatch) throws JsonPatchException, JsonProcessingException {
+    @PatchMapping(path = "/{systemUserId}", consumes = "application/json-patch+json")
+    public ResponseEntity<?> patchSystemUser(@PathVariable("systemUserId") UUID systemUserId, @RequestBody JsonPatch jsonPatch) throws JsonPatchException, JsonProcessingException {
 //        log.info("Inside partialUpdateSystemUser method of SystemUserController");
-        return new ResponseEntity<>(new ApiResponseFormat(true, null, "SystemUser updated.", systemUserService.patchSystemUser(systemUserUuid, jsonPatch)), HttpStatus.OK);
+        return new ResponseEntity<>(new ApiResponseFormat(true, null, "SystemUser updated.", systemUserService.patchSystemUser(systemUserId, jsonPatch)), HttpStatus.OK);
     }
 
-    @DeleteMapping("/{systemUserUuid}")
-    public ResponseEntity<?> deleteBySystemUserId(@PathVariable("systemUserUuid") UUID systemUserUuid) {
+    @DeleteMapping("/{systemUserId}")
+    public ResponseEntity<?> deleteBySystemUserId(@PathVariable("systemUserId") UUID systemUserId) {
 //        log.info("Inside deleteBySystemUserId method of SystemUserController");
-        systemUserService.deleteBySystemUserId(systemUserUuid);
+        systemUserService.deleteBySystemUserId(systemUserId);
         return new ResponseEntity<>(new ApiResponseFormat(true, null, "SystemUser deleted.", null), HttpStatus.OK);
     }
 

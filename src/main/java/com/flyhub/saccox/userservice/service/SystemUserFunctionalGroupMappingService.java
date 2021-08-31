@@ -33,13 +33,13 @@ public class SystemUserFunctionalGroupMappingService {
 			return systemUserFunctionalGroupMappingRepository.save(systemUserFunctionalGroupMappingEntity);
 	}
 	
-	public SystemUserFunctionalGroupMappingEntity findBySystemUserFunctionalGroupMappingId(UUID systemUserFunctionalGroupMappingUuid) {
-		SystemUserFunctionalGroupMappingEntity login = systemUserFunctionalGroupMappingRepository.findBySystemUserFunctionalGroupMappingId(systemUserFunctionalGroupMappingUuid);
+	public SystemUserFunctionalGroupMappingEntity findBySystemUserFunctionalGroupMappingId(UUID systemUserFunctionalGroupMappingId) {
+		SystemUserFunctionalGroupMappingEntity login = systemUserFunctionalGroupMappingRepository.findBySystemUserFunctionalGroupMappingId(systemUserFunctionalGroupMappingId);
 		if (login != null) {
 			return login;
 		}
 		else {
-			throw new CustomNotFoundException("SystemUserFunctionalGroupMapping - " + systemUserFunctionalGroupMappingUuid + " - not found");
+			throw new CustomNotFoundException("SystemUserFunctionalGroupMapping - " + systemUserFunctionalGroupMappingId + " - not found");
 		}
 	}
 
@@ -54,30 +54,30 @@ public class SystemUserFunctionalGroupMappingService {
 		return systemUserFunctionalGroupMappings;
 	}
 
-	public SystemUserFunctionalGroupMappingEntity patchSystemUserFunctionalGroupMapping(UUID systemUserFunctionalGroupMappingUuid, JsonPatch jsonPatch)
+	public SystemUserFunctionalGroupMappingEntity patchSystemUserFunctionalGroupMapping(UUID systemUserFunctionalGroupMappingId, JsonPatch jsonPatch)
 			throws JsonPatchException, JsonProcessingException {
 //        log.info("Inside patchSystemUserFunctionalGroupMapping method of FunctionalGroupService");
-		if (systemUserFunctionalGroupMappingUuid.equals(0L)) {
-			throw new CustomInvalidInputException("SystemUserFunctionalGroupMapping id - " + systemUserFunctionalGroupMappingUuid + " - is not valid");
+		if (systemUserFunctionalGroupMappingId.equals(0L)) {
+			throw new CustomInvalidInputException("SystemUserFunctionalGroupMapping id - " + systemUserFunctionalGroupMappingId + " - is not valid");
 		}
 
-		Optional<SystemUserFunctionalGroupMappingEntity> login = Optional.ofNullable(systemUserFunctionalGroupMappingRepository.findBySystemUserFunctionalGroupMappingId(systemUserFunctionalGroupMappingUuid));
+		Optional<SystemUserFunctionalGroupMappingEntity> login = Optional.ofNullable(systemUserFunctionalGroupMappingRepository.findBySystemUserFunctionalGroupMappingId(systemUserFunctionalGroupMappingId));
 
 		if (login.isPresent()) {
 			SystemUserFunctionalGroupMappingEntity loginEntity = this.applyPatchToSystemUserFunctionalGroupMappingEntity(jsonPatch, login.get());
 			return systemUserFunctionalGroupMappingRepository.save(loginEntity);
 		} else {
-			throw new CustomNotFoundException("FunctionalGroup with id - " + systemUserFunctionalGroupMappingUuid + " - not found");
+			throw new CustomNotFoundException("FunctionalGroup with id - " + systemUserFunctionalGroupMappingId + " - not found");
 		}
 	}
 
-	public void deleteBySystemUserFunctionalGroupMappingId(UUID systemUserFunctionalGroupMappingUuid) {
+	public void deleteBySystemUserFunctionalGroupMappingId(UUID systemUserFunctionalGroupMappingId) {
 //      log.info("Inside deleteFunctionalGroupById method of FunctionalGroupService");
-		if (systemUserFunctionalGroupMappingUuid.equals(0L)) {
-			throw new CustomInvalidInputException("SystemUserFunctionalGroupMapping id - " + systemUserFunctionalGroupMappingUuid + " - is not valid");
+		if (systemUserFunctionalGroupMappingId.equals(0L)) {
+			throw new CustomInvalidInputException("SystemUserFunctionalGroupMapping id - " + systemUserFunctionalGroupMappingId + " - is not valid");
 		}
 
-		systemUserFunctionalGroupMappingRepository.deleteById(systemUserFunctionalGroupMappingUuid);
+		systemUserFunctionalGroupMappingRepository.deleteById(systemUserFunctionalGroupMappingId);
 	}
 
 	public void deleteAllSystemUserFunctionalGroupMappings() {
@@ -90,31 +90,5 @@ public class SystemUserFunctionalGroupMappingService {
 		JsonNode patched = jsonPatch.apply(objectMapper.convertValue(systemUserFunctionalGroupMappingEntity, JsonNode.class));
 		return objectMapper.treeToValue(patched, SystemUserFunctionalGroupMappingEntity.class);
 	}
-//
-//
-//    public SystemUserFunctionalGroupMappingEntity saveSystemUserFunctionalGroupMapping(SystemUserFunctionalGroupMappingEntity systemUserFunctionalGroupMappingEntity) {
-////        log.info("Inside saveSystemUserFunctionalGroupMapping method of SystemUserFunctionalGroupMappingService");
-//        return systemUserFunctionalGroupMappingRepository.save(systemUserFunctionalGroupMappingEntity);
-//    }
-//
-//    public SystemUserFunctionalGroupMappingEntity findBySystemUserFunctionalGroupMappingId(UUID systemUserFunctionalGroupMappingUuid) {
-////        log.info("Inside findBySystemUserFunctionalGroupMappingId method of SystemUserFunctionalGroupMappingService");
-//        return systemUserFunctionalGroupMappingRepository.findBySystemUserFunctionalGroupMappingUuid(systemUserFunctionalGroupMappingUuid);
-//    }
-//
-//    public List<SystemUserFunctionalGroupMappingEntity> listAllSystemUserFunctionalGroupMappings() {
-////        log.info("Inside listAllSystemUserFunctionalGroupMappings method of SystemUserFunctionalGroupMappingService");
-//        return systemUserFunctionalGroupMappingRepository.findAll();
-//    }
-//
-//    public void deleteSystemUserFunctionalGroupMapping(UUID systemUserFunctionalGroupMappingUuid) {
-////        log.info("Inside deleteSystemUserFunctionalGroupMapping method of SystemUserFunctionalGroupMappingService");
-//        systemUserFunctionalGroupMappingRepository.deleteById(systemUserFunctionalGroupMappingUuid);
-//    }
-//
-//    public void deleteAllSystemUserFunctionalGroupMappings() {
-////        log.info("Inside deleteAllSystemUserFunctionalGroupMappings method of SystemUserFunctionalGroupMappingService");
-//        systemUserFunctionalGroupMappingRepository.deleteAll();
-//    }
 
 }

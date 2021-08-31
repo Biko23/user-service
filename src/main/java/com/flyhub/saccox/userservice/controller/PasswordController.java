@@ -34,10 +34,10 @@ public class PasswordController {
         return new ResponseEntity<>(new ApiResponseFormat(true, null, "Password created.", _password), HttpStatus.CREATED);
     }
     
-    @GetMapping("/{passwordUuid}")
-    public ResponseEntity<?> findByPasswordId(@PathVariable("passwordUuid") UUID passwordUuid) {
+    @GetMapping("/{passwordId}")
+    public ResponseEntity<?> findByPasswordId(@PathVariable("passwordId") UUID passwordId) {
 //      log.info("Inside findByPasswordId method of PasswordController");
-    	PasswordEntity password = passwordService.findByPasswordId(passwordUuid);
+    	PasswordEntity password = passwordService.findByPasswordId(passwordId);
       return new ResponseEntity<>(new ApiResponseFormat(true, null, "Password found.", password), HttpStatus.OK);
     }
     
@@ -53,16 +53,16 @@ public class PasswordController {
 //        return new ResponseEntity<>(new ApiResponseFormat(true, null, "Password updated.", passwordService.updatePassword(globalPasswordID, passwordEntity)), HttpStatus.OK);
 //    }
 
-    @PatchMapping(path = "/{passwordUuid}", consumes = "application/json-patch+json")
-    public ResponseEntity<?> patchPassword(@PathVariable("passwordUuid") UUID passwordUuid, @RequestBody JsonPatch jsonPatch) throws JsonPatchException, JsonProcessingException {
+    @PatchMapping(path = "/{passwordId}", consumes = "application/json-patch+json")
+    public ResponseEntity<?> patchPassword(@PathVariable("passwordId") UUID passwordId, @RequestBody JsonPatch jsonPatch) throws JsonPatchException, JsonProcessingException {
 //        log.info("Inside partialUpdatePassword method of PasswordController");
-        return new ResponseEntity<>(new ApiResponseFormat(true, null, "Password updated.", passwordService.patchPassword(passwordUuid, jsonPatch)), HttpStatus.OK);
+        return new ResponseEntity<>(new ApiResponseFormat(true, null, "Password updated.", passwordService.patchPassword(passwordId, jsonPatch)), HttpStatus.OK);
     }
 
-    @DeleteMapping("/{passwordUuid}")
-    public ResponseEntity<?> deleteByPasswordId(@PathVariable("passwordUuid") UUID passwordUuid) {
+    @DeleteMapping("/{passwordId}")
+    public ResponseEntity<?> deleteByPasswordId(@PathVariable("passwordId") UUID passwordId) {
 //        log.info("Inside deleteByPasswordId method of PasswordController");
-        passwordService.deleteByPasswordId(passwordUuid);
+        passwordService.deleteByPasswordId(passwordId);
         return new ResponseEntity<>(new ApiResponseFormat(true, null, "Password deleted.", null), HttpStatus.OK);
     }
 

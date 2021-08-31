@@ -23,16 +23,9 @@ public class PasswordEntity {
     @Id
 	@GeneratedValue(generator = "uuid")
 	@GenericGenerator(name = "uuid", strategy = "uuid2")
-    @JsonProperty("password_uuid")
+    @JsonProperty("password_id")
     @ApiModelProperty(notes = "Unique identifier of a password entity. Auto generated.", example = "1")
-    private UUID passwordUuid;
-
-//    @JsonProperty("system_user_id")
-//    @ApiModelProperty(notes = "System user foreign key.", example = "1", required = true)
-//    @OneToOne
-//    @JoinColumn(name="system_user_id", nullable=false)
-//    private SystemUserEntity systemUserEntity;
-    
+    private UUID passwordId;
 
     @JsonProperty("password")
     @ApiModelProperty(notes = "Password password.", example = "1")
@@ -78,12 +71,12 @@ public class PasswordEntity {
     @ApiModelProperty(notes = "hard delete.", example = "1 | 0")
     private int hardDelete;
 
-	public UUID getPasswordUuid() {
-		return passwordUuid;
+	public UUID getPasswordId() {
+		return passwordId;
 	}
 
-	public void setPasswordUuid(UUID passwordId) {
-		this.passwordUuid = passwordId;
+	public void setPasswordId(UUID passwordId) {
+		this.passwordId = passwordId;
 	}
     
     @OneToOne

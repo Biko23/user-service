@@ -61,21 +61,21 @@ public class FunctionalGroupService {
 		return functionalGroups;
 	}
 
-	public FunctionalGroupEntity patchFunctionalGroup(UUID globalFunctionalGroupId, JsonPatch jsonPatch)
+	public FunctionalGroupEntity patchFunctionalGroup(UUID functionalGroupId, JsonPatch jsonPatch)
 			throws JsonPatchException, JsonProcessingException {
 //        log.info("Inside patchFunctionalGroup method of FunctionalGroupService");
-		if (globalFunctionalGroupId.equals(0L)) {
-			throw new CustomInvalidInputException("FunctionalGroup id - " + globalFunctionalGroupId + " - is not valid");
+		if (functionalGroupId.equals(0L)) {
+			throw new CustomInvalidInputException("FunctionalGroup id - " + functionalGroupId + " - is not valid");
 		}
 
 		Optional<FunctionalGroupEntity> functionalGroup = Optional
-				.ofNullable(functionalGroupRepository.findByFunctionalGroupId(globalFunctionalGroupId));
+				.ofNullable(functionalGroupRepository.findByFunctionalGroupId(functionalGroupId));
 
 		if (functionalGroup.isPresent()) {
 			FunctionalGroupEntity functionalGroupEntity = this.applyPatchToFunctionalGroupEntity(jsonPatch, functionalGroup.get());
 			return functionalGroupRepository.save(functionalGroupEntity);
 		} else {
-			throw new CustomNotFoundException("FunctionalGroup with id - " + globalFunctionalGroupId + " - not found");
+			throw new CustomNotFoundException("FunctionalGroup with id - " + functionalGroupId + " - not found");
 		}
 	}
 

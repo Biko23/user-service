@@ -23,9 +23,9 @@ public class SystemUserEntity {
     @Id
 	@GeneratedValue(generator = "uuid")
 	@GenericGenerator(name = "uuid", strategy = "uuid2")
-    @JsonProperty("system_user_uuid")
+    @JsonProperty("system_user_id")
     @ApiModelProperty(notes = "Unique identifier of a system user type entity. Auto generated.", example = "1")
-    private UUID systemUserUuid;
+    private UUID systemUserId;
 
     @JsonProperty("system_user_type_id_fk")
     @ApiModelProperty(notes = "System user username.", example = "John")
@@ -172,12 +172,12 @@ public class SystemUserEntity {
     @ApiModelProperty(notes = "hard delete.", example = "1 | 0")
     private int hardDelete;
 
-	public UUID getSystemUserUuid() {
-		return systemUserUuid;
+	public UUID getSystemUserId() {
+		return systemUserId;
 	}
 
-	public void setSystemUserUuid(UUID systemUserUuid) {
-		this.systemUserUuid = systemUserUuid;
+	public void setSystemUserId(UUID systemUserId) {
+		this.systemUserId = systemUserId;
 	}
 
 	public Integer getSystemUserTypeIdFk() {

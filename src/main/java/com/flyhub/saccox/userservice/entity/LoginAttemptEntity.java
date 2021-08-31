@@ -23,9 +23,9 @@ public class LoginAttemptEntity {
     @Id
 	@GeneratedValue(generator = "uuid")
 	@GenericGenerator(name = "uuid", strategy = "uuid2")
-    @JsonProperty("login_attempt_uuid")
+    @JsonProperty("login_attempt_id")
     @ApiModelProperty(notes = "Unique identifier of a login attempt entity. Auto generated.", example = "1")
-    private UUID loginAttemptUuid;
+    private UUID loginAttemptId;
 
     @JsonProperty("system_user_id")
     @ApiModelProperty(notes = "System user foreign key.", example = "1", required = true)
@@ -62,11 +62,11 @@ public class LoginAttemptEntity {
     private int hardDelete;
 
 	public UUID getLoginAttemptId() {
-		return loginAttemptUuid;
+		return loginAttemptId;
 	}
 
-	public void setLoginAttemptId(UUID loginAttemptUuid) {
-		this.loginAttemptUuid = loginAttemptUuid;
+	public void setLoginAttemptId(UUID loginAttemptId) {
+		this.loginAttemptId = loginAttemptId;
 	}
 
 }

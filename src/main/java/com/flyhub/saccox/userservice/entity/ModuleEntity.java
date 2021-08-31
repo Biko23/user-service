@@ -23,9 +23,9 @@ public class ModuleEntity {
     @Id
 	@GeneratedValue(generator = "uuid")
 	@GenericGenerator(name = "uuid", strategy = "uuid2")
-    @JsonProperty("module_uuid")
+    @JsonProperty("module_id")
     @ApiModelProperty(notes = "Unique identifier of a module entity. Auto generated.", example = "1")
-    private UUID moduleUuid;
+    private UUID moduleId;
 
     @JsonProperty("name")
     @ApiModelProperty(notes = "Module name.", example = "Finance | Payrol")
@@ -68,11 +68,11 @@ public class ModuleEntity {
     private int hardDelete;
 
 	public UUID getModuleId() {
-		return moduleUuid;
+		return moduleId;
 	}
 
-	public void setModuleId(UUID moduleUuid) {
-		this.moduleUuid = moduleUuid;
+	public void setModuleId(UUID moduleId) {
+		this.moduleId = moduleId;
 	}
 
 }
