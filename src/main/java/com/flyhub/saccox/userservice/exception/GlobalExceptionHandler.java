@@ -22,9 +22,9 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(CustomNoContentException.class)
-    public ResponseEntity<?> handleNoContentExceptionException(CustomNoContentException customNoContentException, WebRequest webRequest) {
+    public ResponseEntity<?> handleNoContentException(CustomNoContentException customNoContentException, WebRequest webRequest) {
         logger.info("No Content Exception: " + customNoContentException.getMessage());
-        return new ResponseEntity<>(new ApiResponseFormat(false, new ErrorFormat(HttpStatus.NO_CONTENT.value(), "Entities not found.", webRequest.getDescription(false)), customNoContentException.getMessage(), null), HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(new ApiResponseFormat(false, new ErrorFormat(HttpStatus.NOT_FOUND.value(), "Entities not found.", webRequest.getDescription(false)), customNoContentException.getMessage(), null), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(CustomInvalidInputException.class)
@@ -64,7 +64,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(CustomJwtAccessTokenExpiredException.class)
-    public ResponseEntity<?> handleJwtAccessTokenExpiredExceptionn(CustomJwtAccessTokenExpiredException customJwtAccessTokenExpiredException, WebRequest webRequest) {
+    public ResponseEntity<?> handleJwtAccessTokenExpiredException(CustomJwtAccessTokenExpiredException customJwtAccessTokenExpiredException, WebRequest webRequest) {
         logger.info("JWT Access Token Expired Exception: " + customJwtAccessTokenExpiredException.getMessage());
         return new ResponseEntity<>(new ApiResponseFormat(false, new ErrorFormat(HttpStatus.BAD_REQUEST.value(), "JWT Access Token expired.", webRequest.getDescription(false)), customJwtAccessTokenExpiredException.getMessage(), null), HttpStatus.BAD_REQUEST);
     }

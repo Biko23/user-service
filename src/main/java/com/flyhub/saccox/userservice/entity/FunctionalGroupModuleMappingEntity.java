@@ -29,15 +29,11 @@ public class FunctionalGroupModuleMappingEntity {
 
     @JsonProperty("functional_group_id")
     @ApiModelProperty(notes = "Functional group foreign key.", example = "1", required = true)
-    @ManyToOne
-    @JoinColumn(name="functional_group_id", nullable=false)
-    private FunctionalGroupEntity functionalGroupEntity;
+    private UUID functionalGroupId;
 
     @JsonProperty("module_id")
     @ApiModelProperty(notes = "Module foreign key.", example = "1", required = true)
-    @ManyToOne
-    @JoinColumn(name="module_id", nullable=false)
-    private ModuleEntity moduleEntity;
+    private UUID moduleId;
 
     @JsonProperty("is_active")
     @ApiModelProperty(notes = "Functional group module mapping active.", example = "1 | 0")

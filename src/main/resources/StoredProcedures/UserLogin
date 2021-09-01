@@ -1,0 +1,52 @@
+create or replace function UserLoginProcedure(phone text, pass text) 
+returns 
+table(
+phone1 varchar,
+first_name varchar, 	
+middle_name varchar,
+last_name varchar,
+functional_group_name varchar,
+module_name varchar,
+can_create integer,
+can_email integer,
+can_hard_delete integer,
+can_print integer,
+can_retrieve integer,
+cansms integer,
+can_search integer,
+can_soft_delete integer,
+can_update integer
+) as '
+
+begin
+
+return query
+	SELECT 
+system_user.phone1, 
+system_user.first_name,
+system_user.middle_name,
+system_user.last_name,
+functional_group.name as functional_group_name,
+module.name as module_name,
+functional_group_module_mapping.can_create,
+functional_group_module_mapping.can_email,
+functional_group_module_mapping.can_hard_delete,
+functional_group_module_mapping.can_print,
+functional_group_module_mapping.can_retrieve,
+functional_group_module_mapping.cansms,
+functional_group_module_mapping.can_search,
+functional_group_module_mapping.can_soft_delete,
+functional_group_module_mapping.can_update
+FROM 
+system_user
+INNER JOIN system_user_functional_group_mapping ON system_user_functional_group_mapping.system_user_id = system_user.system_user_id
+INNER JOIN functional_group ON functional_group.functional_group_id = system_user_functional_group_mapping.functional_group_id
+INNER JOIN functional_group_module_mapping ON functional_group_module_mapping.functional_group_id = functional_group.functional_group_id
+INNER JOIN module ON functional_group_module_mapping.module_id = module.module_id
+WHERE
+system_user.password = pass AND
+system_user.phone1 = phone;
+
+end;
+'
+language plpgsql

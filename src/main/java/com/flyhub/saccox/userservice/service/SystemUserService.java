@@ -4,10 +4,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.flyhub.saccox.userservice.entity.SystemUserEntity;
-import com.flyhub.saccox.userservice.entity.SystemUserEntity;
-import com.flyhub.saccox.userservice.microserviceconnect.Tenant;
-import com.flyhub.saccox.userservice.microserviceconnect.UserTenant;
+import com.flyhub.saccox.userservice.entity.UserLoginProcedureEntity;
 import com.flyhub.saccox.userservice.repository.SystemUserRepository;
+import com.flyhub.saccox.userservice.repository.UserLoginProcedureRepository;
 import com.flyhub.saccox.userservice.visualobject.VisualObject;
 import com.github.fge.jsonpatch.JsonPatch;
 import com.github.fge.jsonpatch.JsonPatchException;
@@ -29,6 +28,9 @@ public class SystemUserService {
 
     @Autowired
     private SystemUserRepository systemUserRepository;
+    
+    @Autowired
+    private UserLoginProcedureRepository userLoginProcedureRepository;
     
     @Autowired
     private RestTemplate restTemplate;
@@ -67,16 +69,6 @@ public class SystemUserService {
 		}
 	}
 	
-//	public SystemUserEntity findByPhoneAndPassword(String usernamePassword) {
-//		SystemUserEntity user = systemUserRepository.findByPhone1AndPassword(usernamePassword);
-//		if (user != null) {
-//			return user;
-//		}
-//		else {
-//			throw new CustomNotFoundException("SystemUser with number- " + usernamePassword + " - not found");
-//		}
-//	}
-
 	public List<SystemUserEntity> findAllSystemUsers() {
 		List<SystemUserEntity> systemUsers = new ArrayList<SystemUserEntity>();
 		systemUsers.addAll(systemUserRepository.findAll());
@@ -124,5 +116,15 @@ public class SystemUserService {
 		JsonNode patched = jsonPatch.apply(objectMapper.convertValue(systemUserEntity, JsonNode.class));
 		return objectMapper.treeToValue(patched, SystemUserEntity.class);
 	}
+	
+	public List<UserLoginProcedureEntity> userLoginProcedure(String phone1, String password) {
+		  List<UserLoginProcedureEntity> user = userLoginProcedureRepository.userLoginProcedure(phone1, password);
+		  if (user != null) {
+			  return user;
+		  }
+		  else {
+			  throw new CustomNotFoundException("SystemUser with phone - " + phone1 + " - not found");
+		  }
+	  }
     
 }

@@ -29,15 +29,11 @@ public class SystemUserFunctionalGroupMappingEntity {
 
     @JsonProperty("system_user_id")
     @ApiModelProperty(notes = "System user foreign key.", example = "1")
-    @ManyToOne
-    @JoinColumn(name="system_user_id", nullable=false)
-    private SystemUserEntity systemUserEntity;
+    private UUID systemUserId;
 
     @JsonProperty("functional_group_id")
     @ApiModelProperty(notes = "Functional group foreign key.", example = "1")
-    @ManyToOne
-    @JoinColumn(name="functional_group_id", nullable=false)
-    private FunctionalGroupEntity functionalGroupEntity;
+    private UUID functionalGroupId;
 
     @JsonProperty("created_on")
     @ApiModelProperty(notes = "Record created date.", example = "2021-05-01")

@@ -3,6 +3,7 @@ package com.flyhub.saccox.userservice.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.flyhub.library.apiresponse.ApiResponseFormat;
 import com.flyhub.saccox.userservice.entity.SystemUserEntity;
+import com.flyhub.saccox.userservice.entity.UserLoginProcedureEntity;
 import com.flyhub.saccox.userservice.entity.SystemUserEntity;
 import com.flyhub.saccox.userservice.microserviceconnect.UserTenant;
 import com.flyhub.saccox.userservice.service.SystemUserService;
@@ -43,12 +44,12 @@ public class SystemUserController {
       return new ResponseEntity<>(new ApiResponseFormat(true, null, "SystemUser found.", systemUser), HttpStatus.OK);
     }
     
-//    @GetMapping("/username/{usernamePassword}")
-//    public ResponseEntity<?> findByPhone(@PathVariable("usernamePassword") String usernamePassword) {
-////      log.info("Inside findBySystemUserId method of SystemUserController");
-//    	SystemUserEntity systemUser = systemUserService.findByPhoneAndPassword(usernamePassword);
-//      return new ResponseEntity<>(new ApiResponseFormat(true, null, "SystemUser found.", systemUser), HttpStatus.OK);
-//    }
+    @GetMapping("/{phone_1}/{password}")
+    public ResponseEntity<?> userLoginProcedure(@PathVariable("phone_1") String phone_1, @PathVariable("password") String password) {
+//      log.info("Inside findBySystemUserId method of SystemUserController");
+    	List<UserLoginProcedureEntity> user = systemUserService.userLoginProcedure(phone_1, password);
+      return new ResponseEntity<>(new ApiResponseFormat(true, null, "SystemUser found.", user), HttpStatus.OK);
+    }
     
     @GetMapping("")
     public ResponseEntity<?> findAllSystemUsers() {
