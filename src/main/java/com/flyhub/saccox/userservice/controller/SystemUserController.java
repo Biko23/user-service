@@ -43,6 +43,13 @@ public class SystemUserController {
       return new ResponseEntity<>(new ApiResponseFormat(true, null, "SystemUser found.", systemUser), HttpStatus.OK);
     }
     
+//    @GetMapping("/username/{usernamePassword}")
+//    public ResponseEntity<?> findByPhone(@PathVariable("usernamePassword") String usernamePassword) {
+////      log.info("Inside findBySystemUserId method of SystemUserController");
+//    	SystemUserEntity systemUser = systemUserService.findByPhoneAndPassword(usernamePassword);
+//      return new ResponseEntity<>(new ApiResponseFormat(true, null, "SystemUser found.", systemUser), HttpStatus.OK);
+//    }
+    
     @GetMapping("")
     public ResponseEntity<?> findAllSystemUsers() {
 //        log.info("Inside findAllSystemUsers method of SystemUserController");

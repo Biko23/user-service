@@ -31,9 +31,9 @@ public class PasswordEntity {
     @ApiModelProperty(notes = "Password password.", example = "1")
     private String password;    
 
-    @JsonProperty("system_user_uuid")
+    @JsonProperty("system_user_id")
     @ApiModelProperty(notes = "Unique identifier of user the password belongs to", example = "1")
-    private UUID system_user_uuid;    
+    private UUID system_user_id;    
 
     @JsonProperty("question")
     @ApiModelProperty(notes = "Password question.", example = "Place of birth?")
@@ -80,7 +80,7 @@ public class PasswordEntity {
 	}
     
     @OneToOne
-    @JoinColumn(name = "system_user_uuid", insertable = false, updatable = false)
+    @JoinColumn(name = "system_user_id", insertable = false, updatable = false)
     private SystemUserEntity systemUserEntity;
 
 }

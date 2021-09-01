@@ -147,6 +147,18 @@ public class SystemUserEntity {
     @JsonProperty("termination_reason")
     @ApiModelProperty(notes = "System user reason for termination.", example = "12-12-21")
     private String terminationReason;
+    
+    @JsonProperty("password")
+    @ApiModelProperty(notes = "Password password.", example = "1")
+    private String password;
+    
+    @JsonProperty("question")
+    @ApiModelProperty(notes = "Password question.", example = "Place of birth?")
+    private String question;
+
+    @JsonProperty("answer")
+    @ApiModelProperty(notes = "Password answer.", example = "12345678")
+    private String answer;
 
     @JsonProperty("created_on")
     @ApiModelProperty(notes = "Record created date.", example = "2021-05-01")

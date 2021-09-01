@@ -39,7 +39,6 @@ public class SystemUserService {
 
 	public VisualObject saveSystemUser(SystemUserEntity systemUserEntity) {		
 //        log.info("Inside saveSystemUser method of SystemUserService");
-    	systemUserEntity.setSystemUserTypeIdFk(1);
         SystemUserEntity systemUser = systemUserRepository.save(systemUserEntity);
         
         
@@ -67,6 +66,16 @@ public class SystemUserService {
 			throw new CustomNotFoundException("SystemUser - " + systemUserId + " - not found");
 		}
 	}
+	
+//	public SystemUserEntity findByPhoneAndPassword(String usernamePassword) {
+//		SystemUserEntity user = systemUserRepository.findByPhone1AndPassword(usernamePassword);
+//		if (user != null) {
+//			return user;
+//		}
+//		else {
+//			throw new CustomNotFoundException("SystemUser with number- " + usernamePassword + " - not found");
+//		}
+//	}
 
 	public List<SystemUserEntity> findAllSystemUsers() {
 		List<SystemUserEntity> systemUsers = new ArrayList<SystemUserEntity>();
