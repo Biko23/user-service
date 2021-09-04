@@ -44,10 +44,10 @@ public class SystemUserController {
       return new ResponseEntity<>(new ApiResponseFormat(true, null, "SystemUser found.", systemUser), HttpStatus.OK);
     }
     
-    @GetMapping("/{phone_1}/{password}")
-    public ResponseEntity<?> userLoginProcedure(@PathVariable("phone_1") String phone_1, @PathVariable("password") String password) {
+    @GetMapping("/{username}/{password}")
+    public ResponseEntity<?> userLoginProcedure(@PathVariable("username") String username, @PathVariable("password") String password) {
 //      log.info("Inside findBySystemUserId method of SystemUserController");
-    	List<UserLoginProcedureEntity> user = systemUserService.userLoginProcedure(phone_1, password);
+    	List<UserLoginProcedureEntity> user = systemUserService.userLoginProcedure(username, password);
       return new ResponseEntity<>(new ApiResponseFormat(true, null, "SystemUser found.", user), HttpStatus.OK);
     }
     
@@ -57,12 +57,7 @@ public class SystemUserController {
         return new ResponseEntity<>(new ApiResponseFormat(true, null, "SystemUser(s) found.", systemUserService.findAllSystemUsers()), HttpStatus.OK);
     }
 
-//    @PutMapping("/{globalSystemUserID}")
-//    public ResponseEntity<?> updateSystemUser(@PathVariable("globalSystemUserID") UUID globalSystemUserID, @RequestBody SystemUserEntity systemUserEntity) {
-////        log.info("Inside fullUpdateSystemUser method of SystemUserController");
-//        return new ResponseEntity<>(new ApiResponseFormat(true, null, "SystemUser updated.", systemUserService.updateSystemUser(globalSystemUserID, systemUserEntity)), HttpStatus.OK);
-//    }
-
+    
     @PatchMapping(path = "/{systemUserId}", consumes = "application/json-patch+json")
     public ResponseEntity<?> patchSystemUser(@PathVariable("systemUserId") UUID systemUserId, @RequestBody JsonPatch jsonPatch) throws JsonPatchException, JsonProcessingException {
 //        log.info("Inside partialUpdateSystemUser method of SystemUserController");

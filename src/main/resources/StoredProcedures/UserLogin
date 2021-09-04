@@ -1,4 +1,4 @@
-create or replace function UserLoginProcedure(phone text, pass text) 
+create or replace function UserLoginProcedure(username text, pass text) 
 returns 
 table(
 phone1 varchar,
@@ -12,7 +12,7 @@ can_email integer,
 can_hard_delete integer,
 can_print integer,
 can_retrieve integer,
-cansms integer,
+can_sms integer,
 can_search integer,
 can_soft_delete integer,
 can_update integer
@@ -28,24 +28,25 @@ system_user.middle_name,
 system_user.last_name,
 functional_group.name as functional_group_name,
 module.name as module_name,
-functional_group_module_mapping.can_create,
-functional_group_module_mapping.can_email,
-functional_group_module_mapping.can_hard_delete,
-functional_group_module_mapping.can_print,
-functional_group_module_mapping.can_retrieve,
-functional_group_module_mapping.cansms,
-functional_group_module_mapping.can_search,
-functional_group_module_mapping.can_soft_delete,
-functional_group_module_mapping.can_update
+COALESCE(functional_group_module_mapping.can_create, 0) AS can_create,
+COALESCE(functional_group_module_mapping.can_email, 0) AS can_email,
+COALESCE(functional_group_module_mapping.can_hard_delete, 0) AS can_hard_delete,
+COALESCE(functional_group_module_mapping.can_print, 0) AS can_print,
+COALESCE(functional_group_module_mapping.can_retrieve, 0) AS can_retrieve,
+COALESCE(functional_group_module_mapping.can_sms, 0) AS can_sms,
+COALESCE(functional_group_module_mapping.can_search, 0) AS can_search,
+COALESCE(functional_group_module_mapping.can_soft_delete, 0) AS can_soft_delete,
+COALESCE(functional_group_module_mapping.can_update, 0) AS can_update
 FROM 
 system_user
-INNER JOIN system_user_functional_group_mapping ON system_user_functional_group_mapping.system_user_id = system_user.system_user_id
-INNER JOIN functional_group ON functional_group.functional_group_id = system_user_functional_group_mapping.functional_group_id
-INNER JOIN functional_group_module_mapping ON functional_group_module_mapping.functional_group_id = functional_group.functional_group_id
-INNER JOIN module ON functional_group_module_mapping.module_id = module.module_id
+LEFT JOIN system_user_functional_group_mapping ON system_user_functional_group_mapping.system_user_id = system_user.system_user_id
+LEFT JOIN functional_group ON functional_group.functional_group_id = system_user_functional_group_mapping.functional_group_id
+LEFT JOIN functional_group_module_mapping ON functional_group_module_mapping.functional_group_id = functional_group.functional_group_id
+LEFT JOIN module ON functional_group_module_mapping.module_id = module.module_id
 WHERE
 system_user.password = pass AND
-system_user.phone1 = phone;
+(system_user.email1 = username OR
+system_user.phone1 = username);
 
 end;
 '

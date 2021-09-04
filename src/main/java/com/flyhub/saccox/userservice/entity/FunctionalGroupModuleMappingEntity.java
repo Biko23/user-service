@@ -8,9 +8,12 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
@@ -23,21 +26,17 @@ public class FunctionalGroupModuleMappingEntity {
     @Id
 	@GeneratedValue(generator = "uuid")
 	@GenericGenerator(name = "uuid", strategy = "uuid2")
-    @JsonProperty("functional_group_module_mapping_id")
+    @JsonProperty("functional_group_module_mapping_global_id")
     @ApiModelProperty(notes = "Unique identifier of a functional group module mapping entity. Auto generated.", example = "1")
-    private UUID functionalGroupModuleMappingId;
+    private UUID functionalGroupModuleMappingGlobalId;
 
-    @JsonProperty("functional_group_id")
+    @JsonProperty("functional_group_global_id")
     @ApiModelProperty(notes = "Functional group foreign key.", example = "1", required = true)
-    private UUID functionalGroupId;
+    private UUID functionalGroupGlobalId;
 
-    @JsonProperty("module_id")
+    @JsonProperty("module_global_id")
     @ApiModelProperty(notes = "Module foreign key.", example = "1", required = true)
-    private UUID moduleId;
-
-    @JsonProperty("is_active")
-    @ApiModelProperty(notes = "Functional group module mapping active.", example = "1 | 0")
-    private int isActive;
+    private UUID moduleGlobalId;
 
     @JsonProperty("mapping_name")
     @ApiModelProperty(notes = "Functional group module mapping name.", example = "")
@@ -84,36 +83,57 @@ public class FunctionalGroupModuleMappingEntity {
     @ApiModelProperty(notes = "Functional group module mapping email.", example = "1 | 0")
     private int canEmail;
 
+    @JsonProperty("tenant_global_id")
+    @ApiModelProperty(notes = "Tenant foreign key.", example = "1")
+    private UUID tenantGlobalId;
+    
+    @JsonProperty("tenant_name")
+    @ApiModelProperty(notes="Name of tenant")
+    private String tenantName;
+    
+    @JsonProperty("is_active")
+    @ApiModelProperty(notes = "Functional group active.", example = "1 | 0")
+    @Column(columnDefinition = "integer default 1")
+    private int isActive;
+
+    @CreationTimestamp
     @JsonProperty("created_on")
     @ApiModelProperty(notes = "Record created date.", example = "2021-05-01")
-    private Date createdOn;
+    @Column(columnDefinition = "timestamp without time zone DEFAULT CURRENT_TIMESTAMP(0)")
+    private LocalDateTime createdOn;
 
+    @UpdateTimestamp
     @JsonProperty("update_on")
     @ApiModelProperty(notes = "Record updated date.", example = "2021-05-01")
-    private Date updatedOn;
+    @Column(columnDefinition = "timestamp without time zone DEFAULT CURRENT_TIMESTAMP(0)")
+    private LocalDateTime updatedOn;
 
     @JsonProperty("created_by")
     @ApiModelProperty(notes = "User who created this record.", example = "1")
-    private Long createdBy;
+    private UUID createdBy;
 
     @JsonProperty("modified_by")
     @ApiModelProperty(notes = "User who modified this record.", example = "1")
-    private Long modifiedBy;
+    private UUID modifiedBy;
 
     @JsonProperty("soft_delete")
     @ApiModelProperty(notes = "Soft delete.", example = "1 | 0")
+    @Column(columnDefinition = "integer default 0")
     private int softDelete;
 
     @JsonProperty("hard_delete")
-    @ApiModelProperty(notes = "hard delete.", example = "1 | 0")
+    @ApiModelProperty(notes = "Hard delete.", example = "1 | 0")
+    @Column(columnDefinition = "integer default 0")
     private int hardDelete;
 
-	public UUID getFunctionalGroupModuleMappingId() {
-		return functionalGroupModuleMappingId;
+	public UUID getFunctionalGroupModuleMappingGlobalId() {
+		return functionalGroupModuleMappingGlobalId;
 	}
 
-	public void setFunctionalGroupModuleMappingId(UUID functionalGroupModuleMappingId) {
-		this.functionalGroupModuleMappingId = functionalGroupModuleMappingId;
+	public void setFunctionalGroupModuleMappingGlobalId(UUID functionalGroupModuleMappingGlobalId) {
+		this.functionalGroupModuleMappingGlobalId = functionalGroupModuleMappingGlobalId;
 	}
+    
+    
 
 }

@@ -33,13 +33,13 @@ public class ModuleService {
 			return moduleRepository.save(moduleEntity);
 	}
 	
-	public ModuleEntity findByModuleId(UUID moduleId) {
-		ModuleEntity login = moduleRepository.findByModuleId(moduleId);
+	public ModuleEntity findByModuleGlobalId(UUID moduleGlobalId) {
+		ModuleEntity login = moduleRepository.findByModuleGlobalId(moduleGlobalId);
 		if (login != null) {
 			return login;
 		}
 		else {
-			throw new CustomNotFoundException("Module - " + moduleId + " - not found");
+			throw new CustomNotFoundException("Module - " + moduleGlobalId + " - not found");
 		}
 	}
 
@@ -54,30 +54,30 @@ public class ModuleService {
 		return modules;
 	}
 
-	public ModuleEntity patchModule(UUID moduleId, JsonPatch jsonPatch)
+	public ModuleEntity patchModule(UUID moduleGlobalId, JsonPatch jsonPatch)
 			throws JsonPatchException, JsonProcessingException {
 //        log.info("Inside patchModule method of FunctionalGroupService");
-		if (moduleId.equals(0L)) {
-			throw new CustomInvalidInputException("Module id - " + moduleId + " - is not valid");
+		if (moduleGlobalId.equals(0L)) {
+			throw new CustomInvalidInputException("Module id - " + moduleGlobalId + " - is not valid");
 		}
 
-		Optional<ModuleEntity> login = Optional.ofNullable(moduleRepository.findByModuleId(moduleId));
+		Optional<ModuleEntity> login = Optional.ofNullable(moduleRepository.findByModuleGlobalId(moduleGlobalId));
 
 		if (login.isPresent()) {
 			ModuleEntity loginEntity = this.applyPatchToModuleEntity(jsonPatch, login.get());
 			return moduleRepository.save(loginEntity);
 		} else {
-			throw new CustomNotFoundException("FunctionalGroup with id - " + moduleId + " - not found");
+			throw new CustomNotFoundException("FunctionalGroup with id - " + moduleGlobalId + " - not found");
 		}
 	}
 
-	public void deleteByModuleId(UUID moduleId) {
+	public void deleteByModuleGlobalId(UUID moduleGlobalId) {
 //      log.info("Inside deleteFunctionalGroupById method of FunctionalGroupService");
-		if (moduleId.equals(0L)) {
-			throw new CustomInvalidInputException("Module id - " + moduleId + " - is not valid");
+		if (moduleGlobalId.equals(0L)) {
+			throw new CustomInvalidInputException("Module id - " + moduleGlobalId + " - is not valid");
 		}
 
-		moduleRepository.deleteById(moduleId);
+		moduleRepository.deleteById(moduleGlobalId);
 	}
 
 	public void deleteAllModules() {

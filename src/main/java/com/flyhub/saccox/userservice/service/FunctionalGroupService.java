@@ -40,8 +40,8 @@ public class FunctionalGroupService {
 			return functionalGroupRepository.save(functionalGroupEntity);
 	}
 	
-	public FunctionalGroupEntity findByFunctionalGroupId(UUID functionalGroupId) {
-		FunctionalGroupEntity functionalGroup = functionalGroupRepository.findByFunctionalGroupId(functionalGroupId);
+	public FunctionalGroupEntity findByFunctionalGroupGlobalId(UUID functionalGroupGlobalId) {
+		FunctionalGroupEntity functionalGroup = functionalGroupRepository.findByFunctionalGroupGlobalId(functionalGroupGlobalId);
 		if (functionalGroup != null) {
 			return functionalGroup;
 		}
@@ -61,25 +61,25 @@ public class FunctionalGroupService {
 		return functionalGroups;
 	}
 
-	public FunctionalGroupEntity patchFunctionalGroup(UUID functionalGroupId, JsonPatch jsonPatch)
+	public FunctionalGroupEntity patchFunctionalGroup(UUID functionalGroupGlobalId, JsonPatch jsonPatch)
 			throws JsonPatchException, JsonProcessingException {
 //        log.info("Inside patchFunctionalGroup method of FunctionalGroupService");
-		if (functionalGroupId.equals(0L)) {
-			throw new CustomInvalidInputException("FunctionalGroup id - " + functionalGroupId + " - is not valid");
+		if (functionalGroupGlobalId.equals(0L)) {
+			throw new CustomInvalidInputException("FunctionalGroup id - " + functionalGroupGlobalId + " - is not valid");
 		}
 
 		Optional<FunctionalGroupEntity> functionalGroup = Optional
-				.ofNullable(functionalGroupRepository.findByFunctionalGroupId(functionalGroupId));
+				.ofNullable(functionalGroupRepository.findByFunctionalGroupGlobalId(functionalGroupGlobalId));
 
 		if (functionalGroup.isPresent()) {
 			FunctionalGroupEntity functionalGroupEntity = this.applyPatchToFunctionalGroupEntity(jsonPatch, functionalGroup.get());
 			return functionalGroupRepository.save(functionalGroupEntity);
 		} else {
-			throw new CustomNotFoundException("FunctionalGroup with id - " + functionalGroupId + " - not found");
+			throw new CustomNotFoundException("FunctionalGroup with id - " + functionalGroupGlobalId + " - not found");
 		}
 	}
 
-	public void deleteByFunctionalGroupId(UUID globalFunctionalGroupUuid) {
+	public void deleteByFunctionalGroupGlobalId(UUID globalFunctionalGroupUuid) {
 //      log.info("Inside deleteFunctionalGroupById method of FunctionalGroupService");
 		if (globalFunctionalGroupUuid.equals(0L)) {
 			throw new CustomInvalidInputException("FunctionalGroup id - " + globalFunctionalGroupUuid + " - is not valid");

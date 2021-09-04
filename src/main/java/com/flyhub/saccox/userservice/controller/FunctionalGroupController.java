@@ -35,10 +35,10 @@ public class FunctionalGroupController {
         return new ResponseEntity<>(new ApiResponseFormat(true, null, "FunctionalGroup created.", _functionalGroup), HttpStatus.CREATED);
     }
     
-    @GetMapping("/{functionalGroupId}")
-    public ResponseEntity<?> findByFunctionalGroupId(@PathVariable("functionalGroupId") UUID functionalGroupId) {
-//      log.info("Inside findByFunctionalGroupId method of FunctionalGroupController");
-    	FunctionalGroupEntity functionalGroup = functionalGroupService.findByFunctionalGroupId(functionalGroupId);
+    @GetMapping("/{functionalGroupGlobalId}")
+    public ResponseEntity<?> findByFunctionalGroupGlobalId(@PathVariable("functionalGroupGlobalId") UUID functionalGroupGlobalId) {
+//      log.info("Inside findByFunctionalGroupGlobalId method of FunctionalGroupController");
+    	FunctionalGroupEntity functionalGroup = functionalGroupService.findByFunctionalGroupGlobalId(functionalGroupGlobalId);
       return new ResponseEntity<>(new ApiResponseFormat(true, null, "FunctionalGroup found.", functionalGroup), HttpStatus.OK);
     }
     
@@ -54,16 +54,16 @@ public class FunctionalGroupController {
 //        return new ResponseEntity<>(new ApiResponseFormat(true, null, "FunctionalGroup updated.", functionalGroupService.updateFunctionalGroup(globalFunctionalGroupID, functionalGroupEntity)), HttpStatus.OK);
 //    }
 
-    @PatchMapping(path = "/{functionalGroupId}", consumes = "application/json-patch+json")
-    public ResponseEntity<?> patchFunctionalGroup(@PathVariable("functionalGroupId") UUID functionalGroupId, @RequestBody JsonPatch jsonPatch) throws JsonPatchException, JsonProcessingException {
+    @PatchMapping(path = "/{functionalGroupGlobalId}", consumes = "application/json-patch+json")
+    public ResponseEntity<?> patchFunctionalGroup(@PathVariable("functionalGroupGlobalId") UUID functionalGroupGlobalId, @RequestBody JsonPatch jsonPatch) throws JsonPatchException, JsonProcessingException {
 //        log.info("Inside partialUpdateFunctionalGroup method of FunctionalGroupController");
-        return new ResponseEntity<>(new ApiResponseFormat(true, null, "FunctionalGroup updated.", functionalGroupService.patchFunctionalGroup(functionalGroupId, jsonPatch)), HttpStatus.OK);
+        return new ResponseEntity<>(new ApiResponseFormat(true, null, "FunctionalGroup updated.", functionalGroupService.patchFunctionalGroup(functionalGroupGlobalId, jsonPatch)), HttpStatus.OK);
     }
 
-    @DeleteMapping("/{functionalGroupId}")
-    public ResponseEntity<?> deleteByFunctionalGroupId(@PathVariable("functionalGroupId") UUID functionalGroupId) {
-//        log.info("Inside deleteByFunctionalGroupId method of FunctionalGroupController");
-        functionalGroupService.deleteByFunctionalGroupId(functionalGroupId);
+    @DeleteMapping("/{functionalGroupGlobalId}")
+    public ResponseEntity<?> deleteByFunctionalGroupGlobalId(@PathVariable("functionalGroupGlobalId") UUID functionalGroupGlobalId) {
+//        log.info("Inside deleteByFunctionalGroupGlobalId method of FunctionalGroupController");
+        functionalGroupService.deleteByFunctionalGroupGlobalId(functionalGroupGlobalId);
         return new ResponseEntity<>(new ApiResponseFormat(true, null, "FunctionalGroup deleted.", null), HttpStatus.OK);
     }
 

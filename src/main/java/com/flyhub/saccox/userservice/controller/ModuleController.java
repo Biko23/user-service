@@ -34,10 +34,10 @@ public class ModuleController {
         return new ResponseEntity<>(new ApiResponseFormat(true, null, "Module created.", _module), HttpStatus.CREATED);
     }
     
-    @GetMapping("/{moduleId}")
-    public ResponseEntity<?> findByModuleId(@PathVariable("moduleId") UUID moduleId) {
-//      log.info("Inside findByModuleId method of ModuleController");
-    	ModuleEntity module = moduleService.findByModuleId(moduleId);
+    @GetMapping("/{moduleGlobalId}")
+    public ResponseEntity<?> findByModuleGlobalId(@PathVariable("moduleGlobalId") UUID moduleGlobalId) {
+//      log.info("Inside findByModuleGlobalId method of ModuleController");
+    	ModuleEntity module = moduleService.findByModuleGlobalId(moduleGlobalId);
       return new ResponseEntity<>(new ApiResponseFormat(true, null, "Module found.", module), HttpStatus.OK);
     }
     
@@ -53,16 +53,16 @@ public class ModuleController {
 //        return new ResponseEntity<>(new ApiResponseFormat(true, null, "Module updated.", moduleService.updateModule(globalModuleID, moduleEntity)), HttpStatus.OK);
 //    }
 
-    @PatchMapping(path = "/{moduleId}", consumes = "application/json-patch+json")
-    public ResponseEntity<?> patchModule(@PathVariable("moduleId") UUID moduleId, @RequestBody JsonPatch jsonPatch) throws JsonPatchException, JsonProcessingException {
+    @PatchMapping(path = "/{moduleGlobalId}", consumes = "application/json-patch+json")
+    public ResponseEntity<?> patchModule(@PathVariable("moduleGlobalId") UUID moduleGlobalId, @RequestBody JsonPatch jsonPatch) throws JsonPatchException, JsonProcessingException {
 //        log.info("Inside partialUpdateModule method of ModuleController");
-        return new ResponseEntity<>(new ApiResponseFormat(true, null, "Module updated.", moduleService.patchModule(moduleId, jsonPatch)), HttpStatus.OK);
+        return new ResponseEntity<>(new ApiResponseFormat(true, null, "Module updated.", moduleService.patchModule(moduleGlobalId, jsonPatch)), HttpStatus.OK);
     }
 
-    @DeleteMapping("/{moduleId}")
-    public ResponseEntity<?> deleteByModuleId(@PathVariable("moduleId") UUID moduleId) {
-//        log.info("Inside deleteByModuleId method of ModuleController");
-        moduleService.deleteByModuleId(moduleId);
+    @DeleteMapping("/{moduleGlobalId}")
+    public ResponseEntity<?> deleteByModuleGlobalId(@PathVariable("moduleGlobalId") UUID moduleGlobalId) {
+//        log.info("Inside deleteByModuleGlobalId method of ModuleController");
+        moduleService.deleteByModuleGlobalId(moduleGlobalId);
         return new ResponseEntity<>(new ApiResponseFormat(true, null, "Module deleted.", null), HttpStatus.OK);
     }
 

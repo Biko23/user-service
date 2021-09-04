@@ -117,13 +117,17 @@ public class SystemUserService {
 		return objectMapper.treeToValue(patched, SystemUserEntity.class);
 	}
 	
-	public List<UserLoginProcedureEntity> userLoginProcedure(String phone1, String password) {
-		  List<UserLoginProcedureEntity> user = userLoginProcedureRepository.userLoginProcedure(phone1, password);
-		  if (user != null) {
+	public List<UserLoginProcedureEntity> userLoginProcedure(String username, String password) {
+		  List<UserLoginProcedureEntity> user = userLoginProcedureRepository.userLoginProcedure(username, password);
+		  
+		  System.out.println("user");
+		  System.out.println(user);
+		  
+		  if (!user.isEmpty()) {
 			  return user;
 		  }
 		  else {
-			  throw new CustomNotFoundException("SystemUser with phone - " + phone1 + " - not found");
+			  throw new CustomNotFoundException("SystemUser with phone - " + username + " - not found");
 		  }
 	  }
     

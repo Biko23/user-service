@@ -18,13 +18,13 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(CustomNotFoundException.class)
     public ResponseEntity<?> handleNotFoundException(CustomNotFoundException customNotFoundException, WebRequest webRequest) {
         logger.info("Not Found Exception: " + customNotFoundException.getMessage());
-        return new ResponseEntity<>(new ApiResponseFormat(false, new ErrorFormat(HttpStatus.NOT_FOUND.value(), "Entity not found.", webRequest.getDescription(false)), customNotFoundException.getMessage(), null), HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(new ApiResponseFormat(false, new ErrorFormat(HttpStatus.NO_CONTENT.value(), "Entity not found.", webRequest.getDescription(false)), customNotFoundException.getMessage(), null), HttpStatus.NO_CONTENT);
     }
 
     @ExceptionHandler(CustomNoContentException.class)
     public ResponseEntity<?> handleNoContentException(CustomNoContentException customNoContentException, WebRequest webRequest) {
         logger.info("No Content Exception: " + customNoContentException.getMessage());
-        return new ResponseEntity<>(new ApiResponseFormat(false, new ErrorFormat(HttpStatus.NOT_FOUND.value(), "Entities not found.", webRequest.getDescription(false)), customNoContentException.getMessage(), null), HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(new ApiResponseFormat(false, new ErrorFormat(HttpStatus.NO_CONTENT.value(), "Entities not found.", webRequest.getDescription(false)), customNoContentException.getMessage(), null), HttpStatus.NO_CONTENT);
     }
 
     @ExceptionHandler(CustomInvalidInputException.class)

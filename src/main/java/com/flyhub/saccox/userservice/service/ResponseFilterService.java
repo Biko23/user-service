@@ -33,13 +33,13 @@ public class ResponseFilterService {
 			return responseFilterRepository.save(responseFilterEntity);
 	}
 	
-	public ResponseFilterEntity findByResponseFilterId(UUID responseFilterId) {
-		ResponseFilterEntity login = responseFilterRepository.findByResponseFilterId(responseFilterId);
+	public ResponseFilterEntity findByResponseFilterGlobalId(UUID responseFilterGlobalId) {
+		ResponseFilterEntity login = responseFilterRepository.findByResponseFilterGlobalId(responseFilterGlobalId);
 		if (login != null) {
 			return login;
 		}
 		else {
-			throw new CustomNotFoundException("ResponseFilter - " + responseFilterId + " - not found");
+			throw new CustomNotFoundException("ResponseFilter - " + responseFilterGlobalId + " - not found");
 		}
 	}
 
@@ -54,30 +54,30 @@ public class ResponseFilterService {
 		return responseFilters;
 	}
 
-	public ResponseFilterEntity patchResponseFilter(UUID responseFilterId, JsonPatch jsonPatch)
+	public ResponseFilterEntity patchResponseFilter(UUID responseFilterGlobalId, JsonPatch jsonPatch)
 			throws JsonPatchException, JsonProcessingException {
 //        log.info("Inside patchResponseFilter method of FunctionalGroupService");
-		if (responseFilterId.equals(0L)) {
-			throw new CustomInvalidInputException("ResponseFilter id - " + responseFilterId + " - is not valid");
+		if (responseFilterGlobalId.equals(0L)) {
+			throw new CustomInvalidInputException("ResponseFilter id - " + responseFilterGlobalId + " - is not valid");
 		}
 
-		Optional<ResponseFilterEntity> login = Optional.ofNullable(responseFilterRepository.findByResponseFilterId(responseFilterId));
+		Optional<ResponseFilterEntity> login = Optional.ofNullable(responseFilterRepository.findByResponseFilterGlobalId(responseFilterGlobalId));
 
 		if (login.isPresent()) {
 			ResponseFilterEntity loginEntity = this.applyPatchToResponseFilterEntity(jsonPatch, login.get());
 			return responseFilterRepository.save(loginEntity);
 		} else {
-			throw new CustomNotFoundException("FunctionalGroup with id - " + responseFilterId + " - not found");
+			throw new CustomNotFoundException("FunctionalGroup with id - " + responseFilterGlobalId + " - not found");
 		}
 	}
 
-	public void deleteByResponseFilterId(UUID responseFilterId) {
+	public void deleteByResponseFilterGlobalId(UUID responseFilterGlobalId) {
 //      log.info("Inside deleteFunctionalGroupById method of FunctionalGroupService");
-		if (responseFilterId.equals(0L)) {
-			throw new CustomInvalidInputException("ResponseFilter id - " + responseFilterId + " - is not valid");
+		if (responseFilterGlobalId.equals(0L)) {
+			throw new CustomInvalidInputException("ResponseFilter id - " + responseFilterGlobalId + " - is not valid");
 		}
 
-		responseFilterRepository.deleteById(responseFilterId);
+		responseFilterRepository.deleteById(responseFilterGlobalId);
 	}
 
 	public void deleteAllResponseFilters() {

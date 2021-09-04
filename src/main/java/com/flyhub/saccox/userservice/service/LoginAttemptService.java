@@ -33,13 +33,13 @@ public class LoginAttemptService {
 			return loginAttemptRepository.save(loginAttemptEntity);
 	}
 	
-	public LoginAttemptEntity findByLoginAttemptId(UUID loginAttemptId) {
-		LoginAttemptEntity login = loginAttemptRepository.findByLoginAttemptId(loginAttemptId);
+	public LoginAttemptEntity findByLoginAttemptGlobalId(UUID loginAttemptGlobalId) {
+		LoginAttemptEntity login = loginAttemptRepository.findByLoginAttemptGlobalId(loginAttemptGlobalId);
 		if (login != null) {
 			return login;
 		}
 		else {
-			throw new CustomNotFoundException("Login attempt - " + loginAttemptId + " - not found");
+			throw new CustomNotFoundException("Login attempt - " + loginAttemptGlobalId + " - not found");
 		}
 	}
 
@@ -54,30 +54,30 @@ public class LoginAttemptService {
 		return loginAttempts;
 	}
 
-	public LoginAttemptEntity patchLoginAttempt(UUID loginAttemptId, JsonPatch jsonPatch)
+	public LoginAttemptEntity patchLoginAttempt(UUID loginAttemptGlobalId, JsonPatch jsonPatch)
 			throws JsonPatchException, JsonProcessingException {
 //        log.info("Inside patchLoginAttempt method of FunctionalGroupService");
-		if (loginAttemptId.equals(0L)) {
-			throw new CustomInvalidInputException("Login attempt id - " + loginAttemptId + " - is not valid");
+		if (loginAttemptGlobalId.equals(0L)) {
+			throw new CustomInvalidInputException("Login attempt id - " + loginAttemptGlobalId + " - is not valid");
 		}
 
-		Optional<LoginAttemptEntity> login = Optional.ofNullable(loginAttemptRepository.findByLoginAttemptId(loginAttemptId));
+		Optional<LoginAttemptEntity> login = Optional.ofNullable(loginAttemptRepository.findByLoginAttemptGlobalId(loginAttemptGlobalId));
 
 		if (login.isPresent()) {
 			LoginAttemptEntity loginEntity = this.applyPatchToLoginAttemptEntity(jsonPatch, login.get());
 			return loginAttemptRepository.save(loginEntity);
 		} else {
-			throw new CustomNotFoundException("FunctionalGroup with id - " + loginAttemptId + " - not found");
+			throw new CustomNotFoundException("FunctionalGroup with id - " + loginAttemptGlobalId + " - not found");
 		}
 	}
 
-	public void deleteByLoginAttemptId(UUID loginAttemptId) {
+	public void deleteByLoginAttemptGlobalId(UUID loginAttemptGlobalId) {
 //      log.info("Inside deleteFunctionalGroupById method of FunctionalGroupService");
-		if (loginAttemptId.equals(0L)) {
-			throw new CustomInvalidInputException("FunctionalGroup id - " + loginAttemptId + " - is not valid");
+		if (loginAttemptGlobalId.equals(0L)) {
+			throw new CustomInvalidInputException("FunctionalGroup id - " + loginAttemptGlobalId + " - is not valid");
 		}
 
-		loginAttemptRepository.deleteById(loginAttemptId);
+		loginAttemptRepository.deleteById(loginAttemptGlobalId);
 	}
 
 	public void deleteAllLoginAttempts() {

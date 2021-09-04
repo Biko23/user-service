@@ -35,10 +35,10 @@ public class SystemUserFunctionalGroupMappingController {
         return new ResponseEntity<>(new ApiResponseFormat(true, null, "SystemUserFunctionalGroupMapping created.", _systemUserFunctionalGroupMapping), HttpStatus.CREATED);
     }
     
-    @GetMapping("/{systemUserFunctionalGroupMappingId}")
-    public ResponseEntity<?> findBySystemUserFunctionalGroupMappingId(@PathVariable("systemUserFunctionalGroupMappingId") UUID systemUserFunctionalGroupMappingId) {
-//      log.info("Inside findBySystemUserFunctionalGroupMappingId method of SystemUserFunctionalGroupMappingController");
-    	SystemUserFunctionalGroupMappingEntity systemUserFunctionalGroupMapping = systemUserFunctionalGroupMappingService.findBySystemUserFunctionalGroupMappingId(systemUserFunctionalGroupMappingId);
+    @GetMapping("/{systemUserFunctionalGroupMappingGlobalId}")
+    public ResponseEntity<?> findBySystemUserFunctionalGroupMappingGlobalId(@PathVariable("systemUserFunctionalGroupMappingGlobalId") UUID systemUserFunctionalGroupMappingGlobalId) {
+//      log.info("Inside findBySystemUserFunctionalGroupMappingGlobalId method of SystemUserFunctionalGroupMappingController");
+    	SystemUserFunctionalGroupMappingEntity systemUserFunctionalGroupMapping = systemUserFunctionalGroupMappingService.findBySystemUserFunctionalGroupMappingGlobalId(systemUserFunctionalGroupMappingGlobalId);
       return new ResponseEntity<>(new ApiResponseFormat(true, null, "SystemUserFunctionalGroupMapping found.", systemUserFunctionalGroupMapping), HttpStatus.OK);
     }
     
@@ -48,22 +48,16 @@ public class SystemUserFunctionalGroupMappingController {
         return new ResponseEntity<>(new ApiResponseFormat(true, null, "SystemUserFunctionalGroupMapping(s) found.", systemUserFunctionalGroupMappingService.findAllSystemUserFunctionalGroupMappings()), HttpStatus.OK);
     }
 
-//    @PutMapping("/{globalSystemUserFunctionalGroupMappingID}")
-//    public ResponseEntity<?> updateSystemUserFunctionalGroupMapping(@PathVariable("globalSystemUserFunctionalGroupMappingID") UUID globalSystemUserFunctionalGroupMappingID, @RequestBody SystemUserFunctionalGroupMappingEntity systemUserFunctionalGroupMappingEntity) {
-////        log.info("Inside fullUpdateSystemUserFunctionalGroupMapping method of SystemUserFunctionalGroupMappingController");
-//        return new ResponseEntity<>(new ApiResponseFormat(true, null, "SystemUserFunctionalGroupMapping updated.", systemUserFunctionalGroupMappingService.updateSystemUserFunctionalGroupMapping(globalSystemUserFunctionalGroupMappingID, systemUserFunctionalGroupMappingEntity)), HttpStatus.OK);
-//    }
-
-    @PatchMapping(path = "/{systemUserFunctionalGroupMappingId}", consumes = "application/json-patch+json")
-    public ResponseEntity<?> patchSystemUserFunctionalGroupMapping(@PathVariable("systemUserFunctionalGroupMappingId") UUID systemUserFunctionalGroupMappingId, @RequestBody JsonPatch jsonPatch) throws JsonPatchException, JsonProcessingException {
+    @PatchMapping(path = "/{systemUserFunctionalGroupMappingGlobalId}", consumes = "application/json-patch+json")
+    public ResponseEntity<?> patchSystemUserFunctionalGroupMapping(@PathVariable("systemUserFunctionalGroupMappingGlobalId") UUID systemUserFunctionalGroupMappingGlobalId, @RequestBody JsonPatch jsonPatch) throws JsonPatchException, JsonProcessingException {
 //        log.info("Inside partialUpdateSystemUserFunctionalGroupMapping method of SystemUserFunctionalGroupMappingController");
-        return new ResponseEntity<>(new ApiResponseFormat(true, null, "SystemUserFunctionalGroupMapping updated.", systemUserFunctionalGroupMappingService.patchSystemUserFunctionalGroupMapping(systemUserFunctionalGroupMappingId, jsonPatch)), HttpStatus.OK);
+        return new ResponseEntity<>(new ApiResponseFormat(true, null, "SystemUserFunctionalGroupMapping updated.", systemUserFunctionalGroupMappingService.patchSystemUserFunctionalGroupMapping(systemUserFunctionalGroupMappingGlobalId, jsonPatch)), HttpStatus.OK);
     }
 
-    @DeleteMapping("/{systemUserFunctionalGroupMappingId}")
-    public ResponseEntity<?> deleteBySystemUserFunctionalGroupMappingId(@PathVariable("systemUserFunctionalGroupMappingId") UUID systemUserFunctionalGroupMappingId) {
-//        log.info("Inside deleteBySystemUserFunctionalGroupMappingId method of SystemUserFunctionalGroupMappingController");
-    	systemUserFunctionalGroupMappingService.deleteBySystemUserFunctionalGroupMappingId(systemUserFunctionalGroupMappingId);
+    @DeleteMapping("/{systemUserFunctionalGroupMappingGlobalId}")
+    public ResponseEntity<?> deleteBySystemUserFunctionalGroupMappingGlobalId(@PathVariable("systemUserFunctionalGroupMappingGlobalId") UUID systemUserFunctionalGroupMappingGlobalId) {
+//        log.info("Inside deleteBySystemUserFunctionalGroupMappingGlobalId method of SystemUserFunctionalGroupMappingController");
+    	systemUserFunctionalGroupMappingService.deleteBySystemUserFunctionalGroupMappingGlobalId(systemUserFunctionalGroupMappingGlobalId);
         return new ResponseEntity<>(new ApiResponseFormat(true, null, "SystemUserFunctionalGroupMapping deleted.", null), HttpStatus.OK);
     }
 

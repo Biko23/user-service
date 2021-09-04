@@ -22,9 +22,9 @@ public class FunctionalGroupModuleMappingService {
         return functionalGroupModuleMappingRepository.save(functionalGroupModuleMappingEntity);
     }
 
-    public FunctionalGroupModuleMappingEntity findByFunctionalGroupModuleMappingId(UUID functionalGroupModuleMappingId) {
-//        log.info("Inside findByFunctionalGroupModuleMappingId method of FunctionalGroupModuleMappingService");
-        return functionalGroupModuleMappingRepository.findByFunctionalGroupModuleMappingId(functionalGroupModuleMappingId);
+    public FunctionalGroupModuleMappingEntity findByFunctionalGroupModuleMappingGlobalId(UUID functionalGroupModuleMappingGlobalId) {
+//        log.info("Inside findByFunctionalGroupModuleMappingGlobalId method of FunctionalGroupModuleMappingService");
+        return functionalGroupModuleMappingRepository.findByFunctionalGroupModuleMappingGlobalId(functionalGroupModuleMappingGlobalId);
     }
 
     public List<FunctionalGroupModuleMappingEntity> listAllFunctionalGroupModuleMappings() {
@@ -32,9 +32,9 @@ public class FunctionalGroupModuleMappingService {
         return functionalGroupModuleMappingRepository.findAll();
     }
 
-    public void deleteFunctionalGroupModuleMapping(UUID functionalGroupModuleMappingId) {
+    public void deleteFunctionalGroupModuleMapping(UUID functionalGroupModuleMappingGlobalId) {
 //        log.info("Inside deleteFunctionalGroupModuleMapping method of FunctionalGroupModuleMappingService");
-        functionalGroupModuleMappingRepository.deleteById(functionalGroupModuleMappingId);
+        functionalGroupModuleMappingRepository.deleteById(functionalGroupModuleMappingGlobalId);
     }
 
     public void deleteAllFunctionalGroupModuleMappings() {

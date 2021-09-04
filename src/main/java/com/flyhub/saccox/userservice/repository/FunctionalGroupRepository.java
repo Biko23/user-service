@@ -9,5 +9,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface FunctionalGroupRepository extends JpaRepository<FunctionalGroupEntity, UUID> {
-    FunctionalGroupEntity findByFunctionalGroupId(UUID functionalGroupId);
+    FunctionalGroupEntity findByFunctionalGroupGlobalId(UUID functionalGroupGlobalId);
 }

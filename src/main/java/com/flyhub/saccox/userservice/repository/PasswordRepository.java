@@ -9,5 +9,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface PasswordRepository extends JpaRepository<PasswordEntity, UUID> {
-	PasswordEntity findByPasswordId(UUID passwordId);
+	PasswordEntity findByPasswordGlobalId(UUID passwordGlobalId);
 }

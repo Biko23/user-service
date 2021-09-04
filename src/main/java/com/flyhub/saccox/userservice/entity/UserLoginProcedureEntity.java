@@ -22,6 +22,7 @@ public class UserLoginProcedureEntity {
 	
 	private String module_name;
 	
+	
 	private int can_create;
 	
 	private int can_email;
@@ -32,7 +33,7 @@ public class UserLoginProcedureEntity {
 	
 	private int can_retrieve;
 	
-	private int cansms;
+	private int can_sms;
 	
 	private int can_search;
 	
@@ -42,7 +43,7 @@ public class UserLoginProcedureEntity {
 
 	public UserLoginProcedureEntity(String phone1, String first_name, String middle_name, String last_name,
 			String functional_group_name, String module_name, int can_create, int can_email, int can_hard_delete,
-			int can_print, int can_retrieve, int cansms, int can_search, int can_soft_delete, int can_update) {
+			int can_print, int can_retrieve, int can_sms, int can_search, int can_soft_delete, int can_update) {
 		this.phone1 = phone1;
 		this.first_name = first_name;
 		this.middle_name = middle_name;
@@ -54,7 +55,7 @@ public class UserLoginProcedureEntity {
 		this.can_hard_delete = can_hard_delete;
 		this.can_print = can_print;
 		this.can_retrieve = can_retrieve;
-		this.cansms = cansms;
+		this.can_sms = can_sms;
 		this.can_search = can_search;
 		this.can_soft_delete = can_soft_delete;
 		this.can_update = can_update;
@@ -151,12 +152,12 @@ public class UserLoginProcedureEntity {
 		this.can_retrieve = can_retrieve;
 	}
 
-	public int getCansms() {
-		return cansms;
+	public int getCan_sms() {
+		return can_sms;
 	}
 
-	public void setCansms(int cansms) {
-		this.cansms = cansms;
+	public void setCan_sms(int can_sms) {
+		this.can_sms = can_sms;
 	}
 
 	public int getCan_search() {

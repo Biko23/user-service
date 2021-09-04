@@ -34,10 +34,10 @@ public class LoginAttemptController {
         return new ResponseEntity<>(new ApiResponseFormat(true, null, "LoginAttempt created.", _loginAttempt), HttpStatus.CREATED);
     }
     
-    @GetMapping("/{loginAttemptId}")
-    public ResponseEntity<?> findByLoginAttemptId(@PathVariable("loginAttemptId") UUID loginAttemptId) {
-//      log.info("Inside findByLoginAttemptId method of LoginAttemptController");
-    	LoginAttemptEntity loginAttempt = loginAttemptService.findByLoginAttemptId(loginAttemptId);
+    @GetMapping("/{loginAttemptGlobalId}")
+    public ResponseEntity<?> findByLoginAttemptGlobalId(@PathVariable("loginAttemptGlobalId") UUID loginAttemptGlobalId) {
+//      log.info("Inside findByLoginAttemptGlobalId method of LoginAttemptController");
+    	LoginAttemptEntity loginAttempt = loginAttemptService.findByLoginAttemptGlobalId(loginAttemptGlobalId);
       return new ResponseEntity<>(new ApiResponseFormat(true, null, "LoginAttempt found.", loginAttempt), HttpStatus.OK);
     }
     
@@ -53,16 +53,16 @@ public class LoginAttemptController {
 //        return new ResponseEntity<>(new ApiResponseFormat(true, null, "LoginAttempt updated.", loginAttemptService.updateLoginAttempt(globalLoginAttemptID, loginAttemptEntity)), HttpStatus.OK);
 //    }
 
-    @PatchMapping(path = "/{loginAttemptId}", consumes = "application/json-patch+json")
-    public ResponseEntity<?> patchLoginAttempt(@PathVariable("loginAttemptId") UUID loginAttemptId, @RequestBody JsonPatch jsonPatch) throws JsonPatchException, JsonProcessingException {
+    @PatchMapping(path = "/{loginAttemptGlobalId}", consumes = "application/json-patch+json")
+    public ResponseEntity<?> patchLoginAttempt(@PathVariable("loginAttemptGlobalId") UUID loginAttemptGlobalId, @RequestBody JsonPatch jsonPatch) throws JsonPatchException, JsonProcessingException {
 //        log.info("Inside partialUpdateLoginAttempt method of LoginAttemptController");
-        return new ResponseEntity<>(new ApiResponseFormat(true, null, "LoginAttempt updated.", loginAttemptService.patchLoginAttempt(loginAttemptId, jsonPatch)), HttpStatus.OK);
+        return new ResponseEntity<>(new ApiResponseFormat(true, null, "LoginAttempt updated.", loginAttemptService.patchLoginAttempt(loginAttemptGlobalId, jsonPatch)), HttpStatus.OK);
     }
 
-    @DeleteMapping("/{loginAttemptId}")
-    public ResponseEntity<?> deleteByLoginAttemptId(@PathVariable("loginAttemptId") UUID loginAttemptId) {
-//        log.info("Inside deleteByLoginAttemptId method of LoginAttemptController");
-        loginAttemptService.deleteByLoginAttemptId(loginAttemptId);
+    @DeleteMapping("/{loginAttemptGlobalId}")
+    public ResponseEntity<?> deleteByLoginAttemptGlobalId(@PathVariable("loginAttemptGlobalId") UUID loginAttemptGlobalId) {
+//        log.info("Inside deleteByLoginAttemptGlobalId method of LoginAttemptController");
+        loginAttemptService.deleteByLoginAttemptGlobalId(loginAttemptGlobalId);
         return new ResponseEntity<>(new ApiResponseFormat(true, null, "LoginAttempt deleted.", null), HttpStatus.OK);
     }
 

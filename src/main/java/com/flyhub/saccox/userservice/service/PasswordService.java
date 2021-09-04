@@ -33,13 +33,13 @@ public class PasswordService {
 			return passwordRepository.save(passwordEntity);
 	}
 	
-	public PasswordEntity findByPasswordId(UUID passwordId) {
-		PasswordEntity login = passwordRepository.findByPasswordId(passwordId);
+	public PasswordEntity findByPasswordGlobalId(UUID passwordGlobalId) {
+		PasswordEntity login = passwordRepository.findByPasswordGlobalId(passwordGlobalId);
 		if (login != null) {
 			return login;
 		}
 		else {
-			throw new CustomNotFoundException("Password - " + passwordId + " - not found");
+			throw new CustomNotFoundException("Password - " + passwordGlobalId + " - not found");
 		}
 	}
 
@@ -54,30 +54,30 @@ public class PasswordService {
 		return passwords;
 	}
 
-	public PasswordEntity patchPassword(UUID passwordId, JsonPatch jsonPatch)
+	public PasswordEntity patchPassword(UUID passwordGlobalId, JsonPatch jsonPatch)
 			throws JsonPatchException, JsonProcessingException {
 //        log.info("Inside patchPassword method of FunctionalGroupService");
-		if (passwordId.equals(0L)) {
-			throw new CustomInvalidInputException("Password id - " + passwordId + " - is not valid");
+		if (passwordGlobalId.equals(0L)) {
+			throw new CustomInvalidInputException("Password id - " + passwordGlobalId + " - is not valid");
 		}
 
-		Optional<PasswordEntity> login = Optional.ofNullable(passwordRepository.findByPasswordId(passwordId));
+		Optional<PasswordEntity> login = Optional.ofNullable(passwordRepository.findByPasswordGlobalId(passwordGlobalId));
 
 		if (login.isPresent()) {
 			PasswordEntity loginEntity = this.applyPatchToPasswordEntity(jsonPatch, login.get());
 			return passwordRepository.save(loginEntity);
 		} else {
-			throw new CustomNotFoundException("FunctionalGroup with id - " + passwordId + " - not found");
+			throw new CustomNotFoundException("FunctionalGroup with id - " + passwordGlobalId + " - not found");
 		}
 	}
 
-	public void deleteByPasswordId(UUID passwordId) {
+	public void deleteByPasswordGlobalId(UUID passwordGlobalId) {
 //      log.info("Inside deleteFunctionalGroupById method of FunctionalGroupService");
-		if (passwordId.equals(0L)) {
-			throw new CustomInvalidInputException("Password id - " + passwordId + " - is not valid");
+		if (passwordGlobalId.equals(0L)) {
+			throw new CustomInvalidInputException("Password id - " + passwordGlobalId + " - is not valid");
 		}
 
-		passwordRepository.deleteById(passwordId);
+		passwordRepository.deleteById(passwordGlobalId);
 	}
 
 	public void deleteAllPasswords() {

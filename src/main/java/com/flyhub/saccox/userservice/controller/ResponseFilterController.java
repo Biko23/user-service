@@ -34,10 +34,10 @@ public class ResponseFilterController {
         return new ResponseEntity<>(new ApiResponseFormat(true, null, "ResponseFilter created.", _responseFilter), HttpStatus.CREATED);
     }
     
-    @GetMapping("/{responseFilterId}")
-    public ResponseEntity<?> findByResponseFilterId(@PathVariable("responseFilterId") UUID responseFilterId) {
-//      log.info("Inside findByResponseFilterId method of ResponseFilterController");
-    	ResponseFilterEntity responseFilter = responseFilterService.findByResponseFilterId(responseFilterId);
+    @GetMapping("/{responseFilterGlobalId}")
+    public ResponseEntity<?> findByResponseFilterGlobalId(@PathVariable("responseFilterGlobalId") UUID responseFilterGlobalId) {
+//      log.info("Inside findByResponseFilterGlobalId method of ResponseFilterController");
+    	ResponseFilterEntity responseFilter = responseFilterService.findByResponseFilterGlobalId(responseFilterGlobalId);
       return new ResponseEntity<>(new ApiResponseFormat(true, null, "ResponseFilter found.", responseFilter), HttpStatus.OK);
     }
     
@@ -53,16 +53,16 @@ public class ResponseFilterController {
 //        return new ResponseEntity<>(new ApiResponseFormat(true, null, "ResponseFilter updated.", responseFilterService.updateResponseFilter(globalResponseFilterID, responseFilterEntity)), HttpStatus.OK);
 //    }
 
-    @PatchMapping(path = "/{responseFilterId}", consumes = "application/json-patch+json")
-    public ResponseEntity<?> patchResponseFilter(@PathVariable("responseFilterId") UUID responseFilterId, @RequestBody JsonPatch jsonPatch) throws JsonPatchException, JsonProcessingException {
+    @PatchMapping(path = "/{responseFilterGlobalId}", consumes = "application/json-patch+json")
+    public ResponseEntity<?> patchResponseFilter(@PathVariable("responseFilterGlobalId") UUID responseFilterGlobalId, @RequestBody JsonPatch jsonPatch) throws JsonPatchException, JsonProcessingException {
 //        log.info("Inside partialUpdateResponseFilter method of ResponseFilterController");
-        return new ResponseEntity<>(new ApiResponseFormat(true, null, "ResponseFilter updated.", responseFilterService.patchResponseFilter(responseFilterId, jsonPatch)), HttpStatus.OK);
+        return new ResponseEntity<>(new ApiResponseFormat(true, null, "ResponseFilter updated.", responseFilterService.patchResponseFilter(responseFilterGlobalId, jsonPatch)), HttpStatus.OK);
     }
 
-    @DeleteMapping("/{responseFilterId}")
-    public ResponseEntity<?> deleteByResponseFilterId(@PathVariable("responseFilterId") UUID responseFilterId) {
-//        log.info("Inside deleteByResponseFilterId method of ResponseFilterController");
-        responseFilterService.deleteByResponseFilterId(responseFilterId);
+    @DeleteMapping("/{responseFilterGlobalId}")
+    public ResponseEntity<?> deleteByResponseFilterGlobalId(@PathVariable("responseFilterGlobalId") UUID responseFilterGlobalId) {
+//        log.info("Inside deleteByResponseFilterGlobalId method of ResponseFilterController");
+        responseFilterService.deleteByResponseFilterGlobalId(responseFilterGlobalId);
         return new ResponseEntity<>(new ApiResponseFormat(true, null, "ResponseFilter deleted.", null), HttpStatus.OK);
     }
 
