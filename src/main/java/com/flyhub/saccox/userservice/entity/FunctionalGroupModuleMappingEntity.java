@@ -30,57 +30,73 @@ public class FunctionalGroupModuleMappingEntity {
     @ApiModelProperty(notes = "Unique identifier of a functional group module mapping entity. Auto generated.", example = "1")
     private UUID functionalGroupModuleMappingGlobalId;
 
+    @JsonProperty("name")
+    @ApiModelProperty(notes = "Functional group module mapping name.", example = "")
+    private String name;
+
+    @JsonProperty("description")
+    @ApiModelProperty(notes = "Functional group module mapping description.", example = "")
+    private String description;
+
     @JsonProperty("functional_group_global_id")
     @ApiModelProperty(notes = "Functional group foreign key.", example = "1", required = true)
     private UUID functionalGroupGlobalId;
+
+    @JsonProperty("functional_group_name")
+    @ApiModelProperty(notes = "Functional group name foreign key.", example = "1", required = true)
+    private String functionalGroupName;
 
     @JsonProperty("module_global_id")
     @ApiModelProperty(notes = "Module foreign key.", example = "1", required = true)
     private UUID moduleGlobalId;
 
-    @JsonProperty("mapping_name")
-    @ApiModelProperty(notes = "Functional group module mapping name.", example = "")
-    private String mappingName;
-    
-    @JsonProperty("description")
-    @ApiModelProperty(notes = "Functional group module mapping description.", example = "")
-    private String description;
-    
+    @JsonProperty("module_name")
+    @ApiModelProperty(notes = "Module foreign key.", example = "1", required = true)
+    private String moduleName;
 
     @JsonProperty("can_search")
     @ApiModelProperty(notes = "Functional group module mapping search.", example = "1 | 0")
+    @Column(columnDefinition = "integer default 0")
     private int canSearch;
 
     @JsonProperty("can_create")
     @ApiModelProperty(notes = "Functional group module mapping create.", example = "1 | 0")
+    @Column(columnDefinition = "integer default 0")
     private int canCreate;
 
     @JsonProperty("can_retrieve")
     @ApiModelProperty(notes = "Functional group module mapping retrieve.", example = "1 | 0")
+    @Column(columnDefinition = "integer default 0")
     private int canRetrieve;
 
     @JsonProperty("can_update")
     @ApiModelProperty(notes = "Functional group module mapping update.", example = "1 | 0")
+    @Column(columnDefinition = "integer default 0")
     private int canUpdate;
 
     @JsonProperty("can_soft_delete")
     @ApiModelProperty(notes = "Functional group module mapping soft delete.", example = "1 | 0")
+    @Column(columnDefinition = "integer default 0")
     private int canSoftDelete;
 
     @JsonProperty("can_hard_delete")
     @ApiModelProperty(notes = "Functional group module mapping hard delete.", example = "1 | 0")
+    @Column(columnDefinition = "integer default 0")
     private int canHardDelete;
 
     @JsonProperty("can_print")
     @ApiModelProperty(notes = "Functional group module mapping print.", example = "1 | 0")
+    @Column(columnDefinition = "integer default 0")
     private int canPrint;
 
     @JsonProperty("can_sms")
     @ApiModelProperty(notes = "Functional group module mapping sms.", example = "1 | 0")
+    @Column(columnDefinition = "integer default 0")
     private int canSMS;
 
     @JsonProperty("can_email")
     @ApiModelProperty(notes = "Functional group module mapping email.", example = "1 | 0")
+    @Column(columnDefinition = "integer default 0")
     private int canEmail;
 
     @JsonProperty("tenant_global_id")
@@ -125,15 +141,5 @@ public class FunctionalGroupModuleMappingEntity {
     @ApiModelProperty(notes = "Hard delete.", example = "1 | 0")
     @Column(columnDefinition = "integer default 0")
     private int hardDelete;
-
-	public UUID getFunctionalGroupModuleMappingGlobalId() {
-		return functionalGroupModuleMappingGlobalId;
-	}
-
-	public void setFunctionalGroupModuleMappingGlobalId(UUID functionalGroupModuleMappingGlobalId) {
-		this.functionalGroupModuleMappingGlobalId = functionalGroupModuleMappingGlobalId;
-	}
-    
-    
 
 }

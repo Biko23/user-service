@@ -85,13 +85,4 @@ public class ModuleEntity {
     @Column(columnDefinition = "integer default 0")
     private int hardDelete;
 
-	public UUID getModuleGlobalId() {
-		return moduleGlobalId;
-	}
-
-	public void setModuleGlobalId(UUID moduleGlobalId) {
-		this.moduleGlobalId = moduleGlobalId;
-	}
-    
-    
 }

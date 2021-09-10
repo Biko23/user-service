@@ -88,18 +88,6 @@ public class PasswordEntity {
     @ApiModelProperty(notes = "Hard delete.", example = "1 | 0")
     @Column(columnDefinition = "integer default 0")
     private int hardDelete;
-    
-    @OneToOne
-    @JoinColumn(name = "system_user_id", insertable = false, updatable = false)
-    private SystemUserEntity systemUserEntity;
 
-	public UUID getPasswordGlobalId() {
-		return passwordGlobalId;
-	}
 
-	public void setPasswordGlobalId(UUID passwordGlobalId) {
-		this.passwordGlobalId = passwordGlobalId;
-	}
-
-    
 }

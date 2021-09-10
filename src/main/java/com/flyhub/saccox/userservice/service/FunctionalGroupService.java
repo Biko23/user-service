@@ -37,10 +37,12 @@ public class FunctionalGroupService {
 
 
 	public FunctionalGroupEntity saveFunctionalGroup(FunctionalGroupEntity functionalGroupEntity) {
-			return functionalGroupRepository.save(functionalGroupEntity);
+		log.info("Inside saveFunctionalGroup method of FunctionalGroupService");
+		return functionalGroupRepository.save(functionalGroupEntity);
 	}
 	
 	public FunctionalGroupEntity findByFunctionalGroupGlobalId(UUID functionalGroupGlobalId) {
+		log.info("Inside findByFunctionalGroupGlobalId method of FunctionalGroupService");
 		FunctionalGroupEntity functionalGroup = functionalGroupRepository.findByFunctionalGroupGlobalId(functionalGroupGlobalId);
 		if (functionalGroup != null) {
 			return functionalGroup;
@@ -51,6 +53,7 @@ public class FunctionalGroupService {
 	}
 
 	public List<FunctionalGroupEntity> findAllFunctionalGroups() {
+		log.info("Inside findAllFunctionalGroups method of FunctionalGroupService");
 		List<FunctionalGroupEntity> functionalGroups = new ArrayList<FunctionalGroupEntity>();
 		functionalGroups.addAll(functionalGroupRepository.findAll());
 
@@ -63,7 +66,7 @@ public class FunctionalGroupService {
 
 	public FunctionalGroupEntity patchFunctionalGroup(UUID functionalGroupGlobalId, JsonPatch jsonPatch)
 			throws JsonPatchException, JsonProcessingException {
-//        log.info("Inside patchFunctionalGroup method of FunctionalGroupService");
+        log.info("Inside patchFunctionalGroup method of FunctionalGroupService");
 		if (functionalGroupGlobalId.equals(0L)) {
 			throw new CustomInvalidInputException("FunctionalGroup id - " + functionalGroupGlobalId + " - is not valid");
 		}
@@ -80,7 +83,7 @@ public class FunctionalGroupService {
 	}
 
 	public void deleteByFunctionalGroupGlobalId(UUID globalFunctionalGroupUuid) {
-//      log.info("Inside deleteFunctionalGroupById method of FunctionalGroupService");
+      log.info("Inside deleteFunctionalGroupById method of FunctionalGroupService");
 		if (globalFunctionalGroupUuid.equals(0L)) {
 			throw new CustomInvalidInputException("FunctionalGroup id - " + globalFunctionalGroupUuid + " - is not valid");
 		}
@@ -89,7 +92,7 @@ public class FunctionalGroupService {
 	}
 
 	public void deleteAllFunctionalGroups() {
-//      log.info("Inside deleteAllFunctionalGroups method of FunctionalGroupService");
+      log.info("Inside deleteAllFunctionalGroups method of FunctionalGroupService");
 		functionalGroupRepository.deleteAll();
 	}
 

@@ -81,14 +81,4 @@ public class SystemUserFunctionalGroupMappingEntity {
     @Column(columnDefinition = "integer default 0")
     private int hardDelete;
 
-	public UUID getSystemUserFunctionalGroupMappingGlobalId() {
-		return systemUserFunctionalGroupMappingGlobalId;
-	}
-
-	public void setSystemUserFunctionalGroupMappingGlobalId(UUID systemUserFunctionalGroupMappingGlobalId) {
-		this.systemUserFunctionalGroupMappingGlobalId = systemUserFunctionalGroupMappingGlobalId;
-	}
-    
-    
-
 }

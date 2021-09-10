@@ -87,14 +87,4 @@ public class ResponseFilterEntity {
     @Column(columnDefinition = "integer default 0")
     private int hardDelete;
 
-	public UUID getResponseFilterGlobalId() {
-		return responseFilterGlobalId;
-	}
-
-	public void setResponseFilterGlobalId(UUID responseFilterGlobalId) {
-		this.responseFilterGlobalId = responseFilterGlobalId;
-	}
-    
-    
-
 }

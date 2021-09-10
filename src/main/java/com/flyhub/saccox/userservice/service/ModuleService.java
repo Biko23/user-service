@@ -30,10 +30,12 @@ public class ModuleService {
 
 
 	public ModuleEntity saveModule(ModuleEntity moduleEntity) {
-			return moduleRepository.save(moduleEntity);
+		log.info("Inside saveModule method of ModuleService");
+		return moduleRepository.save(moduleEntity);
 	}
 	
 	public ModuleEntity findByModuleGlobalId(UUID moduleGlobalId) {
+		log.info("Inside findByModuleGlobalId method of ModuleService");
 		ModuleEntity login = moduleRepository.findByModuleGlobalId(moduleGlobalId);
 		if (login != null) {
 			return login;
@@ -44,6 +46,7 @@ public class ModuleService {
 	}
 
 	public List<ModuleEntity> findAllModules() {
+		log.info("Inside findAllModules method of ModuleService");
 		List<ModuleEntity> modules = new ArrayList<ModuleEntity>();
 		modules.addAll(moduleRepository.findAll());
 
@@ -56,7 +59,7 @@ public class ModuleService {
 
 	public ModuleEntity patchModule(UUID moduleGlobalId, JsonPatch jsonPatch)
 			throws JsonPatchException, JsonProcessingException {
-//        log.info("Inside patchModule method of FunctionalGroupService");
+        log.info("Inside patchModule method of ModuleService");
 		if (moduleGlobalId.equals(0L)) {
 			throw new CustomInvalidInputException("Module id - " + moduleGlobalId + " - is not valid");
 		}
@@ -72,7 +75,7 @@ public class ModuleService {
 	}
 
 	public void deleteByModuleGlobalId(UUID moduleGlobalId) {
-//      log.info("Inside deleteFunctionalGroupById method of FunctionalGroupService");
+      log.info("Inside deleteFunctionalGroupById method of ModuleService");
 		if (moduleGlobalId.equals(0L)) {
 			throw new CustomInvalidInputException("Module id - " + moduleGlobalId + " - is not valid");
 		}
@@ -81,7 +84,7 @@ public class ModuleService {
 	}
 
 	public void deleteAllModules() {
-//      log.info("Inside deleteAllModules method of FunctionalGroupService");
+      log.info("Inside deleteAllModules method of ModuleService");
 		moduleRepository.deleteAll();
 	}
 

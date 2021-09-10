@@ -95,13 +95,4 @@ public class LoginAttemptEntity {
     @Column(columnDefinition = "integer default 0")
     private int hardDelete;
 
-	public UUID getLoginAttemptGlobalId() {
-		return loginAttemptGlobalId;
-	}
-
-	public void setLoginAttemptGlobalId(UUID loginAttemptGlobalId) {
-		this.loginAttemptGlobalId = loginAttemptGlobalId;
-	}
-    
-    
 }

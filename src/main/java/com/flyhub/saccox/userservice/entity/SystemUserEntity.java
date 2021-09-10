@@ -70,13 +70,13 @@ public class SystemUserEntity {
     @ApiModelProperty(notes = "System user primary email.", example = "john@gmaoil.com")
     private String primaryEmail;
 
-    @JsonProperty("seccondary_email")
+    @JsonProperty("secondary_email")
     @ApiModelProperty(notes = "System user secondary email.", example = "a@gmail.com")
     private String secondaryEmail;
 
     @JsonProperty("dob")
     @ApiModelProperty(notes = "System user date of birth.", example = "12-12-21")
-    private Date dob;
+    private LocalDateTime dob;
 
     @JsonProperty("gender")
     @ApiModelProperty(notes = "System user date of birth.", example = "12-12-21")
@@ -104,7 +104,7 @@ public class SystemUserEntity {
 
     @JsonProperty("employment_date")
     @ApiModelProperty(notes = "System user date of employment.", example = "12-12-21")
-    private Date employmentDate;
+    private LocalDateTime employmentDate;
 
     @JsonProperty("employment_year")
     @ApiModelProperty(notes = "System user year of employment.", example = "12-12-21")
@@ -112,7 +112,7 @@ public class SystemUserEntity {
 
     @JsonProperty("termination_date")
     @ApiModelProperty(notes = "System user date of termination.", example = "12-12-21")
-    private Date terminationDate;
+    private LocalDateTime terminationDate;
 
     @JsonProperty("termination_year")
     @ApiModelProperty(notes = "System user year of termination.", example = "12-12-21")
@@ -169,19 +169,4 @@ public class SystemUserEntity {
     @Column(columnDefinition = "integer default 0")
     private int hardDelete;
 
-	public UUID getSystemUserId() {
-		return systemUserId;
-	}
-
-	public void setSystemUserId(UUID systemUserId) {
-		this.systemUserId = systemUserId;
-	}
-	
-    
-    @OneToOne(mappedBy = "systemUserEntity")
-    private PasswordEntity passwordEntity;
-
-	
-	
-	
 }

@@ -32,48 +32,48 @@ public class SystemUserController {
 
     @PostMapping("")
     public ResponseEntity<?> saveSystemUser(@RequestBody SystemUserEntity systemUserEntity) {
-//        log.info("Inside saveSystemUser method of SystemUserController");
+        log.info("Inside saveSystemUser method of SystemUserController");
         VisualObject _systemUser = systemUserService.saveSystemUser(systemUserEntity);
         return new ResponseEntity<>(new ApiResponseFormat(true, null, "SystemUser created.", _systemUser), HttpStatus.CREATED);
     }
     
     @GetMapping("/{systemUserId}")
     public ResponseEntity<?> findBySystemUserId(@PathVariable("systemUserId") UUID systemUserId) {
-//      log.info("Inside findBySystemUserId method of SystemUserController");
+      log.info("Inside findBySystemUserId method of SystemUserController");
     	SystemUserEntity systemUser = systemUserService.findBySystemUserId(systemUserId);
       return new ResponseEntity<>(new ApiResponseFormat(true, null, "SystemUser found.", systemUser), HttpStatus.OK);
     }
     
     @GetMapping("/{username}/{password}")
     public ResponseEntity<?> userLoginProcedure(@PathVariable("username") String username, @PathVariable("password") String password) {
-//      log.info("Inside findBySystemUserId method of SystemUserController");
+      log.info("Inside findBySystemUserId method of SystemUserController");
     	List<UserLoginProcedureEntity> user = systemUserService.userLoginProcedure(username, password);
       return new ResponseEntity<>(new ApiResponseFormat(true, null, "SystemUser found.", user), HttpStatus.OK);
     }
     
     @GetMapping("")
     public ResponseEntity<?> findAllSystemUsers() {
-//        log.info("Inside findAllSystemUsers method of SystemUserController");
+        log.info("Inside findAllSystemUsers method of SystemUserController");
         return new ResponseEntity<>(new ApiResponseFormat(true, null, "SystemUser(s) found.", systemUserService.findAllSystemUsers()), HttpStatus.OK);
     }
 
     
     @PatchMapping(path = "/{systemUserId}", consumes = "application/json-patch+json")
     public ResponseEntity<?> patchSystemUser(@PathVariable("systemUserId") UUID systemUserId, @RequestBody JsonPatch jsonPatch) throws JsonPatchException, JsonProcessingException {
-//        log.info("Inside partialUpdateSystemUser method of SystemUserController");
+        log.info("Inside partialUpdateSystemUser method of SystemUserController");
         return new ResponseEntity<>(new ApiResponseFormat(true, null, "SystemUser updated.", systemUserService.patchSystemUser(systemUserId, jsonPatch)), HttpStatus.OK);
     }
 
     @DeleteMapping("/{systemUserId}")
     public ResponseEntity<?> deleteBySystemUserId(@PathVariable("systemUserId") UUID systemUserId) {
-//        log.info("Inside deleteBySystemUserId method of SystemUserController");
+        log.info("Inside deleteBySystemUserId method of SystemUserController");
         systemUserService.deleteBySystemUserId(systemUserId);
         return new ResponseEntity<>(new ApiResponseFormat(true, null, "SystemUser deleted.", null), HttpStatus.OK);
     }
 
     @DeleteMapping("")
     public ResponseEntity<?> deleteAllSystemUsers() {
-//        log.info("Inside deleteAllSystemUsers method of SystemUserController");
+        log.info("Inside deleteAllSystemUsers method of SystemUserController");
         systemUserService.deleteAllSystemUsers();
         return new ResponseEntity<>(new ApiResponseFormat(true, null, "SystemUsers deleted.", null), HttpStatus.OK);
     }

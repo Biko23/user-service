@@ -26,9 +26,5 @@ public class UserTenant {
 		this.systemUserEntity = systemUserEntity;
 		this.tenant = tenant;
 	}
-	
-	
-	
-	
 
 }

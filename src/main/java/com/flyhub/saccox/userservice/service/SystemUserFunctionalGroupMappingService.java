@@ -26,14 +26,14 @@ public class SystemUserFunctionalGroupMappingService {
     private SystemUserFunctionalGroupMappingRepository systemUserFunctionalGroupMappingRepository;
 	@Autowired
 	private ObjectMapper objectMapper;
-    
-
 
 	public SystemUserFunctionalGroupMappingEntity saveSystemUserFunctionalGroupMapping(SystemUserFunctionalGroupMappingEntity systemUserFunctionalGroupMappingEntity) {
-			return systemUserFunctionalGroupMappingRepository.save(systemUserFunctionalGroupMappingEntity);
+		log.info("Inside saveSystemUserFunctionalGroupMapping method of SystemUserFunctionalGroupMappingService");
+		return systemUserFunctionalGroupMappingRepository.save(systemUserFunctionalGroupMappingEntity);
 	}
 	
 	public SystemUserFunctionalGroupMappingEntity findBySystemUserFunctionalGroupMappingGlobalId(UUID systemUserFunctionalGroupMappingGlobalId) {
+		log.info("Inside findBySystemUserFunctionalGroupMappingGlobalId method of SystemUserFunctionalGroupMappingService");
 		SystemUserFunctionalGroupMappingEntity login = systemUserFunctionalGroupMappingRepository.findBySystemUserFunctionalGroupMappingGlobalId(systemUserFunctionalGroupMappingGlobalId);
 		if (login != null) {
 			return login;
@@ -44,6 +44,7 @@ public class SystemUserFunctionalGroupMappingService {
 	}
 
 	public List<SystemUserFunctionalGroupMappingEntity> findAllSystemUserFunctionalGroupMappings() {
+		log.info("Inside findAllSystemUserFunctionalGroupMappings method of SystemUserFunctionalGroupMappingService");
 		List<SystemUserFunctionalGroupMappingEntity> systemUserFunctionalGroupMappings = new ArrayList<SystemUserFunctionalGroupMappingEntity>();
 		systemUserFunctionalGroupMappings.addAll(systemUserFunctionalGroupMappingRepository.findAll());
 
@@ -56,7 +57,7 @@ public class SystemUserFunctionalGroupMappingService {
 
 	public SystemUserFunctionalGroupMappingEntity patchSystemUserFunctionalGroupMapping(UUID systemUserFunctionalGroupMappingGlobalId, JsonPatch jsonPatch)
 			throws JsonPatchException, JsonProcessingException {
-//        log.info("Inside patchSystemUserFunctionalGroupMapping method of FunctionalGroupService");
+        log.info("Inside patchSystemUserFunctionalGroupMapping method of SystemUserFunctionalGroupMappingService");
 		if (systemUserFunctionalGroupMappingGlobalId.equals(0L)) {
 			throw new CustomInvalidInputException("SystemUserFunctionalGroupMapping id - " + systemUserFunctionalGroupMappingGlobalId + " - is not valid");
 		}
@@ -72,7 +73,7 @@ public class SystemUserFunctionalGroupMappingService {
 	}
 
 	public void deleteBySystemUserFunctionalGroupMappingGlobalId(UUID systemUserFunctionalGroupMappingGlobalId) {
-//      log.info("Inside deleteFunctionalGroupById method of FunctionalGroupService");
+      log.info("Inside deleteBySystemUserFunctionalGroupMappingGlobalId method of SystemUserFunctionalGroupMappingService");
 		if (systemUserFunctionalGroupMappingGlobalId.equals(0L)) {
 			throw new CustomInvalidInputException("SystemUserFunctionalGroupMapping id - " + systemUserFunctionalGroupMappingGlobalId + " - is not valid");
 		}
@@ -81,7 +82,7 @@ public class SystemUserFunctionalGroupMappingService {
 	}
 
 	public void deleteAllSystemUserFunctionalGroupMappings() {
-//      log.info("Inside deleteAllSystemUserFunctionalGroupMappings method of FunctionalGroupService");
+      log.info("Inside deleteAllSystemUserFunctionalGroupMappings method of SystemUserFunctionalGroupMappingService");
 		systemUserFunctionalGroupMappingRepository.deleteAll();
 	}
 

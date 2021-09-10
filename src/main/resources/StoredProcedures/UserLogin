@@ -1,7 +1,7 @@
 create or replace function UserLoginProcedure(username text, pass text) 
 returns 
 table(
-phone1 varchar,
+primary_phone varchar,
 first_name varchar, 	
 middle_name varchar,
 last_name varchar,
@@ -22,7 +22,7 @@ begin
 
 return query
 	SELECT 
-system_user.phone1, 
+system_user.primary_phone,
 system_user.first_name,
 system_user.middle_name,
 system_user.last_name,
@@ -40,13 +40,13 @@ COALESCE(functional_group_module_mapping.can_update, 0) AS can_update
 FROM 
 system_user
 LEFT JOIN system_user_functional_group_mapping ON system_user_functional_group_mapping.system_user_id = system_user.system_user_id
-LEFT JOIN functional_group ON functional_group.functional_group_id = system_user_functional_group_mapping.functional_group_id
-LEFT JOIN functional_group_module_mapping ON functional_group_module_mapping.functional_group_id = functional_group.functional_group_id
-LEFT JOIN module ON functional_group_module_mapping.module_id = module.module_id
+LEFT JOIN functional_group ON functional_group.functional_group_global_id = system_user_functional_group_mapping.functional_group_global_id
+LEFT JOIN functional_group_module_mapping ON functional_group_module_mapping.functional_group_global_id = functional_group.functional_group_global_id
+LEFT JOIN module ON functional_group_module_mapping.module_global_id = module.module_global_id
 WHERE
 system_user.password = pass AND
-(system_user.email1 = username OR
-system_user.phone1 = username);
+(system_user.primary_email = username OR
+system_user.primary_phone = username);
 
 end;
 '

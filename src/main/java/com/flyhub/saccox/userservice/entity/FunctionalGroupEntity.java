@@ -34,13 +34,17 @@ public class FunctionalGroupEntity {
     @ApiModelProperty(notes = "Functional group name.", example = "1")
     private String name;
 
+    @JsonProperty("description")
+    @ApiModelProperty(notes = "Functional group description.", example = "Team that handles member contributions and other transactions")
+    private String description;
+
     @JsonProperty("branch_global_id")
     @ApiModelProperty(notes = "Branch foreign key.", example = "1")
     private UUID branchGlobalId;
 
-    @JsonProperty("description")
-    @ApiModelProperty(notes = "Functional group description.", example = "Team that handles member contributions and other transactions")
-    private String description;
+    @JsonProperty("branch_name")
+    @ApiModelProperty(notes = "Branch foreign key.", example = "1")
+    private String branchName;
     
     @JsonProperty("tenant_global_id")
     @ApiModelProperty(notes = "Tenant foreign key.", example = "1")
@@ -85,13 +89,4 @@ public class FunctionalGroupEntity {
     @Column(columnDefinition = "integer default 0")
     private int hardDelete;
 
-	public UUID getFunctionalGroupGlobalId() {
-		return functionalGroupGlobalId;
-	}
-
-	public void setFunctionalGroupGlobalId(UUID functionalGroupGlobalId) {
-		this.functionalGroupGlobalId = functionalGroupGlobalId;
-	}
-    
-    
 }

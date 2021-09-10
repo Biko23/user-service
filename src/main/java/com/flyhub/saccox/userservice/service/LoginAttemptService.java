@@ -30,10 +30,12 @@ public class LoginAttemptService {
 
 
 	public LoginAttemptEntity saveLoginAttempt(LoginAttemptEntity loginAttemptEntity) {
-			return loginAttemptRepository.save(loginAttemptEntity);
+		log.info("Inside saveLoginAttempt method of LoginAttemptService");
+		return loginAttemptRepository.save(loginAttemptEntity);
 	}
 	
 	public LoginAttemptEntity findByLoginAttemptGlobalId(UUID loginAttemptGlobalId) {
+		log.info("Inside findByLoginAttemptGlobalId method of LoginAttemptService");
 		LoginAttemptEntity login = loginAttemptRepository.findByLoginAttemptGlobalId(loginAttemptGlobalId);
 		if (login != null) {
 			return login;
@@ -44,6 +46,7 @@ public class LoginAttemptService {
 	}
 
 	public List<LoginAttemptEntity> findAllLoginAttempts() {
+		log.info("Inside findAllLoginAttempts method of LoginAttemptService");
 		List<LoginAttemptEntity> loginAttempts = new ArrayList<LoginAttemptEntity>();
 		loginAttempts.addAll(loginAttemptRepository.findAll());
 
@@ -56,7 +59,7 @@ public class LoginAttemptService {
 
 	public LoginAttemptEntity patchLoginAttempt(UUID loginAttemptGlobalId, JsonPatch jsonPatch)
 			throws JsonPatchException, JsonProcessingException {
-//        log.info("Inside patchLoginAttempt method of FunctionalGroupService");
+        log.info("Inside patchLoginAttempt method of LoginAttemptService");
 		if (loginAttemptGlobalId.equals(0L)) {
 			throw new CustomInvalidInputException("Login attempt id - " + loginAttemptGlobalId + " - is not valid");
 		}
@@ -72,7 +75,7 @@ public class LoginAttemptService {
 	}
 
 	public void deleteByLoginAttemptGlobalId(UUID loginAttemptGlobalId) {
-//      log.info("Inside deleteFunctionalGroupById method of FunctionalGroupService");
+      log.info("Inside deleteByLoginAttemptGlobalId method of LoginAttemptService");
 		if (loginAttemptGlobalId.equals(0L)) {
 			throw new CustomInvalidInputException("FunctionalGroup id - " + loginAttemptGlobalId + " - is not valid");
 		}
@@ -81,7 +84,7 @@ public class LoginAttemptService {
 	}
 
 	public void deleteAllLoginAttempts() {
-//      log.info("Inside deleteAllFunctionalGroups method of FunctionalGroupService");
+//      log.info("Inside deleteAllLoginAttempts method of LoginAttemptService");
 		loginAttemptRepository.deleteAll();
 	}
 

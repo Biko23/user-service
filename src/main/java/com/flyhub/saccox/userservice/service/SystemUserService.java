@@ -40,12 +40,13 @@ public class SystemUserService {
 
 
 	public VisualObject saveSystemUser(SystemUserEntity systemUserEntity) {		
-//        log.info("Inside saveSystemUser method of SystemUserService");
+        log.info("Inside saveSystemUser method of SystemUserService");
         SystemUserEntity systemUser = systemUserRepository.save(systemUserEntity);
         
-        
         ResponseEntity<VisualObject> systemUserResponse = restTemplate.postForEntity("http://localhost:9100/api/v1/auth/system-users", systemUser, VisualObject.class);
-        
+		System.out.println("systemUserResponse");
+		System.out.println(systemUserResponse);
+
         SystemUserEntity tokenObject = new SystemUserEntity();
         
         tokenObject.setSystemUserId(systemUser.getSystemUserId());
@@ -60,6 +61,7 @@ public class SystemUserService {
     }
 	
 	public SystemUserEntity findBySystemUserId(UUID systemUserId) {
+		log.info("Inside findBySystemUserId method of SystemUserService");
 		SystemUserEntity login = systemUserRepository.findBySystemUserId(systemUserId);
 		if (login != null) {
 			return login;
@@ -70,6 +72,7 @@ public class SystemUserService {
 	}
 	
 	public List<SystemUserEntity> findAllSystemUsers() {
+		log.info("Inside findAllSystemUsers method of SystemUserService");
 		List<SystemUserEntity> systemUsers = new ArrayList<SystemUserEntity>();
 		systemUsers.addAll(systemUserRepository.findAll());
 
@@ -82,7 +85,7 @@ public class SystemUserService {
 
 	public SystemUserEntity patchSystemUser(UUID systemUserId, JsonPatch jsonPatch)
 			throws JsonPatchException, JsonProcessingException {
-//        log.info("Inside patchSystemUser method of FunctionalGroupService");
+        log.info("Inside patchSystemUser method of SystemUserService");
 		if (systemUserId.equals(0L)) {
 			throw new CustomInvalidInputException("SystemUser id - " + systemUserId + " - is not valid");
 		}
@@ -98,7 +101,7 @@ public class SystemUserService {
 	}
 
 	public void deleteBySystemUserId(UUID systemUserId) {
-//      log.info("Inside deleteFunctionalGroupById method of FunctionalGroupService");
+      log.info("Inside deleteBySystemUserId method of SystemUserService");
 		if (systemUserId.equals(0L)) {
 			throw new CustomInvalidInputException("SystemUser id - " + systemUserId + " - is not valid");
 		}
@@ -107,7 +110,7 @@ public class SystemUserService {
 	}
 
 	public void deleteAllSystemUsers() {
-//      log.info("Inside deleteAllSystemUsers method of FunctionalGroupService");
+      log.info("Inside deleteAllSystemUsers method of SystemUserService");
 		systemUserRepository.deleteAll();
 	}
 
@@ -118,11 +121,9 @@ public class SystemUserService {
 	}
 	
 	public List<UserLoginProcedureEntity> userLoginProcedure(String username, String password) {
+		log.info("Inside userLoginProcedure method of SystemUserService");
 		  List<UserLoginProcedureEntity> user = userLoginProcedureRepository.userLoginProcedure(username, password);
-		  
-		  System.out.println("user");
-		  System.out.println(user);
-		  
+
 		  if (!user.isEmpty()) {
 			  return user;
 		  }

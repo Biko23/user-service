@@ -30,10 +30,12 @@ public class PasswordService {
 
 
 	public PasswordEntity savePassword(PasswordEntity passwordEntity) {
-			return passwordRepository.save(passwordEntity);
+		log.info("Inside savePassword method of PasswordService");
+		return passwordRepository.save(passwordEntity);
 	}
 	
 	public PasswordEntity findByPasswordGlobalId(UUID passwordGlobalId) {
+		log.info("Inside findByPasswordGlobalId method of PasswordService");
 		PasswordEntity login = passwordRepository.findByPasswordGlobalId(passwordGlobalId);
 		if (login != null) {
 			return login;
@@ -44,6 +46,7 @@ public class PasswordService {
 	}
 
 	public List<PasswordEntity> findAllPasswords() {
+		log.info("Inside findAllPasswords method of PasswordService");
 		List<PasswordEntity> passwords = new ArrayList<PasswordEntity>();
 		passwords.addAll(passwordRepository.findAll());
 
@@ -56,7 +59,7 @@ public class PasswordService {
 
 	public PasswordEntity patchPassword(UUID passwordGlobalId, JsonPatch jsonPatch)
 			throws JsonPatchException, JsonProcessingException {
-//        log.info("Inside patchPassword method of FunctionalGroupService");
+        log.info("Inside patchPassword method of PasswordService");
 		if (passwordGlobalId.equals(0L)) {
 			throw new CustomInvalidInputException("Password id - " + passwordGlobalId + " - is not valid");
 		}
@@ -72,7 +75,7 @@ public class PasswordService {
 	}
 
 	public void deleteByPasswordGlobalId(UUID passwordGlobalId) {
-//      log.info("Inside deleteFunctionalGroupById method of FunctionalGroupService");
+      log.info("Inside deleteByPasswordGlobalId method of PasswordService");
 		if (passwordGlobalId.equals(0L)) {
 			throw new CustomInvalidInputException("Password id - " + passwordGlobalId + " - is not valid");
 		}
@@ -81,7 +84,7 @@ public class PasswordService {
 	}
 
 	public void deleteAllPasswords() {
-//      log.info("Inside deleteAllPasswords method of FunctionalGroupService");
+      log.info("Inside deleteAllPasswords method of PasswordService");
 		passwordRepository.deleteAll();
 	}
 
