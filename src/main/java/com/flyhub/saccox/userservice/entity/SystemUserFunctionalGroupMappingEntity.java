@@ -72,4 +72,5 @@ public class SystemUserFunctionalGroupMappingEntity {
     @Column(columnDefinition = "integer default 0")
     private int hardDelete;
 
+
 }
