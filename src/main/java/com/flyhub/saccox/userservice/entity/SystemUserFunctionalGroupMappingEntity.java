@@ -24,30 +24,21 @@ import java.util.UUID;
 public class SystemUserFunctionalGroupMappingEntity {
 
     @Id
-	@GeneratedValue(generator = "uuid")
-	@GenericGenerator(name = "uuid", strategy = "uuid2")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @JsonProperty("system_user_functional_group_mapping_global_id")
     @ApiModelProperty(notes = "Unique identifier of a system user functional group mapping entity. Auto generated.", example = "1")
     private UUID systemUserFunctionalGroupMappingGlobalId;
 
-    @JsonProperty("system_user_id")
+    @JsonProperty("system_user_global_id")
     @ApiModelProperty(notes = "System user foreign key.", example = "1")
-    private UUID systemUserId;
+    private UUID systemUserGlobalId;
 
     @JsonProperty("functional_group_global_id")
     @ApiModelProperty(notes = "Functional group foreign key.", example = "1")
     private UUID functionalGroupGlobalId;
-    
-    @JsonProperty("tenant_global_id")
-    @ApiModelProperty(notes = "Tenant foreign key.", example = "1")
-    private UUID tenantGlobalId;
-    
-    @JsonProperty("tenant_name")
-    @ApiModelProperty(notes="Name of tenant")
-    private String tenantName;
-    
+
     @JsonProperty("is_active")
-    @ApiModelProperty(notes = "Functional group active.", example = "1 | 0")
+    @ApiModelProperty(notes = "Mapping group active.", example = "1 | 0")
     @Column(columnDefinition = "integer default 1")
     private int isActive;
 
