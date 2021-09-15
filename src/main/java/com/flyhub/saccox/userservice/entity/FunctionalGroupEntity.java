@@ -41,6 +41,10 @@ public class FunctionalGroupEntity {
     @ApiModelProperty(notes = "Functional group name.", example = "1")
     private String name;
 
+    @JsonProperty("description")
+    @ApiModelProperty(notes = "Functional group name.", example = "1")
+    private String description;
+
     @JsonProperty("is_active")
     @ApiModelProperty(notes = "Functional group active.", example = "1 | 0")
     @Column(columnDefinition = "integer default 1")

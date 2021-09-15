@@ -49,7 +49,7 @@ public class SystemUserService {
 
         SystemUserEntity tokenObject = new SystemUserEntity();
         
-        tokenObject.setSystemUserId(systemUser.getSystemUserId());
+//        tokenObject.setSystemUserId(systemUser.getSystemUserId());
         
         VisualObject tokenResponse = restTemplate.postForObject("http://localhost:9100/api/v1/auth/tokens",tokenObject, VisualObject.class);
 		
