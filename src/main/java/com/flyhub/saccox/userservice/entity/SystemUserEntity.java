@@ -26,13 +26,17 @@ public class SystemUserEntity {
     @Id
 	@GeneratedValue(generator = "uuid")
 	@GenericGenerator(name = "uuid", strategy = "uuid2")
-    @JsonProperty("system_user_id")
+    @JsonProperty("system_user_global_id")
     @ApiModelProperty(notes = "Unique identifier of a system user type entity. Auto generated.", example = "1")
-    private UUID systemUserId;
+    private UUID systemUserGlobalId;
 
     @JsonProperty("tenant_global_id")
     @ApiModelProperty(notes = "Tenant foreign key.", example = "1")
     private UUID tenantGlobalId;
+
+    @JsonProperty("branch_global_id")
+    @ApiModelProperty(notes = "Tenant foreign key.", example = "1")
+    private UUID branchGlobalId;
 
     @JsonProperty("tenant_name")
     @ApiModelProperty(notes="Name of tenant")
@@ -169,4 +173,7 @@ public class SystemUserEntity {
     @Column(columnDefinition = "integer default 0")
     private int hardDelete;
 
+    @JsonProperty("refresh_token")
+    @ApiModelProperty(notes = "Refresh token.", example = "UUID", required = true)
+    private UUID refreshToken;
 }

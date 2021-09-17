@@ -37,37 +37,48 @@ public class SystemUserController {
         return new ResponseEntity<>(new ApiResponseFormat(true, null, "SystemUser created.", _systemUser), HttpStatus.CREATED);
     }
     
-    @GetMapping("/{systemUserId}")
-    public ResponseEntity<?> findBySystemUserId(@PathVariable("systemUserId") UUID systemUserId) {
-      log.info("Inside findBySystemUserId method of SystemUserController");
-    	SystemUserEntity systemUser = systemUserService.findBySystemUserId(systemUserId);
+    @GetMapping("/{systemUserGlobalId}")
+    public ResponseEntity<?> findBysystemUserGlobalId(@PathVariable("systemUserGlobalId") UUID systemUserGlobalId) {
+      log.info("Inside findBysystemUserGlobalId method of SystemUserController");
+    	SystemUserEntity systemUser = systemUserService.findBySystemUserGlobalId(systemUserGlobalId);
       return new ResponseEntity<>(new ApiResponseFormat(true, null, "SystemUser found.", systemUser), HttpStatus.OK);
     }
     
     @GetMapping("/{username}/{password}")
     public ResponseEntity<?> userLoginProcedure(@PathVariable("username") String username, @PathVariable("password") String password) {
-      log.info("Inside findBySystemUserId method of SystemUserController");
+      log.info("Inside findBysystemUserGlobalId method of SystemUserController");
     	List<UserLoginProcedureEntity> user = systemUserService.userLoginProcedure(username, password);
       return new ResponseEntity<>(new ApiResponseFormat(true, null, "SystemUser found.", user), HttpStatus.OK);
+    }
+
+    @GetMapping("/staff-groups")
+    public ResponseEntity<?> systemUserFunctionalGroupsProcedure() {
+        log.info("Inside systemUserFunctionalGroupsProcedure method of SystemUserController");
+        return new ResponseEntity<>(new ApiResponseFormat(true, null, "SystemUser(s) found.", systemUserService.systemUserFunctionalGroupsProcedure()), HttpStatus.OK);
     }
     
     @GetMapping("")
     public ResponseEntity<?> findAllSystemUsers() {
         log.info("Inside findAllSystemUsers method of SystemUserController");
-        return new ResponseEntity<>(new ApiResponseFormat(true, null, "SystemUser(s) found.", systemUserService.findAllSystemUsers()), HttpStatus.OK);
+        return new ResponseEntity<>(new ApiResponseFormat(true, null, "SystemUser(s) found.", systemUserService.systemUserFunctionalGroupsProcedure()), HttpStatus.OK);
     }
 
-    
-    @PatchMapping(path = "/{systemUserId}", consumes = "application/json-patch+json")
-    public ResponseEntity<?> patchSystemUser(@PathVariable("systemUserId") UUID systemUserId, @RequestBody JsonPatch jsonPatch) throws JsonPatchException, JsonProcessingException {
+    @GetMapping("/staff")
+    public ResponseEntity<?> findAllStaff() {
+        log.info("Inside findAllStaff method of SystemUserController");
+        return new ResponseEntity<>(new ApiResponseFormat(true, null, "SystemUser(s) found.", systemUserService.findAllStaff()), HttpStatus.OK);
+    }
+
+    @PatchMapping(path = "/{systemUserGlobalId}", consumes = "application/json-patch+json")
+    public ResponseEntity<?> patchSystemUser(@PathVariable("systemUserGlobalId") UUID systemUserGlobalId, @RequestBody JsonPatch jsonPatch) throws JsonPatchException, JsonProcessingException {
         log.info("Inside partialUpdateSystemUser method of SystemUserController");
-        return new ResponseEntity<>(new ApiResponseFormat(true, null, "SystemUser updated.", systemUserService.patchSystemUser(systemUserId, jsonPatch)), HttpStatus.OK);
+        return new ResponseEntity<>(new ApiResponseFormat(true, null, "SystemUser updated.", systemUserService.patchSystemUser(systemUserGlobalId, jsonPatch)), HttpStatus.OK);
     }
 
-    @DeleteMapping("/{systemUserId}")
-    public ResponseEntity<?> deleteBySystemUserId(@PathVariable("systemUserId") UUID systemUserId) {
-        log.info("Inside deleteBySystemUserId method of SystemUserController");
-        systemUserService.deleteBySystemUserId(systemUserId);
+    @DeleteMapping("/{systemUserGlobalId}")
+    public ResponseEntity<?> deleteBysystemUserGlobalId(@PathVariable("systemUserGlobalId") UUID systemUserGlobalId) {
+        log.info("Inside deleteBysystemUserGlobalId method of SystemUserController");
+        systemUserService.deleteBySystemUserGlobalId(systemUserGlobalId);
         return new ResponseEntity<>(new ApiResponseFormat(true, null, "SystemUser deleted.", null), HttpStatus.OK);
     }
 

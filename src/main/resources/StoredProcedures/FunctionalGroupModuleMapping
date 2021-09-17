@@ -42,7 +42,9 @@ module
 WHERE
 functional_group_module_mapping.functional_group_global_id = functional_group.functional_group_global_id
 AND
-functional_group_module_mapping.module_global_id = module.module_global_id;
+functional_group_module_mapping.module_global_id = module.module_global_id
+AND
+functional_group_module_mapping.soft_delete = 0;
 
 end;
 '
