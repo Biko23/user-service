@@ -50,14 +50,25 @@ public class SystemUserController {
     	List<UserLoginProcedureEntity> user = systemUserService.userLoginProcedure(username, password);
       return new ResponseEntity<>(new ApiResponseFormat(true, null, "SystemUser found.", user), HttpStatus.OK);
     }
+
+    @GetMapping("/staff-groups")
+    public ResponseEntity<?> systemUserFunctionalGroupsProcedure() {
+        log.info("Inside systemUserFunctionalGroupsProcedure method of SystemUserController");
+        return new ResponseEntity<>(new ApiResponseFormat(true, null, "SystemUser(s) found.", systemUserService.systemUserFunctionalGroupsProcedure()), HttpStatus.OK);
+    }
     
     @GetMapping("")
     public ResponseEntity<?> findAllSystemUsers() {
         log.info("Inside findAllSystemUsers method of SystemUserController");
-        return new ResponseEntity<>(new ApiResponseFormat(true, null, "SystemUser(s) found.", systemUserService.findAllSystemUsers()), HttpStatus.OK);
+        return new ResponseEntity<>(new ApiResponseFormat(true, null, "SystemUser(s) found.", systemUserService.systemUserFunctionalGroupsProcedure()), HttpStatus.OK);
     }
 
-    
+    @GetMapping("/staff")
+    public ResponseEntity<?> findAllStaff() {
+        log.info("Inside findAllStaff method of SystemUserController");
+        return new ResponseEntity<>(new ApiResponseFormat(true, null, "SystemUser(s) found.", systemUserService.findAllStaff()), HttpStatus.OK);
+    }
+
     @PatchMapping(path = "/{systemUserGlobalId}", consumes = "application/json-patch+json")
     public ResponseEntity<?> patchSystemUser(@PathVariable("systemUserGlobalId") UUID systemUserGlobalId, @RequestBody JsonPatch jsonPatch) throws JsonPatchException, JsonProcessingException {
         log.info("Inside partialUpdateSystemUser method of SystemUserController");
@@ -78,6 +89,4 @@ public class SystemUserController {
         return new ResponseEntity<>(new ApiResponseFormat(true, null, "SystemUsers deleted.", null), HttpStatus.OK);
     }
 
-
-//   
 }

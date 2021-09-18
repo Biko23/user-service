@@ -102,11 +102,11 @@ public class FunctionalGroupModuleMappingEntity {
     @JsonProperty("tenant_global_id")
     @ApiModelProperty(notes = "Tenant foreign key.", example = "1")
     private UUID tenantGlobalId;
-    
+
     @JsonProperty("tenant_name")
     @ApiModelProperty(notes="Name of tenant")
     private String tenantName;
-    
+
     @JsonProperty("is_active")
     @ApiModelProperty(notes = "Functional group active.", example = "1 | 0")
     @Column(columnDefinition = "integer default 1")

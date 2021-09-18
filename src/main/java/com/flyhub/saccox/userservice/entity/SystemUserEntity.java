@@ -29,15 +29,19 @@ public class SystemUserEntity {
     @JsonProperty("system_user_global_id")
     @ApiModelProperty(notes = "Unique identifier of a system user type entity. Auto generated.", example = "1")
     private UUID systemUserGlobalId;
-    
+
     @JsonProperty("tenant_global_id")
     @ApiModelProperty(notes = "Tenant foreign key.", example = "1")
     private UUID tenantGlobalId;
-    
+
+    @JsonProperty("branch_global_id")
+    @ApiModelProperty(notes = "Tenant foreign key.", example = "1")
+    private UUID branchGlobalId;
+
     @JsonProperty("tenant_name")
     @ApiModelProperty(notes="Name of tenant")
     private String tenantName;
-	
+
     @JsonProperty("first_name")
     @ApiModelProperty(notes = "System user first name.", example = "John")
     private String firstName;
@@ -121,11 +125,11 @@ public class SystemUserEntity {
     @JsonProperty("termination_reason")
     @ApiModelProperty(notes = "System user reason for termination.", example = "12-12-21")
     private String terminationReason;
-    
+
     @JsonProperty("password")
     @ApiModelProperty(notes = "Password password.", example = "1")
     private String password;
-    
+
     @JsonProperty("question")
     @ApiModelProperty(notes = "Password question.", example = "Place of birth?")
     private String question;
@@ -133,7 +137,7 @@ public class SystemUserEntity {
     @JsonProperty("answer")
     @ApiModelProperty(notes = "Password answer.", example = "12345678")
     private String answer;
-    
+
     @JsonProperty("is_active")
     @ApiModelProperty(notes = "Functional group active.", example = "1 | 0")
     @Column(columnDefinition = "integer default 1")
@@ -169,4 +173,7 @@ public class SystemUserEntity {
     @Column(columnDefinition = "integer default 0")
     private int hardDelete;
 
+    @JsonProperty("refresh_token")
+    @ApiModelProperty(notes = "Refresh token.", example = "UUID", required = true)
+    private UUID refreshToken;
 }
