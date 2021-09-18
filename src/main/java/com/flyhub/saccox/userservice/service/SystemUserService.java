@@ -49,7 +49,7 @@ public class SystemUserService {
 
         SystemUserEntity tokenObject = new SystemUserEntity();
         
-        tokenObject.setSystemUserId(systemUser.getSystemUserId());
+        tokenObject.setSystemUserGlobalId(systemUser.getSystemUserGlobalId());
         
         VisualObject tokenResponse = restTemplate.postForObject("http://localhost:9100/api/v1/auth/tokens",tokenObject, VisualObject.class);
 		
@@ -60,14 +60,14 @@ public class SystemUserService {
         return tokenResponse;
     }
 	
-	public SystemUserEntity findBySystemUserId(UUID systemUserId) {
-		log.info("Inside findBySystemUserId method of SystemUserService");
-		SystemUserEntity login = systemUserRepository.findBySystemUserId(systemUserId);
+	public SystemUserEntity findBySystemUserGlobalId(UUID systemUserGlobalId) {
+		log.info("Inside findBySystemUserGlobalId method of SystemUserService");
+		SystemUserEntity login = systemUserRepository.findBySystemUserGlobalId(systemUserGlobalId);
 		if (login != null) {
 			return login;
 		}
 		else {
-			throw new CustomNotFoundException("SystemUser - " + systemUserId + " - not found");
+			throw new CustomNotFoundException("SystemUser - " + systemUserGlobalId + " - not found");
 		}
 	}
 	
@@ -83,30 +83,30 @@ public class SystemUserService {
 		return systemUsers;
 	}
 
-	public SystemUserEntity patchSystemUser(UUID systemUserId, JsonPatch jsonPatch)
+	public SystemUserEntity patchSystemUser(UUID systemUserGlobalId, JsonPatch jsonPatch)
 			throws JsonPatchException, JsonProcessingException {
         log.info("Inside patchSystemUser method of SystemUserService");
-		if (systemUserId.equals(0L)) {
-			throw new CustomInvalidInputException("SystemUser id - " + systemUserId + " - is not valid");
+		if (systemUserGlobalId.equals(0L)) {
+			throw new CustomInvalidInputException("SystemUser id - " + systemUserGlobalId + " - is not valid");
 		}
 
-		Optional<SystemUserEntity> login = Optional.ofNullable(systemUserRepository.findBySystemUserId(systemUserId));
+		Optional<SystemUserEntity> login = Optional.ofNullable(systemUserRepository.findBySystemUserGlobalId(systemUserGlobalId));
 
 		if (login.isPresent()) {
 			SystemUserEntity loginEntity = this.applyPatchToSystemUserEntity(jsonPatch, login.get());
 			return systemUserRepository.save(loginEntity);
 		} else {
-			throw new CustomNotFoundException("FunctionalGroup with id - " + systemUserId + " - not found");
+			throw new CustomNotFoundException("FunctionalGroup with id - " + systemUserGlobalId + " - not found");
 		}
 	}
 
-	public void deleteBySystemUserId(UUID systemUserId) {
-      log.info("Inside deleteBySystemUserId method of SystemUserService");
-		if (systemUserId.equals(0L)) {
-			throw new CustomInvalidInputException("SystemUser id - " + systemUserId + " - is not valid");
+	public void deleteBySystemUserGlobalId(UUID systemUserGlobalId) {
+      log.info("Inside deleteBySystemUserGlobalId method of SystemUserService");
+		if (systemUserGlobalId.equals(0L)) {
+			throw new CustomInvalidInputException("SystemUser id - " + systemUserGlobalId + " - is not valid");
 		}
 
-		systemUserRepository.deleteById(systemUserId);
+		systemUserRepository.deleteById(systemUserGlobalId);
 	}
 
 	public void deleteAllSystemUsers() {

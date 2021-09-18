@@ -92,7 +92,7 @@ public class FunctionalGroupModuleMappingEntity {
     @JsonProperty("can_sms")
     @ApiModelProperty(notes = "Functional group module mapping sms.", example = "1 | 0")
     @Column(columnDefinition = "integer default 0")
-    private int canSMS;
+    private int canSms;
 
     @JsonProperty("can_email")
     @ApiModelProperty(notes = "Functional group module mapping email.", example = "1 | 0")

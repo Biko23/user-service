@@ -30,9 +30,9 @@ public class SystemUserFunctionalGroupMappingEntity {
     @ApiModelProperty(notes = "Unique identifier of a system user functional group mapping entity. Auto generated.", example = "1")
     private UUID systemUserFunctionalGroupMappingGlobalId;
 
-    @JsonProperty("system_user_id")
+    @JsonProperty("system_user_global_id")
     @ApiModelProperty(notes = "System user foreign key.", example = "1")
-    private UUID systemUserId;
+    private UUID systemUserGlobalId;
 
     @JsonProperty("functional_group_global_id")
     @ApiModelProperty(notes = "Functional group foreign key.", example = "1")

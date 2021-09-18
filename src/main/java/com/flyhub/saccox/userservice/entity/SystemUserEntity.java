@@ -26,9 +26,9 @@ public class SystemUserEntity {
     @Id
 	@GeneratedValue(generator = "uuid")
 	@GenericGenerator(name = "uuid", strategy = "uuid2")
-    @JsonProperty("system_user_id")
+    @JsonProperty("system_user_global_id")
     @ApiModelProperty(notes = "Unique identifier of a system user type entity. Auto generated.", example = "1")
-    private UUID systemUserId;
+    private UUID systemUserGlobalId;
     
     @JsonProperty("tenant_global_id")
     @ApiModelProperty(notes = "Tenant foreign key.", example = "1")

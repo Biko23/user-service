@@ -37,16 +37,16 @@ public class SystemUserController {
         return new ResponseEntity<>(new ApiResponseFormat(true, null, "SystemUser created.", _systemUser), HttpStatus.CREATED);
     }
     
-    @GetMapping("/{systemUserId}")
-    public ResponseEntity<?> findBySystemUserId(@PathVariable("systemUserId") UUID systemUserId) {
-      log.info("Inside findBySystemUserId method of SystemUserController");
-    	SystemUserEntity systemUser = systemUserService.findBySystemUserId(systemUserId);
+    @GetMapping("/{systemUserGlobalId}")
+    public ResponseEntity<?> findBySystemUserGlobalId(@PathVariable("systemUserGlobalId") UUID systemUserGlobalId) {
+      log.info("Inside findBySystemUserGlobalId method of SystemUserController");
+    	SystemUserEntity systemUser = systemUserService.findBySystemUserGlobalId(systemUserGlobalId);
       return new ResponseEntity<>(new ApiResponseFormat(true, null, "SystemUser found.", systemUser), HttpStatus.OK);
     }
     
     @GetMapping("/{username}/{password}")
     public ResponseEntity<?> userLoginProcedure(@PathVariable("username") String username, @PathVariable("password") String password) {
-      log.info("Inside findBySystemUserId method of SystemUserController");
+      log.info("Inside findBySystemUserGlobalId method of SystemUserController");
     	List<UserLoginProcedureEntity> user = systemUserService.userLoginProcedure(username, password);
       return new ResponseEntity<>(new ApiResponseFormat(true, null, "SystemUser found.", user), HttpStatus.OK);
     }
@@ -58,16 +58,16 @@ public class SystemUserController {
     }
 
     
-    @PatchMapping(path = "/{systemUserId}", consumes = "application/json-patch+json")
-    public ResponseEntity<?> patchSystemUser(@PathVariable("systemUserId") UUID systemUserId, @RequestBody JsonPatch jsonPatch) throws JsonPatchException, JsonProcessingException {
+    @PatchMapping(path = "/{systemUserGlobalId}", consumes = "application/json-patch+json")
+    public ResponseEntity<?> patchSystemUser(@PathVariable("systemUserGlobalId") UUID systemUserGlobalId, @RequestBody JsonPatch jsonPatch) throws JsonPatchException, JsonProcessingException {
         log.info("Inside partialUpdateSystemUser method of SystemUserController");
-        return new ResponseEntity<>(new ApiResponseFormat(true, null, "SystemUser updated.", systemUserService.patchSystemUser(systemUserId, jsonPatch)), HttpStatus.OK);
+        return new ResponseEntity<>(new ApiResponseFormat(true, null, "SystemUser updated.", systemUserService.patchSystemUser(systemUserGlobalId, jsonPatch)), HttpStatus.OK);
     }
 
-    @DeleteMapping("/{systemUserId}")
-    public ResponseEntity<?> deleteBySystemUserId(@PathVariable("systemUserId") UUID systemUserId) {
-        log.info("Inside deleteBySystemUserId method of SystemUserController");
-        systemUserService.deleteBySystemUserId(systemUserId);
+    @DeleteMapping("/{systemUserGlobalId}")
+    public ResponseEntity<?> deleteBySystemUserGlobalId(@PathVariable("systemUserGlobalId") UUID systemUserGlobalId) {
+        log.info("Inside deleteBySystemUserGlobalId method of SystemUserController");
+        systemUserService.deleteBySystemUserGlobalId(systemUserGlobalId);
         return new ResponseEntity<>(new ApiResponseFormat(true, null, "SystemUser deleted.", null), HttpStatus.OK);
     }
 
