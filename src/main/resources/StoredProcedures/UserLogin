@@ -1,7 +1,7 @@
 create or replace function UserLoginProcedure(username text, pass text) 
 returns 
 table(
-system_user_global_id varchar,
+system_user_global_id UUID,
 primary_phone varchar,
 first_name varchar, 	
 middle_name varchar,
