@@ -51,6 +51,10 @@ public class SystemUserService {
 		System.out.println(systemUserResponse);
 
         SystemUserEntity tokenObject = new SystemUserEntity();
+<<<<<<< HEAD
+        
+        tokenObject.setSystemUserGlobalId(systemUser.getSystemUserGlobalId());
+=======
         UUID tenantGlobalId = UUID.randomUUID();
         String tenantName = "Tenant Name";
         UUID branchGlobalId = UUID.randomUUID();
@@ -64,6 +68,7 @@ public class SystemUserService {
 
 		System.out.println("tokenObject");
 		System.out.println(tokenObject);
+>>>>>>> 1cc2cc544ba74860d512a512cfe5762f4553381e
         
         VisualObject tokenResponse = restTemplate.postForObject("http://localhost:9100/api/v1/auth/tokens",tokenObject, VisualObject.class);
 		
@@ -97,6 +102,8 @@ public class SystemUserService {
 		return systemUsers;
 	}
 
+<<<<<<< HEAD
+=======
 	public List<SystemUserEntity> findAllStaff() {
 		log.info("Inside findAllSystemUsers method of SystemUserService");
 		List<SystemUserEntity> staff = new ArrayList<SystemUserEntity>();
@@ -109,6 +116,7 @@ public class SystemUserService {
 		return staff;
 	}
 
+>>>>>>> 1cc2cc544ba74860d512a512cfe5762f4553381e
 	public SystemUserEntity patchSystemUser(UUID systemUserGlobalId, JsonPatch jsonPatch)
 			throws JsonPatchException, JsonProcessingException {
         log.info("Inside patchSystemUser method of SystemUserService");
@@ -127,7 +135,11 @@ public class SystemUserService {
 	}
 
 	public void deleteBySystemUserGlobalId(UUID systemUserGlobalId) {
+<<<<<<< HEAD
+      log.info("Inside deleteBySystemUserGlobalId method of SystemUserService");
+=======
       log.info("Inside deleteBySystemUserId method of SystemUserService");
+>>>>>>> 1cc2cc544ba74860d512a512cfe5762f4553381e
 		if (systemUserGlobalId.equals(0L)) {
 			throw new CustomInvalidInputException("SystemUser id - " + systemUserGlobalId + " - is not valid");
 		}

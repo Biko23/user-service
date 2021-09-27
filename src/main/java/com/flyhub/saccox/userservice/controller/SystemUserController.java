@@ -38,15 +38,15 @@ public class SystemUserController {
     }
     
     @GetMapping("/{systemUserGlobalId}")
-    public ResponseEntity<?> findBysystemUserGlobalId(@PathVariable("systemUserGlobalId") UUID systemUserGlobalId) {
-      log.info("Inside findBysystemUserGlobalId method of SystemUserController");
+    public ResponseEntity<?> findBySystemUserGlobalId(@PathVariable("systemUserGlobalId") UUID systemUserGlobalId) {
+      log.info("Inside findBySystemUserGlobalId method of SystemUserController");
     	SystemUserEntity systemUser = systemUserService.findBySystemUserGlobalId(systemUserGlobalId);
       return new ResponseEntity<>(new ApiResponseFormat(true, null, "SystemUser found.", systemUser), HttpStatus.OK);
     }
     
     @GetMapping("/{username}/{password}")
     public ResponseEntity<?> userLoginProcedure(@PathVariable("username") String username, @PathVariable("password") String password) {
-      log.info("Inside findBysystemUserGlobalId method of SystemUserController");
+      log.info("Inside findBySystemUserGlobalId method of SystemUserController");
     	List<UserLoginProcedureEntity> user = systemUserService.userLoginProcedure(username, password);
       return new ResponseEntity<>(new ApiResponseFormat(true, null, "SystemUser found.", user), HttpStatus.OK);
     }
@@ -76,8 +76,8 @@ public class SystemUserController {
     }
 
     @DeleteMapping("/{systemUserGlobalId}")
-    public ResponseEntity<?> deleteBysystemUserGlobalId(@PathVariable("systemUserGlobalId") UUID systemUserGlobalId) {
-        log.info("Inside deleteBysystemUserGlobalId method of SystemUserController");
+    public ResponseEntity<?> deleteBySystemUserGlobalId(@PathVariable("systemUserGlobalId") UUID systemUserGlobalId) {
+        log.info("Inside deleteBySystemUserGlobalId method of SystemUserController");
         systemUserService.deleteBySystemUserGlobalId(systemUserGlobalId);
         return new ResponseEntity<>(new ApiResponseFormat(true, null, "SystemUser deleted.", null), HttpStatus.OK);
     }
@@ -94,6 +94,7 @@ public class SystemUserController {
         return new ResponseEntity<>(new ApiResponseFormat(true, null, "SystemUser exists.", systemUserService.findByPrimaryPhoneOrSecondaryPhone(phoneNumber)), HttpStatus.OK);
     }
 
+<<<<<<< HEAD
     @GetMapping("/email-exists/{email}")
     public ResponseEntity<?> findByPrimaryEmailOrSecondaryEmail(@PathVariable("email") String email) {
         log.info("Inside findByPrimaryEmailOrSecondaryEmail method of SystemUserController");
@@ -101,4 +102,6 @@ public class SystemUserController {
     }
 
 //   
+=======
+>>>>>>> 6a52a46938740261d07de0f5147bf684d4a90fe0
 }
