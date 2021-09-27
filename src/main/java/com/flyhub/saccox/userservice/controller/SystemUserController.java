@@ -88,7 +88,17 @@ public class SystemUserController {
         systemUserService.deleteAllSystemUsers();
         return new ResponseEntity<>(new ApiResponseFormat(true, null, "SystemUsers deleted.", null), HttpStatus.OK);
     }
+    @GetMapping("/phone-exists/{phoneNumber}")
+    public ResponseEntity<?> findByPrimaryPhoneOrSecondaryPhone(@PathVariable("phoneNumber") String phoneNumber) {
+        log.info("Inside findByPrimaryPhoneOrSecondaryPhone method of SystemUserController");
+        return new ResponseEntity<>(new ApiResponseFormat(true, null, "SystemUser exists.", systemUserService.findByPrimaryPhoneOrSecondaryPhone(phoneNumber)), HttpStatus.OK);
+    }
 
+    @GetMapping("/email-exists/{email}")
+    public ResponseEntity<?> findByPrimaryEmailOrSecondaryEmail(@PathVariable("email") String email) {
+        log.info("Inside findByPrimaryEmailOrSecondaryEmail method of SystemUserController");
+        return new ResponseEntity<>(new ApiResponseFormat(true, null, "SystemUser exists.", systemUserService.findByPrimaryEmailOrSecondaryEmail(email)), HttpStatus.OK);
+    }
 
 //   
 }

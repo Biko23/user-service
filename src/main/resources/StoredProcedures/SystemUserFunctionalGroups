@@ -2,9 +2,9 @@ create or replace function SystemUserFunctionalGroupsProcedure()
 returns
 table(
 system_user_global_id uuid,
-system_user_functional_group_mapping_global_id uuid,
-functional_group_global_id uuid,
-functional_group_name varchar,
+system_user_functional_group_mapping_global_ids uuid[],
+functional_group_global_ids uuid[],
+functional_group_names varchar[],
 first_name varchar,
 middle_name varchar,
 last_name varchar,
@@ -17,9 +17,9 @@ begin
 return query
 SELECT
 system_user.system_user_global_id,
-system_user_functional_group_mapping.system_user_functional_group_mapping_global_id,
-system_user_functional_group_mapping.functional_group_global_id,
-functional_group.name AS functional_group_name,
+ARRAY_AGG(system_user_functional_group_mapping.system_user_functional_group_mapping_global_id) AS system_user_functional_group_mapping_global_ids,
+ARRAY_AGG(system_user_functional_group_mapping.functional_group_global_id) AS functional_group_global_ids,
+ARRAY_AGG(functional_group.name) AS functional_group_names,
 system_user.first_name,
 system_user.middle_name,
 system_user.last_name,
@@ -29,9 +29,12 @@ FROM
 system_user,system_user_functional_group_mapping
 LEFT JOIN functional_group ON functional_group.functional_group_global_id = system_user_functional_group_mapping.functional_group_global_id
 WHERE
-system_user.system_user_global_id = system_user_functional_group_mapping.system_user_global_id
-AND
-system_user.is_staff = 1;
+system_user.system_user_global_id = system_user_functional_group_mapping.system_user_global_id AND
+system_user.is_staff = 1 AND
+system_user_functional_group_mapping.soft_delete = 0
+GROUP BY
+system_user.system_user_global_id;
+
 
 end;
 '
