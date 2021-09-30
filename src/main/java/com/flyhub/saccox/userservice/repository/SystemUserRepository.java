@@ -15,5 +15,7 @@ public interface SystemUserRepository extends JpaRepository<SystemUserEntity, UU
 
     @Query("SELECT u FROM SystemUserEntity u WHERE u.isStaff = 1")
     List<SystemUserEntity> findAllStaff();
-    
+    SystemUserEntity findByPrimaryPhoneOrSecondaryPhone(String primaryPhone, String secondaryPhone);
+    SystemUserEntity findByPrimaryEmailOrSecondaryEmail(String primaryEmail, String secondaryEmail);
+
 }

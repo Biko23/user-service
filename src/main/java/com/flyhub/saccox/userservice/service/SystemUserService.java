@@ -22,10 +22,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -184,12 +181,35 @@ public class SystemUserService {
 	public List<SystemUserFunctionalGroupsProcedureEntity> systemUserFunctionalGroupsProcedure() {
 		log.info("Inside systemUserFunctionalGroupsProcedure method of SystemUserService");
 		List<SystemUserFunctionalGroupsProcedureEntity> systemUserFunctionalGroups = systemUserFunctionalGroupsProcedureRepository.systemUserFunctionalGroupsProcedure();
-
 		if (!systemUserFunctionalGroups.isEmpty()) {
 			return systemUserFunctionalGroups;
 		}
 		else {
 			throw new CustomNotFoundException("System User Functional Group Mappings not found");
+		}
+	}
+
+	public boolean findByPrimaryPhoneOrSecondaryPhone(String phoneNumber) {
+		log.info("Inside findByPrimaryPhoneOrSecondaryPhone method of SystemUserService");
+		SystemUserEntity userWithPrimaryPhoneOrSecondaryPhone = systemUserRepository.findByPrimaryPhoneOrSecondaryPhone(phoneNumber, phoneNumber);
+		if (userWithPrimaryPhoneOrSecondaryPhone != null) {
+			return true;
+		}
+		else {
+			return false;
+//			throw new CustomNotFoundException("System User with phone number not found");
+		}
+	}
+
+	public boolean findByPrimaryEmailOrSecondaryEmail(String email) {
+		log.info("Inside findByPrimaryPhoneOrSecondaryEmail method of SystemUserService");
+		SystemUserEntity userWithPrimaryEmailOrSecondaryEmail = systemUserRepository.findByPrimaryEmailOrSecondaryEmail(email, email);
+		if (userWithPrimaryEmailOrSecondaryEmail != null) {
+			return true;
+		}
+		else {
+			return false;
+//			throw new CustomNotFoundException("System User with email not found");
 		}
 	}
     
