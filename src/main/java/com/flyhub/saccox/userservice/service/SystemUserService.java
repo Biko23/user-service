@@ -17,8 +17,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -44,20 +47,32 @@ public class SystemUserService {
     
 
 
-	public VisualObject saveSystemUser(SystemUserEntity systemUserEntity) {		
+	public VisualObject saveSystemUser(MultipartFile file,
+									   String first_name,
+									   String middle_name,
+									   String last_name,
+									   String primary_email,
+									   String primary_phone,
+									   String password,
+									   String question,
+									   String answer) throws IOException {
         log.info("Inside saveSystemUser method of SystemUserService");
+        SystemUserEntity systemUserEntity = new SystemUserEntity();
+        systemUserEntity.setImageSmall(file.getBytes());
+        systemUserEntity.setFirstName(first_name);
+        systemUserEntity.setMiddleName(middle_name);
+        systemUserEntity.setLastName(last_name);
+        systemUserEntity.setPrimaryEmail(primary_email);
+        systemUserEntity.setPrimaryPhone(primary_phone);
+        systemUserEntity.setPassword(password);
+        systemUserEntity.setQuestion(question);
+        systemUserEntity.setAnswer(answer);
         SystemUserEntity systemUser = systemUserRepository.save(systemUserEntity);
 
 
         ResponseEntity<VisualObject> systemUserResponse = restTemplate.postForEntity("http://localhost:9100/api/v1/auth/system-users", systemUser, VisualObject.class);
-		System.out.println("systemUserResponse");
-		System.out.println(systemUserResponse);
 
         SystemUserEntity tokenObject = new SystemUserEntity();
-<<<<<<< HEAD
-        
-        tokenObject.setSystemUserGlobalId(systemUser.getSystemUserGlobalId());
-=======
         UUID tenantGlobalId = UUID.randomUUID();
         String tenantName = "Tenant Name";
         UUID branchGlobalId = UUID.randomUUID();
@@ -71,7 +86,6 @@ public class SystemUserService {
 
 		System.out.println("tokenObject");
 		System.out.println(tokenObject);
->>>>>>> 1cc2cc544ba74860d512a512cfe5762f4553381e
         
         VisualObject tokenResponse = restTemplate.postForObject("http://localhost:9100/api/v1/auth/tokens",tokenObject, VisualObject.class);
 		
@@ -105,8 +119,6 @@ public class SystemUserService {
 		return systemUsers;
 	}
 
-<<<<<<< HEAD
-=======
 	public List<SystemUserEntity> findAllStaff() {
 		log.info("Inside findAllSystemUsers method of SystemUserService");
 		List<SystemUserEntity> staff = new ArrayList<SystemUserEntity>();
@@ -119,7 +131,7 @@ public class SystemUserService {
 		return staff;
 	}
 
->>>>>>> 1cc2cc544ba74860d512a512cfe5762f4553381e
+	@Transactional
 	public SystemUserEntity patchSystemUser(UUID systemUserGlobalId, JsonPatch jsonPatch)
 			throws JsonPatchException, JsonProcessingException {
         log.info("Inside patchSystemUser method of SystemUserService");
@@ -138,11 +150,7 @@ public class SystemUserService {
 	}
 
 	public void deleteBySystemUserGlobalId(UUID systemUserGlobalId) {
-<<<<<<< HEAD
       log.info("Inside deleteBySystemUserGlobalId method of SystemUserService");
-=======
-      log.info("Inside deleteBySystemUserId method of SystemUserService");
->>>>>>> 1cc2cc544ba74860d512a512cfe5762f4553381e
 		if (systemUserGlobalId.equals(0L)) {
 			throw new CustomInvalidInputException("SystemUser id - " + systemUserGlobalId + " - is not valid");
 		}

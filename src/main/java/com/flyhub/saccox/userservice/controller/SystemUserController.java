@@ -16,7 +16,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -31,9 +33,17 @@ public class SystemUserController {
     private SystemUserService systemUserService;
 
     @PostMapping("")
-    public ResponseEntity<?> saveSystemUser(@RequestBody SystemUserEntity systemUserEntity) {
+    public ResponseEntity<?> saveSystemUser(@RequestParam("file") MultipartFile file,
+                                            @RequestParam("first_name") String first_name,
+                                            @RequestParam("middle_name") String middle_name,
+                                            @RequestParam("last_name") String last_name,
+                                            @RequestParam("primary_phone") String primary_phone,
+                                            @RequestParam("primary_email") String primary_email,
+                                            @RequestParam("password") String password,
+                                            @RequestParam("question") String question,
+                                            @RequestParam("answer") String answer) throws IOException {
         log.info("Inside saveSystemUser method of SystemUserController");
-        VisualObject _systemUser = systemUserService.saveSystemUser(systemUserEntity);
+        VisualObject _systemUser = systemUserService.saveSystemUser(file, first_name, middle_name, last_name, primary_phone, primary_email, password, question, answer);
         return new ResponseEntity<>(new ApiResponseFormat(true, null, "SystemUser created.", _systemUser), HttpStatus.CREATED);
     }
     
