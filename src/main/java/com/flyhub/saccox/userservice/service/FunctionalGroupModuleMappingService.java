@@ -38,6 +38,12 @@ public class FunctionalGroupModuleMappingService {
         return functionalGroupModuleMappingRepository.save(functionalGroupModuleMappingEntity);
     }
 
+    public List<FunctionalGroupModuleMappingEntity> saveMultipleFunctionalGroupModuleMappings(List<FunctionalGroupModuleMappingEntity> functionalGroupModuleMappingEntity) {
+        log.info("Inside saveMultipleFunctionalGroupModuleMappings method of FunctionalGroupModuleMappingService");
+        System.out.println(functionalGroupModuleMappingEntity);
+        return functionalGroupModuleMappingRepository.saveAll(functionalGroupModuleMappingEntity);
+    }
+
     public FunctionalGroupModuleMappingEntity findByFunctionalGroupModuleMappingGlobalId(UUID functionalGroupModuleMappingGlobalId) {
         log.info("Inside findByFunctionalGroupModuleMappingGlobalId method of FunctionalGroupModuleMappingService");
         if(functionalGroupModuleMappingGlobalId.equals(0L)) {

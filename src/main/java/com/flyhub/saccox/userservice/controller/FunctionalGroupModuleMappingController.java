@@ -33,6 +33,15 @@ public class FunctionalGroupModuleMappingController {
         return new ResponseEntity<>(new ApiResponseFormat(true, null, "Functional group module mapping created.", _systemUserEntity), HttpStatus.CREATED);
     }
 
+    @PostMapping("/multiple")
+    public ResponseEntity<?> saveMultipleFunctionalGroupModuleMapping(@RequestBody List<FunctionalGroupModuleMappingEntity>  functionalGroupModuleMappingEntities) {
+        log.info("Inside saveMultipleFunctionalGroupModuleMapping method of FunctionalGroupModuleMappingController");
+        System.out.println("functionalGroupModuleMappingEntities controller");
+        System.out.println(functionalGroupModuleMappingEntities);
+//        List<FunctionalGroupModuleMappingEntity> _systemUserEntity = functionalGroupModuleMappingService.saveMultipleFunctionalGroupModuleMappings(functionalGroupModuleMappingEntities);
+        return new ResponseEntity<>(new ApiResponseFormat(true, null, "Functional group module mapping created.", functionalGroupModuleMappingService.saveMultipleFunctionalGroupModuleMappings(functionalGroupModuleMappingEntities)), HttpStatus.CREATED);
+    }
+
     @GetMapping("/{functionalGroupModuleMappingGlobalId}")
     public ResponseEntity<?> findByFunctionalGroupModuleMappingGlobalId(@PathVariable("functionalGroupModuleMappingGlobalId") UUID functionalGroupModuleMappingGlobalId) {
         log.info("Inside findByFunctionalGroupModuleMappingGlobalId method of FunctionalGroupModuleMappingController");
