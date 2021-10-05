@@ -1,11 +1,10 @@
 package com.flyhub.saccox.userservice.service;
 
+import aj.org.objectweb.asm.TypeReference;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.flyhub.saccox.userservice.entity.SystemUserEntity;
-import com.flyhub.saccox.userservice.entity.SystemUserFunctionalGroupsProcedureEntity;
-import com.flyhub.saccox.userservice.entity.UserLoginProcedureEntity;
+import com.flyhub.saccox.userservice.entity.*;
 import com.flyhub.saccox.userservice.repository.SystemUserFunctionalGroupsProcedureRepository;
 import com.flyhub.saccox.userservice.repository.SystemUserRepository;
 import com.flyhub.saccox.userservice.repository.UserLoginProcedureRepository;
@@ -15,6 +14,9 @@ import com.github.fge.jsonpatch.JsonPatchException;
 import com.flyhub.saccox.userservice.exception.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -38,10 +40,10 @@ public class SystemUserService {
     private RestTemplate restTemplate;
 	@Autowired
 	private ObjectMapper objectMapper;
-    
 
 
-	public VisualObject saveSystemUser(SystemUserEntity systemUserEntity) {		
+
+	public VisualObject saveSystemUser(SystemUserEntity systemUserEntity) {
         log.info("Inside saveSystemUser method of SystemUserService");
         SystemUserEntity systemUser = systemUserRepository.save(systemUserEntity);
 
@@ -51,10 +53,9 @@ public class SystemUserService {
 		System.out.println(systemUserResponse);
 
         SystemUserEntity tokenObject = new SystemUserEntity();
-<<<<<<< HEAD
         
         tokenObject.setSystemUserGlobalId(systemUser.getSystemUserGlobalId());
-=======
+
         UUID tenantGlobalId = UUID.randomUUID();
         String tenantName = "Tenant Name";
         UUID branchGlobalId = UUID.randomUUID();
@@ -68,7 +69,6 @@ public class SystemUserService {
 
 		System.out.println("tokenObject");
 		System.out.println(tokenObject);
->>>>>>> 1cc2cc544ba74860d512a512cfe5762f4553381e
         
         VisualObject tokenResponse = restTemplate.postForObject("http://localhost:9100/api/v1/auth/tokens",tokenObject, VisualObject.class);
 		
@@ -78,6 +78,21 @@ public class SystemUserService {
         
         return tokenResponse;
     }
+
+	public SystemUserEntity giveMemberOnlineAccess(SystemUserEntity systemUserEntity) {
+		log.info("Inside giveMemberOnlineAccess method of SystemUserService");
+		SystemUserEntity savedMemberResponse = systemUserRepository.save(systemUserEntity);
+
+		VisualObject functionalGroupResponse = restTemplate.getForObject("http://localhost:9100/api/v1/user/functional-groups/member-online-group", VisualObject.class);
+
+		SystemUserFunctionalGroupMappingEntity memberToSystemUserFunctionalGroupMapping = new SystemUserFunctionalGroupMappingEntity();
+
+		memberToSystemUserFunctionalGroupMapping.setFunctionalGroupGlobalId(functionalGroupResponse.getData().getFunctionalGroupGlobalId());
+		memberToSystemUserFunctionalGroupMapping.setSystemUserGlobalId(savedMemberResponse.getSystemUserGlobalId());
+
+		ResponseEntity<SystemUserFunctionalGroupMappingEntity> systemUserFunctionalGroupMappingResponse = restTemplate.postForEntity("http://localhost:9100/api/v1/user/system-user-functional-group-mappings", memberToSystemUserFunctionalGroupMapping, SystemUserFunctionalGroupMappingEntity.class);
+		return savedMemberResponse;
+	}
 	
 	public SystemUserEntity findBySystemUserGlobalId(UUID systemUserGlobalId) {
 		log.info("Inside findBySystemUserGlobalId method of SystemUserService");
@@ -101,9 +116,6 @@ public class SystemUserService {
 
 		return systemUsers;
 	}
-
-<<<<<<< HEAD
-=======
 	public List<SystemUserEntity> findAllStaff() {
 		log.info("Inside findAllSystemUsers method of SystemUserService");
 		List<SystemUserEntity> staff = new ArrayList<SystemUserEntity>();
@@ -116,7 +128,6 @@ public class SystemUserService {
 		return staff;
 	}
 
->>>>>>> 1cc2cc544ba74860d512a512cfe5762f4553381e
 	public SystemUserEntity patchSystemUser(UUID systemUserGlobalId, JsonPatch jsonPatch)
 			throws JsonPatchException, JsonProcessingException {
         log.info("Inside patchSystemUser method of SystemUserService");
@@ -135,11 +146,7 @@ public class SystemUserService {
 	}
 
 	public void deleteBySystemUserGlobalId(UUID systemUserGlobalId) {
-<<<<<<< HEAD
       log.info("Inside deleteBySystemUserGlobalId method of SystemUserService");
-=======
-      log.info("Inside deleteBySystemUserId method of SystemUserService");
->>>>>>> 1cc2cc544ba74860d512a512cfe5762f4553381e
 		if (systemUserGlobalId.equals(0L)) {
 			throw new CustomInvalidInputException("SystemUser id - " + systemUserGlobalId + " - is not valid");
 		}
@@ -161,7 +168,7 @@ public class SystemUserService {
 	public List<UserLoginProcedureEntity> userLoginProcedure(String username, String password) {
 		log.info("Inside userLoginProcedure method of SystemUserService");
 		  List<UserLoginProcedureEntity> user = userLoginProcedureRepository.userLoginProcedure(username, password);
-
+		System.out.println(user);
 		  if (!user.isEmpty()) {
 			  return user;
 		  }

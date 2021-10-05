@@ -44,8 +44,14 @@ public class FunctionalGroupController {
     
     @GetMapping("")
     public ResponseEntity<?> findAllFunctionalGroups() {
-//        log.info("Inside findAllFunctionalGroups method of FunctionalGroupController");
+        log.info("Inside findAllFunctionalGroups method of FunctionalGroupController");
         return new ResponseEntity<>(new ApiResponseFormat(true, null, "FunctionalGroup(s) found.", functionalGroupService.findAllFunctionalGroups()), HttpStatus.OK);
+    }
+
+    @GetMapping("/member-online-group")
+    public ResponseEntity<?> findMemberOnlineAccessFunctionalGroup(){
+        log.info("Inside findMemberOnlineAccessFunctionalGroup method of FunctionalGroupController");
+        return new ResponseEntity<>(new ApiResponseFormat(true, null, "Member Functional Group found.", functionalGroupService.findMemberOnlineAccessFunctionalGroup()), HttpStatus.OK);
     }
 
 //    @PutMapping("/{globalFunctionalGroupID}")

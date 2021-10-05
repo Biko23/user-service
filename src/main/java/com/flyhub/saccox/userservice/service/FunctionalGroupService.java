@@ -1,6 +1,5 @@
 package com.flyhub.saccox.userservice.service;
 
-import com.flyhub.saccox.userservice.visualobject.VisualObject;
 import com.github.fge.jsonpatch.JsonPatch;
 import com.github.fge.jsonpatch.JsonPatchException;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -10,20 +9,15 @@ import com.flyhub.saccox.userservice.entity.FunctionalGroupEntity;
 import com.flyhub.saccox.userservice.exception.CustomInvalidInputException;
 import com.flyhub.saccox.userservice.exception.CustomNoContentException;
 import com.flyhub.saccox.userservice.exception.CustomNotFoundException;
-import com.flyhub.saccox.userservice.entity.FunctionalGroupEntity;
-import com.flyhub.saccox.userservice.entity.SystemUserEntity;
-import com.flyhub.saccox.userservice.exception.*;
 import com.flyhub.saccox.userservice.repository.FunctionalGroupRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import com.flyhub.saccox.userservice.visualobject.VisualObject;
 
 @Service
 @Slf4j
@@ -50,6 +44,15 @@ public class FunctionalGroupService {
 		else {
 			throw new CustomNotFoundException("FunctionalGroup - " + functionalGroup + " - not found");
 		}
+	}
+
+	public FunctionalGroupEntity findMemberOnlineAccessFunctionalGroup(){
+      log.info("Inside findMemberOnlineAccessFunctionalGroup method of FunctionalGroupService");
+		FunctionalGroupEntity memberOnlineAccessGroup = functionalGroupRepository.findByNameContains("ember");
+		System.out.println("memberOnlineAccessGroup");
+		System.out.println(memberOnlineAccessGroup);
+//		UUID groupId = memberOnlineAccessGroup.getFunctionalGroupGlobalId();
+		return memberOnlineAccessGroup;
 	}
 
 	public List<FunctionalGroupEntity> findAllFunctionalGroups() {

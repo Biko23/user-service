@@ -17,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -35,6 +36,13 @@ public class SystemUserController {
         log.info("Inside saveSystemUser method of SystemUserController");
         VisualObject _systemUser = systemUserService.saveSystemUser(systemUserEntity);
         return new ResponseEntity<>(new ApiResponseFormat(true, null, "SystemUser created.", _systemUser), HttpStatus.CREATED);
+    }
+
+    @PostMapping("/member-online-access")
+    public ResponseEntity<?> giveMemberOnlineAccess(@RequestBody SystemUserEntity systemUserEntity) {
+        log.info("Inside giveMemberOnlineAccess method of SystemUserController");
+        SystemUserEntity systemUser = systemUserService.giveMemberOnlineAccess(systemUserEntity);
+        return new ResponseEntity<>(new ApiResponseFormat(true, null, "SystemUser created.", systemUser), HttpStatus.CREATED);
     }
     
     @GetMapping("/{systemUserGlobalId}")
@@ -94,14 +102,10 @@ public class SystemUserController {
         return new ResponseEntity<>(new ApiResponseFormat(true, null, "SystemUser exists.", systemUserService.findByPrimaryPhoneOrSecondaryPhone(phoneNumber)), HttpStatus.OK);
     }
 
-<<<<<<< HEAD
     @GetMapping("/email-exists/{email}")
     public ResponseEntity<?> findByPrimaryEmailOrSecondaryEmail(@PathVariable("email") String email) {
         log.info("Inside findByPrimaryEmailOrSecondaryEmail method of SystemUserController");
         return new ResponseEntity<>(new ApiResponseFormat(true, null, "SystemUser exists.", systemUserService.findByPrimaryEmailOrSecondaryEmail(email)), HttpStatus.OK);
     }
 
-//   
-=======
->>>>>>> 6a52a46938740261d07de0f5147bf684d4a90fe0
 }
