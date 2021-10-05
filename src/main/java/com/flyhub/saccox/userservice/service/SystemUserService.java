@@ -54,10 +54,7 @@ public class SystemUserService {
 		System.out.println(systemUserResponse);
 
         SystemUserEntity tokenObject = new SystemUserEntity();
-<<<<<<< HEAD
-        
-        tokenObject.setSystemUserGlobalId(systemUser.getSystemUserGlobalId());
-=======
+
         UUID tenantGlobalId = UUID.randomUUID();
         String tenantName = "Tenant Name";
         UUID branchGlobalId = UUID.randomUUID();
@@ -71,7 +68,6 @@ public class SystemUserService {
 
 		System.out.println("tokenObject");
 		System.out.println(tokenObject);
->>>>>>> 1cc2cc544ba74860d512a512cfe5762f4553381e
         
         VisualObject tokenResponse = restTemplate.postForObject("http://localhost:9100/api/v1/auth/tokens",tokenObject, VisualObject.class);
 		
