@@ -11,6 +11,7 @@ import javax.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.sql.Date;
 import java.time.LocalDateTime;
@@ -82,6 +83,23 @@ public class SystemUserEntity {
     @JsonProperty("secondary_email")
     @ApiModelProperty(notes = "System user secondary email.", example = "a@gmail.com")
     private String secondaryEmail;
+
+    @JsonProperty("image_url_small")
+    @ApiModelProperty(notes="")
+    private String ImageUrlSmall;
+
+    @JsonProperty("image_url_large")
+    @ApiModelProperty(notes="")
+    private String ImageUrlLarge;
+
+    @Lob
+    @JsonProperty("image_small")
+    @ApiModelProperty(notes="")
+    private byte[] ImageSmall;
+
+    @JsonProperty("image_Large")
+    @ApiModelProperty(notes="")
+    private Byte ImageLarge;
 
     @JsonProperty("dob")
     @ApiModelProperty(notes = "System user date of birth.", example = "12-12-21")

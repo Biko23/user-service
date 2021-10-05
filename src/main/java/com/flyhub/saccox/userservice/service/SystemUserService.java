@@ -19,8 +19,11 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.*;
 
 @Service
@@ -41,16 +44,12 @@ public class SystemUserService {
 	@Autowired
 	private ObjectMapper objectMapper;
 
-
-
 	public VisualObject saveSystemUser(SystemUserEntity systemUserEntity) {
         log.info("Inside saveSystemUser method of SystemUserService");
         SystemUserEntity systemUser = systemUserRepository.save(systemUserEntity);
 
 
         ResponseEntity<VisualObject> systemUserResponse = restTemplate.postForEntity("http://localhost:9100/api/v1/auth/system-users", systemUser, VisualObject.class);
-		System.out.println("systemUserResponse");
-		System.out.println(systemUserResponse);
 
         SystemUserEntity tokenObject = new SystemUserEntity();
         
@@ -67,9 +66,6 @@ public class SystemUserService {
 		tokenObject.setBranchGlobalId(branchGlobalId);
 		tokenObject.setRefreshToken(refreshToken);
 
-		System.out.println("tokenObject");
-		System.out.println(tokenObject);
-        
         VisualObject tokenResponse = restTemplate.postForObject("http://localhost:9100/api/v1/auth/tokens",tokenObject, VisualObject.class);
 		
         System.out.println("tokenResponse");
@@ -116,18 +112,8 @@ public class SystemUserService {
 
 		return systemUsers;
 	}
-	public List<SystemUserEntity> findAllStaff() {
-		log.info("Inside findAllSystemUsers method of SystemUserService");
-		List<SystemUserEntity> staff = new ArrayList<SystemUserEntity>();
-		staff.addAll(systemUserRepository.findAllStaff());
 
-		if (staff.isEmpty()) {
-			throw new CustomNoContentException("SystemUsers not found");
-		}
-
-		return staff;
-	}
-
+	@Transactional
 	public SystemUserEntity patchSystemUser(UUID systemUserGlobalId, JsonPatch jsonPatch)
 			throws JsonPatchException, JsonProcessingException {
         log.info("Inside patchSystemUser method of SystemUserService");
