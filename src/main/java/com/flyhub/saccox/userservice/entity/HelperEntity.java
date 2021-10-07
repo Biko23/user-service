@@ -12,4 +12,10 @@ import java.util.UUID;
 public class HelperEntity {
     @JsonProperty("functional_group_global_id")
     private UUID functionalGroupGlobalId;
+
+    @JsonProperty("system_user_global_id")
+    private UUID systemUserGlobalId;
+
+    @JsonProperty("member_global_id")
+    private UUID memberGlobalId;
 }

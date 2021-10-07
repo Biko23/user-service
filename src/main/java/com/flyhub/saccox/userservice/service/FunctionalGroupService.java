@@ -49,16 +49,30 @@ public class FunctionalGroupService {
 	public FunctionalGroupEntity findMemberOnlineAccessFunctionalGroup(){
       log.info("Inside findMemberOnlineAccessFunctionalGroup method of FunctionalGroupService");
 		FunctionalGroupEntity memberOnlineAccessGroup = functionalGroupRepository.findByNameContains("ember");
-		System.out.println("memberOnlineAccessGroup");
-		System.out.println(memberOnlineAccessGroup);
-//		UUID groupId = memberOnlineAccessGroup.getFunctionalGroupGlobalId();
 		return memberOnlineAccessGroup;
+	}
+
+	public FunctionalGroupEntity findInternalAdminFunctionalGroup(){
+		log.info("Inside findMemberOnlineAccessFunctionalGroup method of FunctionalGroupService");
+		FunctionalGroupEntity internalAdminFunctionalGroup = functionalGroupRepository.findByNameContains("nternal Admin");
+		return internalAdminFunctionalGroup;
 	}
 
 	public List<FunctionalGroupEntity> findAllFunctionalGroups() {
 		log.info("Inside findAllFunctionalGroups method of FunctionalGroupService");
 		List<FunctionalGroupEntity> functionalGroups = new ArrayList<FunctionalGroupEntity>();
 		functionalGroups.addAll(functionalGroupRepository.findAll());
+
+		if (functionalGroups.isEmpty()) {
+			throw new CustomNoContentException("FunctionalGroups not found");
+		}
+
+		return functionalGroups;
+	}
+
+	public List<FunctionalGroupEntity> findAllAddedFunctionalGroups() {
+		log.info("Inside findAllFunctionalGroups method of FunctionalGroupService");
+		List<FunctionalGroupEntity> functionalGroups = functionalGroupRepository.findAllAddedFunctionalGroups();
 
 		if (functionalGroups.isEmpty()) {
 			throw new CustomNoContentException("FunctionalGroups not found");

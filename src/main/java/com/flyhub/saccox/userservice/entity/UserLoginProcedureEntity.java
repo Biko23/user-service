@@ -11,7 +11,7 @@ import java.util.UUID;
 @Data
 public class UserLoginProcedureEntity {
 
-	@Id
+
 	private UUID system_user_global_id;
 
 	private String primary_phone;
@@ -23,9 +23,10 @@ public class UserLoginProcedureEntity {
 	private String last_name;
 	
 	private String functional_group_name;
-	
+
 	private String module_name;
-	
+	@Id
+	private String functional_group_module_name;
 	
 	private int can_create;
 	

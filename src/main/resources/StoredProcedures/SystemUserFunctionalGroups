@@ -23,7 +23,7 @@ ARRAY_AGG(functional_group.name) AS functional_group_names,
 system_user.first_name,
 system_user.middle_name,
 system_user.last_name,
-system_user.primary_phone,
+replace(system_user.primary_phone, ''+256'', ''0'') as primary_phone,
 system_user.primary_email
 FROM
 system_user,system_user_functional_group_mapping
