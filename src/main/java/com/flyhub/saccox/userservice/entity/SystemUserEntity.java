@@ -59,6 +59,10 @@ public class SystemUserEntity {
     @ApiModelProperty(notes = "System user other name.", example = "Malkovic")
     private String otherName;
 
+    @JsonProperty("full_name")
+    @ApiModelProperty(notes = "System user other name.", example = "Malkovic")
+    private String fullName;
+
     @JsonProperty("username")
     @ApiModelProperty(notes = "System user username.", example = "John | 256700000000")
     private String userName;

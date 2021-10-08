@@ -59,6 +59,7 @@ public class SystemUserService {
         systemUserEntity.setFirstName(first_name);
         systemUserEntity.setMiddleName(middle_name);
         systemUserEntity.setLastName(last_name);
+        systemUserEntity.setFullName(systemUserEntity.getFirstName() + " " + systemUserEntity.getMiddleName() + " " + systemUserEntity.getLastName());
         systemUserEntity.setPrimaryEmail(primary_email);
         systemUserEntity.setPrimaryPhone(primary_phone);
         systemUserEntity.setPassword(password);
