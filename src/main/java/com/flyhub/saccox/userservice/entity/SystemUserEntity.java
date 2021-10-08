@@ -39,6 +39,11 @@ public class SystemUserEntity {
     @ApiModelProperty(notes = "Tenant foreign key.", example = "1")
     private UUID branchGlobalId;
 
+    @JsonProperty("member_global_id")
+    @ApiModelProperty(notes = "Member foreign key.", example = "1")
+    @Column(unique = true)
+    private UUID memberGlobalId;
+
     @JsonProperty("tenant_name")
     @ApiModelProperty(notes="Name of tenant")
     private String tenantName;

@@ -17,5 +17,5 @@ public interface SystemUserRepository extends JpaRepository<SystemUserEntity, UU
     List<SystemUserEntity> findAllStaff();
     SystemUserEntity findByPrimaryPhoneOrSecondaryPhone(String primaryPhone, String secondaryPhone);
     SystemUserEntity findByPrimaryEmailOrSecondaryEmail(String primaryEmail, String secondaryEmail);
-
+    SystemUserEntity findByMemberGlobalId(UUID memberGlobalId);
 }

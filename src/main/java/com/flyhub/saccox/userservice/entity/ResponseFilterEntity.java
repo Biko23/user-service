@@ -30,12 +30,6 @@ public class ResponseFilterEntity {
     @ApiModelProperty(notes = "Unique identifier of a response filter entity. Auto generated.", example = "1")
     private UUID responseFilterGlobalId;
 
-    @JsonProperty("functional_group_global_id")
-    @ApiModelProperty(notes = "Functional group foreign key.", example = "1", required = true)
-    @ManyToOne
-    @JoinColumn(name="functional_group_global_id", nullable=false)
-    private FunctionalGroupEntity functionalGroupEntity;
-
     @JsonProperty("entity")
     @ApiModelProperty(notes = "Response filter entity.", example = "entity")
     private String entity;

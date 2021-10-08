@@ -4,8 +4,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.flyhub.library.apiresponse.ApiResponseFormat;
 import com.flyhub.saccox.userservice.entity.SystemUserEntity;
 import com.flyhub.saccox.userservice.entity.UserLoginProcedureEntity;
-import com.flyhub.saccox.userservice.entity.SystemUserEntity;
-import com.flyhub.saccox.userservice.microserviceconnect.UserTenant;
 import com.flyhub.saccox.userservice.service.SystemUserService;
 import com.flyhub.saccox.userservice.visualobject.VisualObject;
 import com.github.fge.jsonpatch.JsonPatch;
@@ -19,9 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -33,7 +29,7 @@ public class SystemUserController {
     private SystemUserService systemUserService;
 
     @PostMapping("")
-    public ResponseEntity<?> saveSystemUser(@RequestParam("file") MultipartFile file,
+    public ResponseEntity<?> systemUserSignup(@RequestParam("file") MultipartFile file,
                                             @RequestParam("first_name") String first_name,
                                             @RequestParam("middle_name") String middle_name,
                                             @RequestParam("last_name") String last_name,
@@ -42,9 +38,24 @@ public class SystemUserController {
                                             @RequestParam("password") String password,
                                             @RequestParam("question") String question,
                                             @RequestParam("answer") String answer) throws IOException {
-        log.info("Inside saveSystemUser method of SystemUserController");
-        VisualObject _systemUser = systemUserService.saveSystemUser(file, first_name, middle_name, last_name, primary_phone, primary_email, password, question, answer);
+        log.info("Inside systemUserSignup method of SystemUserController");
+        VisualObject _systemUser = systemUserService.systemUserSignup(file, first_name, middle_name, last_name, primary_phone, primary_email, password, question, answer);
         return new ResponseEntity<>(new ApiResponseFormat(true, null, "SystemUser created.", _systemUser), HttpStatus.CREATED);
+    }
+
+    @PostMapping("/save-user")
+    public ResponseEntity<?> saveSystemUser(@RequestBody SystemUserEntity systemUserEntity) {
+        log.info("Inside saveSystemUser method of SystemUserController");
+        VisualObject _systemUser = systemUserService.saveSystemUser(systemUserEntity);
+        return new ResponseEntity<>(new ApiResponseFormat(true, null, "SystemUser created.", _systemUser), HttpStatus.CREATED);
+    }
+
+
+    @PostMapping("/member-online-access")
+    public ResponseEntity<?> giveMemberOnlineAccess(@RequestBody SystemUserEntity systemUserEntity) {
+        log.info("Inside giveMemberOnlineAccess method of SystemUserController");
+        SystemUserEntity systemUser = systemUserService.giveMemberOnlineAccess(systemUserEntity);
+        return new ResponseEntity<>(new ApiResponseFormat(true, null, "SystemUser created.", systemUser), HttpStatus.CREATED);
     }
     
     @GetMapping("/{systemUserGlobalId}")
@@ -53,6 +64,13 @@ public class SystemUserController {
     	SystemUserEntity systemUser = systemUserService.findBySystemUserGlobalId(systemUserGlobalId);
       return new ResponseEntity<>(new ApiResponseFormat(true, null, "SystemUser found.", systemUser), HttpStatus.OK);
     }
+
+//    @GetMapping("/staff-as-member/{memberGlobalId}")
+//    public ResponseEntity<?> findByMemberGlobalId(@PathVariable("memberGlobalId") UUID memberGlobalId) {
+//        log.info("Inside findByMemberGlobalId method of SystemUserController");
+//        SystemUserEntity staffAsmember = systemUserService.findByMemberGlobalId(memberGlobalId);
+//        return new ResponseEntity<>(new ApiResponseFormat(true, null, "SystemUser found.", staffAsmember), HttpStatus.OK);
+//    }
     
     @GetMapping("/{username}/{password}")
     public ResponseEntity<?> userLoginProcedure(@PathVariable("username") String username, @PathVariable("password") String password) {
