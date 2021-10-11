@@ -57,6 +57,13 @@ public class SystemUserController {
         SystemUserEntity systemUser = systemUserService.giveMemberOnlineAccess(systemUserEntity);
         return new ResponseEntity<>(new ApiResponseFormat(true, null, "SystemUser created.", systemUser), HttpStatus.CREATED);
     }
+
+    @PostMapping("/login")
+    public ResponseEntity<?> userLoginProcedure(@RequestBody SystemUserEntity systemUserEntity) {
+        log.info("Inside userLoginProcedure method of SystemUserController");
+        List<UserLoginProcedureEntity> systemUser = systemUserService.userLoginProcedure(systemUserEntity);
+        return new ResponseEntity<>(new ApiResponseFormat(true, null, "SystemUser found.", systemUser), HttpStatus.CREATED);
+    }
     
     @GetMapping("/{systemUserGlobalId}")
     public ResponseEntity<?> findBySystemUserGlobalId(@PathVariable("systemUserGlobalId") UUID systemUserGlobalId) {
@@ -72,12 +79,12 @@ public class SystemUserController {
 //        return new ResponseEntity<>(new ApiResponseFormat(true, null, "SystemUser found.", staffAsmember), HttpStatus.OK);
 //    }
     
-    @GetMapping("/{username}/{password}")
-    public ResponseEntity<?> userLoginProcedure(@PathVariable("username") String username, @PathVariable("password") String password) {
-      log.info("Inside findBySystemUserGlobalId method of SystemUserController");
-    	List<UserLoginProcedureEntity> user = systemUserService.userLoginProcedure(username, password);
-      return new ResponseEntity<>(new ApiResponseFormat(true, null, "SystemUser found.", user), HttpStatus.OK);
-    }
+//    @GetMapping("/{username}/{password}")
+//    public ResponseEntity<?> userLoginProcedure(@PathVariable("username") String username, @PathVariable("password") String password) {
+//      log.info("Inside findBySystemUserGlobalId method of SystemUserController");
+//    	List<UserLoginProcedureEntity> user = systemUserService.userLoginProcedure(username, password);
+//      return new ResponseEntity<>(new ApiResponseFormat(true, null, "SystemUser found.", user), HttpStatus.OK);
+//    }
 
     @GetMapping("/staff-groups")
     public ResponseEntity<?> systemUserFunctionalGroupsProcedure() {
