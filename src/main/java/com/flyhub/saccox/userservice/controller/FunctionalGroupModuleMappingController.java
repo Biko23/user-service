@@ -1,7 +1,12 @@
 package com.flyhub.saccox.userservice.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.flyhub.library.apiresponse.ApiResponseFormat;
 import com.flyhub.saccox.userservice.entity.FunctionalGroupModuleMappingEntity;
+import com.flyhub.saccox.userservice.entity.FunctionalGroupModuleMappingProcedureEntity;
 import com.flyhub.saccox.userservice.service.FunctionalGroupModuleMappingService;
+import com.github.fge.jsonpatch.JsonPatch;
+import com.github.fge.jsonpatch.JsonPatchException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,92 +27,76 @@ public class FunctionalGroupModuleMappingController {
     private FunctionalGroupModuleMappingService functionalGroupModuleMappingService;
 
     @PostMapping("")
-    public ResponseEntity<FunctionalGroupModuleMappingEntity> saveFunctionalGroupModuleMapping(@RequestBody FunctionalGroupModuleMappingEntity functionalGroupModuleMappingEntity) {
+    public ResponseEntity<?> saveFunctionalGroupModuleMapping(@RequestBody FunctionalGroupModuleMappingEntity systemUserEntity) {
         log.info("Inside saveFunctionalGroupModuleMapping method of FunctionalGroupModuleMappingController");
-        try {
-            FunctionalGroupModuleMappingEntity _functionalGroupModuleMappingEntity = functionalGroupModuleMappingService.saveFunctionalGroupModuleMapping(functionalGroupModuleMappingEntity);
-            return new ResponseEntity<>(_functionalGroupModuleMappingEntity, HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        FunctionalGroupModuleMappingEntity _systemUserEntity = functionalGroupModuleMappingService.saveFunctionalGroupModuleMapping(systemUserEntity);
+        return new ResponseEntity<>(new ApiResponseFormat(true, null, "Functional group module mapping created.", _systemUserEntity), HttpStatus.CREATED);
     }
 
     @GetMapping("/{functionalGroupModuleMappingGlobalId}")
-    public ResponseEntity<FunctionalGroupModuleMappingEntity> findByFunctionalGroupModuleMappingGlobalId(@PathVariable("functionalGroupModuleMappingGlobalId") UUID functionalGroupModuleMappingGlobalId) {
+    public ResponseEntity<?> findByFunctionalGroupModuleMappingGlobalId(@PathVariable("functionalGroupModuleMappingGlobalId") UUID functionalGroupModuleMappingGlobalId) {
         log.info("Inside findByFunctionalGroupModuleMappingGlobalId method of FunctionalGroupModuleMappingController");
-        Optional<FunctionalGroupModuleMappingEntity> functionalGroupModuleMappingOptional = Optional.ofNullable(functionalGroupModuleMappingService.findByFunctionalGroupModuleMappingGlobalId(functionalGroupModuleMappingGlobalId));
-
-        if (functionalGroupModuleMappingOptional.isPresent()) {
-            return new ResponseEntity<>(functionalGroupModuleMappingOptional.get(), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        FunctionalGroupModuleMappingEntity systemUserEntity = functionalGroupModuleMappingService.findByFunctionalGroupModuleMappingGlobalId(functionalGroupModuleMappingGlobalId);
+        return new ResponseEntity<>(new ApiResponseFormat(true, null, "Functional group module mapping found.", systemUserEntity), HttpStatus.OK);
     }
 
     @GetMapping("")
-    public ResponseEntity<List<FunctionalGroupModuleMappingEntity>> findAllFunctionalGroupModuleMappings() {
+    public ResponseEntity<?> findAllFunctionalGroupModuleMappings() {
         log.info("Inside findAllFunctionalGroupModuleMappings method of FunctionalGroupModuleMappingController");
-        try {
-            List<FunctionalGroupModuleMappingEntity> functionalGroupModuleMappings = new ArrayList<FunctionalGroupModuleMappingEntity>();
-            functionalGroupModuleMappings.addAll(functionalGroupModuleMappingService.listAllFunctionalGroupModuleMappings());
+        return new ResponseEntity<>(new ApiResponseFormat(true, null, "Functional group module mapping(s) found.", functionalGroupModuleMappingService.listAllFunctionalGroupModuleMappings()), HttpStatus.OK);
+    }
 
-            if (functionalGroupModuleMappings.isEmpty()) {
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            }
-
-            return new ResponseEntity<>(functionalGroupModuleMappings, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    @GetMapping("/module-mappings")
+    public ResponseEntity<?> findAllFunctionalGroupModuleProcedureMappings() {
+        log.info("Inside findAllFunctionalGroupModuleProcedureMappings method of FunctionalGroupModuleMappingController");
+        return new ResponseEntity<>(new ApiResponseFormat(true, null, "Functional group module mapping(s) found.", functionalGroupModuleMappingService.functionalGroupModuleMappingProcedure()), HttpStatus.OK);
     }
 
     @PutMapping("/{functionalGroupModuleMappingGlobalId}")
-    public ResponseEntity<FunctionalGroupModuleMappingEntity> fullUpdateFunctionalGroupModuleMapping(@PathVariable("functionalGroupModuleMappingGlobalId") UUID functionalGroupModuleMappingGlobalId, @RequestBody FunctionalGroupModuleMappingEntity functionalGroupModuleMappingEntity) {
-        log.info("Inside fullUpdateFunctionalGroupModuleMapping method of FunctionalGroupModuleMappingController");
-        Optional<FunctionalGroupModuleMappingEntity> functionalGroupModuleMappingOptional = Optional.ofNullable(functionalGroupModuleMappingService.findByFunctionalGroupModuleMappingGlobalId(functionalGroupModuleMappingGlobalId));
-
-        if (functionalGroupModuleMappingOptional.isPresent()) {
-            functionalGroupModuleMappingEntity.setFunctionalGroupModuleMappingGlobalId(functionalGroupModuleMappingGlobalId);
-            return new ResponseEntity<>(functionalGroupModuleMappingService.saveFunctionalGroupModuleMapping(functionalGroupModuleMappingEntity), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    public ResponseEntity<?> updateFunctionalGroupModuleMapping(@PathVariable("functionalGroupModuleMappingGlobalId") UUID functionalGroupModuleMappingGlobalId, @RequestBody FunctionalGroupModuleMappingEntity systemUserEntity) {
+        log.info("Inside updateFunctionalGroupModuleMapping method of FunctionalGroupModuleMappingController");
+        return new ResponseEntity<>(new ApiResponseFormat(true, null, "Functional group module mapping updated.", functionalGroupModuleMappingService.updateFunctionalGroupModuleMapping(functionalGroupModuleMappingGlobalId, systemUserEntity)), HttpStatus.OK);
     }
 
-    @PatchMapping("/{functionalGroupModuleMappingGlobalId}")
-    public ResponseEntity<FunctionalGroupModuleMappingEntity> partialUpdateFunctionalGroupModuleMapping(@PathVariable("functionalGroupModuleMappingGlobalId") UUID functionalGroupModuleMappingGlobalId, @RequestBody FunctionalGroupModuleMappingEntity functionalGroupModuleMappingEntity) {
-        log.info("Inside partialUpdateFunctionalGroupModuleMapping method of FunctionalGroupModuleMappingController");
-        Optional<FunctionalGroupModuleMappingEntity> functionalGroupModuleMappingOptional = Optional.ofNullable(functionalGroupModuleMappingService.findByFunctionalGroupModuleMappingGlobalId(functionalGroupModuleMappingGlobalId));
-
-        if (functionalGroupModuleMappingOptional.isPresent()) {
-            functionalGroupModuleMappingEntity.setFunctionalGroupModuleMappingGlobalId(functionalGroupModuleMappingGlobalId);
-            return new ResponseEntity<>(functionalGroupModuleMappingService.saveFunctionalGroupModuleMapping(functionalGroupModuleMappingEntity), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    @PatchMapping(path = "/{functionalGroupModuleMappingGlobalId}", consumes = "application/json-patch+json")
+    public ResponseEntity<?> patchFunctionalGroupModuleMapping(@PathVariable("functionalGroupModuleMappingGlobalId") UUID functionalGroupModuleMappingGlobalId, @RequestBody JsonPatch jsonPatch) throws JsonPatchException, JsonProcessingException {
+        log.info("Inside patchFunctionalGroupModuleMapping method of FunctionalGroupModuleMappingController");
+        return new ResponseEntity<>(new ApiResponseFormat(true, null, "Mapping updated.", functionalGroupModuleMappingService.patchFunctionalGroupModuleMapping(functionalGroupModuleMappingGlobalId, jsonPatch)), HttpStatus.OK);
     }
 
     @DeleteMapping("/{functionalGroupModuleMappingGlobalId}")
-    public ResponseEntity<HttpStatus> deleteFunctionalGroupModuleMapping(@PathVariable("functionalGroupModuleMappingGlobalId") UUID functionalGroupModuleMappingGlobalId) {
+    public ResponseEntity<?> deleteFunctionalGroupModuleMapping(@PathVariable("functionalGroupModuleMappingGlobalId") UUID functionalGroupModuleMappingGlobalId) {
         log.info("Inside deleteFunctionalGroupModuleMapping method of FunctionalGroupModuleMappingController");
-        try {
-            functionalGroupModuleMappingService.deleteFunctionalGroupModuleMapping(functionalGroupModuleMappingGlobalId);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        functionalGroupModuleMappingService.deleteFunctionalGroupModuleMapping(functionalGroupModuleMappingGlobalId);
+        return new ResponseEntity<>(new ApiResponseFormat(true, null, "Functional group module mapping deleted.", null), HttpStatus.OK);
     }
 
     @DeleteMapping("")
-    public ResponseEntity<HttpStatus> deleteAllFunctionalGroupModuleMappings() {
+    public ResponseEntity<?> deleteAllFunctionalGroupModuleMappings() {
         log.info("Inside deleteAllFunctionalGroupModuleMappings method of FunctionalGroupModuleMappingController");
-        try {
-            functionalGroupModuleMappingService.deleteAllFunctionalGroupModuleMappings();
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-
+        functionalGroupModuleMappingService.deleteAllFunctionalGroupModuleMappings();
+        return new ResponseEntity<>(new ApiResponseFormat(true, null, "Functional group module mappings deleted.", null), HttpStatus.OK);
     }
+
+
+//    @GetMapping("/module-mappings")
+//    public ResponseEntity<List<FunctionalGroupModuleMappingProcedureEntity>> findAllFunctionalGroupModuleProcedureMappings() {
+//        log.info("Inside findAllFunctionalGroupModuleProcedureMappings method of FunctionalGroupModuleMappingController");
+//        try {
+//            List<FunctionalGroupModuleMappingProcedureEntity> functionalGroupModuleProcedureMappings = new ArrayList<FunctionalGroupModuleMappingProcedureEntity>();
+//            functionalGroupModuleProcedureMappings.addAll(functionalGroupModuleMappingService.functionalGroupModuleMappingProcedure());
+//
+//            if (functionalGroupModuleProcedureMappings.isEmpty()) {
+//                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+//            }
+//
+//            return new ResponseEntity<>(functionalGroupModuleProcedureMappings, HttpStatus.OK);
+//        } catch (Exception e) {
+//            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
+//    }
+
+
+
 
 }

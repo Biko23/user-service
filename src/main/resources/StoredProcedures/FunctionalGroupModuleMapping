@@ -1,0 +1,51 @@
+create or replace function FunctionalGroupModuleMappingProcedure()
+returns
+table(
+functional_group_module_mapping_global_id uuid,
+functional_group_name varchar,
+functional_group_description varchar,
+functional_group_global_id uuid,
+module_name varchar,
+module_global_id uuid,
+can_create integer,
+can_email integer,
+can_print integer,
+can_retrieve integer,
+can_search integer,
+can_sms integer,
+can_update integer,
+can_soft_delete integer
+) as '
+
+begin
+
+return query
+SELECT
+functional_group_module_mapping.functional_group_module_mapping_global_id,
+functional_group.name AS functional_group_name,
+functional_group.description AS functional_group_description,
+functional_group.functional_group_global_id,
+module.name AS module_name,
+functional_group_module_mapping.module_global_id,
+functional_group_module_mapping.can_create,
+functional_group_module_mapping.can_email,
+functional_group_module_mapping.can_print,
+functional_group_module_mapping.can_retrieve,
+functional_group_module_mapping.can_search,
+functional_group_module_mapping.can_sms,
+functional_group_module_mapping.can_update,
+functional_group_module_mapping.can_soft_delete
+FROM
+functional_group_module_mapping,
+functional_group,
+module
+WHERE
+functional_group_module_mapping.functional_group_global_id = functional_group.functional_group_global_id
+AND
+functional_group_module_mapping.module_global_id = module.module_global_id
+AND
+functional_group_module_mapping.soft_delete = 0;
+
+end;
+'
+language plpgsql

@@ -5,13 +5,17 @@ import javax.persistence.Id;
 
 import lombok.Data;
 
+import java.util.UUID;
+
 @Entity
 @Data
 public class UserLoginProcedureEntity {
 
 	@Id
+	private UUID system_user_global_id;
+
 	private String primary_phone;
-	
+
 	private String first_name;
 	
 	private String middle_name;
