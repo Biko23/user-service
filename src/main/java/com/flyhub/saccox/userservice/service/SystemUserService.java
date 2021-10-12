@@ -30,8 +30,12 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.PBEKeySpec;
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.security.spec.InvalidKeySpecException;
 import java.util.*;
 
 @Service
@@ -52,6 +56,16 @@ public class SystemUserService {
     @Autowired
     private ObjectMapper objectMapper;
 
+    public Map<String, String> handleValidationExceptions(Errors errors) {
+        Map<String, String> errorsMessages = new HashMap<>();
+        errors.getAllErrors().forEach((error) -> {
+            String fieldName = ((FieldError) error).getField();
+            String errorMessage = error.getDefaultMessage();
+            errorsMessages.put(fieldName, errorMessage);
+        });
+        return errorsMessages;
+    }
+
     public VisualObject systemUserSignup(MultipartFile file,
                                          String first_name,
                                          String middle_name,
@@ -60,7 +74,7 @@ public class SystemUserService {
                                          String primary_email,
                                          String password,
                                          String question,
-                                         String answer) throws IOException {
+                                         String answer) throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
         log.info("Inside systemUserSignup method of SystemUserService");
         SystemUserEntity systemUserEntity = new SystemUserEntity();
         systemUserEntity.setImageSmall(file.getBytes());
@@ -72,6 +86,18 @@ public class SystemUserService {
         systemUserEntity.setPassword(password);
         systemUserEntity.setQuestion(question);
         systemUserEntity.setAnswer(answer);
+        systemUserEntity.setNin("CF12345678YH9T");
+        // get a salt value using the SecureRandom class
+        SecureRandom secureRandom = new SecureRandom();
+        byte[] salt = secureRandom.generateSeed(12);
+        systemUserEntity.setSaltValue(salt);
+        // hash the password with the salt
+        PBEKeySpec pbeKeySpec = new PBEKeySpec(systemUserEntity.getPassword().toCharArray(), salt, 10, 512);
+        SecretKeyFactory skf = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA512");
+        byte[] hash = skf.generateSecret(pbeKeySpec).getEncoded();
+        //converting to string to store into database
+        String hashedPassword = Base64.getMimeEncoder().encodeToString(hash);
+        systemUserEntity.setPassword(hashedPassword);
         SystemUserEntity systemUser = systemUserRepository.save(systemUserEntity);
         //get the admin functional group
         VisualObject functionalGroupResponse = restTemplate.getForObject("http://localhost:9100/api/v1/user/functional-groups/internal-admin-group", VisualObject.class);
@@ -92,14 +118,13 @@ public class SystemUserService {
         return tokenResponse;
     }
 
-    public VisualObject saveSystemUser(SystemUserEntity systemUserEntity) {
+    public VisualObject saveSystemUser(SystemUserEntity systemUserEntity) throws NoSuchAlgorithmException, InvalidKeySpecException {
         log.info("Inside saveSystemUser method of SystemUserService");
-        System.out.println("systemUserEntity start");
+        System.out.println("systemUserEntity service received");
         System.out.println(systemUserEntity);
+        if (systemUserEntity.getMemberGlobalId() != null) {
         SystemUserEntity userAsMember = systemUserRepository.findByMemberGlobalId(systemUserEntity.getMemberGlobalId());
-        System.out.println("userAsMember");
-        System.out.println(userAsMember);
-        if (userAsMember != null) {
+
             // update the is_active and is_staff
             // use to update member in the system user table given the member id
             updateSystemUser(userAsMember.getSystemUserGlobalId(), userAsMember);
@@ -118,11 +143,22 @@ public class SystemUserService {
             SecureRandom secureRandom = new SecureRandom();
             byte[] salt = secureRandom.generateSeed(12);
             systemUserEntity.setSaltValue(salt);
-
+            // hash the password with the salt
+            PBEKeySpec pbeKeySpec = new PBEKeySpec(systemUserEntity.getPassword().toCharArray(), salt, 10, 512);
+            SecretKeyFactory skf = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA512");
+            byte[] hash = skf.generateSecret(pbeKeySpec).getEncoded();
+            //converting to string to store into database
+            String hashedPassword = Base64.getMimeEncoder().encodeToString(hash);
+            systemUserEntity.setPassword(hashedPassword);
             SystemUserEntity systemUser = systemUserRepository.save(systemUserEntity);
+            //get the admin functional group
+            VisualObject functionalGroupResponse = restTemplate.getForObject("http://localhost:9100/api/v1/user/functional-groups/internal-admin-group", VisualObject.class);
+            SystemUserFunctionalGroupMappingEntity systemUserFunctionalGroupMapping = new SystemUserFunctionalGroupMappingEntity();
+            // assign internal admin group to system user
+            systemUserFunctionalGroupMapping.setFunctionalGroupGlobalId(functionalGroupResponse.getData().getFunctionalGroupGlobalId());
+            systemUserFunctionalGroupMapping.setSystemUserGlobalId(systemUser.getSystemUserGlobalId());
+            ResponseEntity<SystemUserFunctionalGroupMappingEntity> systemUserFunctionalGroupMappingResponse = restTemplate.postForEntity("http://localhost:9100/api/v1/user/system-user-functional-group-mappings", systemUserFunctionalGroupMapping, SystemUserFunctionalGroupMappingEntity.class);
 
-            System.out.println("systemUser response");
-            System.out.println(systemUser);
             ResponseEntity<VisualObject> systemUserResponse = restTemplate.postForEntity("http://localhost:9100/api/v1/auth/system-users", systemUser, VisualObject.class);
 
             SystemUserEntity tokenObject = new SystemUserEntity();
@@ -136,6 +172,27 @@ public class SystemUserService {
             VisualObject tokenResponse = restTemplate.postForObject("http://localhost:9100/api/v1/auth/tokens", tokenObject, VisualObject.class);
 
             return tokenResponse;
+        }
+    }
+
+    public List<UserLoginProcedureEntity> userLoginProcedure(SystemUserEntity systemUserEntity) throws NoSuchAlgorithmException, InvalidKeySpecException {
+        log.info("Inside userLoginProcedure method of SystemUserService");
+        // fetch user with corresponding username
+        SystemUserEntity systemUser = systemUserRepository.findByPrimaryPhoneOrPrimaryEmail(systemUserEntity.getUserName(),systemUserEntity.getUserName());
+        System.out.println("systemUser login");
+        System.out.println(systemUser);
+        //Obtain the salt from the database and hash the input password
+        PBEKeySpec pbeKeySpec = new PBEKeySpec(systemUserEntity.getPassword().toCharArray(), systemUser.getSaltValue(), 10, 512);
+        SecretKeyFactory secretKey = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA512");
+        byte[] hashedInputPassword = secretKey.generateSecret(pbeKeySpec).getEncoded();
+
+        String hashedInputPasswordToString = Base64.getMimeEncoder().encodeToString(hashedInputPassword);
+        //compare the password strings
+        List<UserLoginProcedureEntity> user = userLoginProcedureRepository.userLoginProcedure(systemUserEntity.getUserName(), hashedInputPasswordToString);
+        if (!user.isEmpty()) {
+            return user;
+        } else {
+            throw new CustomNotFoundException("SystemUser with phone - " + systemUserEntity.getUserName() + " - not found");
         }
     }
 
@@ -155,85 +212,15 @@ public class SystemUserService {
         return savedMemberResponse;
     }
 
-    public SystemUserEntity findBySystemUserGlobalId(UUID systemUserGlobalId) {
-        log.info("Inside findBySystemUserGlobalId method of SystemUserService");
-        SystemUserEntity login = systemUserRepository.findBySystemUserGlobalId(systemUserGlobalId);
-        if (login != null) {
-            return login;
-        } else {
-            throw new CustomNotFoundException("SystemUser - " + systemUserGlobalId + " - not found");
-        }
-    }
-
-    public List<SystemUserEntity> findAllSystemUsers() {
-        log.info("Inside findAllSystemUsers method of SystemUserService");
-        List<SystemUserEntity> systemUsers = new ArrayList<SystemUserEntity>();
-        systemUsers.addAll(systemUserRepository.findAll());
-
-        if (systemUsers.isEmpty()) {
-            throw new CustomNoContentException("SystemUsers not found");
-        }
-
-        return systemUsers;
-    }
-
     public List<SystemUserEntity> findAllStaff() {
         log.info("Inside findAllSystemUsers method of SystemUserService");
         List<SystemUserEntity> staff = new ArrayList<SystemUserEntity>();
         staff.addAll(systemUserRepository.findAllStaff());
         if (staff.isEmpty()) {
-            throw new CustomNoContentException("SystemUsers not found");
+            throw new CustomNoContentException("System Users not found");
         }
 
         return staff;
-    }
-
-    @Transactional
-    public SystemUserEntity patchSystemUser(UUID systemUserGlobalId, JsonPatch jsonPatch)
-            throws JsonPatchException, JsonProcessingException {
-        log.info("Inside patchSystemUser method of SystemUserService");
-        if (systemUserGlobalId.equals(0L)) {
-            throw new CustomInvalidInputException("SystemUser id - " + systemUserGlobalId + " - is not valid");
-        }
-
-        Optional<SystemUserEntity> login = Optional.ofNullable(systemUserRepository.findBySystemUserGlobalId(systemUserGlobalId));
-
-        if (login.isPresent()) {
-            SystemUserEntity loginEntity = this.applyPatchToSystemUserEntity(jsonPatch, login.get());
-            return systemUserRepository.save(loginEntity);
-        } else {
-            throw new CustomNotFoundException("FunctionalGroup with id - " + systemUserGlobalId + " - not found");
-        }
-    }
-
-    public void deleteBySystemUserGlobalId(UUID systemUserGlobalId) {
-        log.info("Inside deleteBySystemUserGlobalId method of SystemUserService");
-        if (systemUserGlobalId.equals(0L)) {
-            throw new CustomInvalidInputException("SystemUser id - " + systemUserGlobalId + " - is not valid");
-        }
-
-        systemUserRepository.deleteById(systemUserGlobalId);
-    }
-
-    public void deleteAllSystemUsers() {
-        log.info("Inside deleteAllSystemUsers method of SystemUserService");
-        systemUserRepository.deleteAll();
-    }
-
-    private SystemUserEntity applyPatchToSystemUserEntity(JsonPatch jsonPatch, SystemUserEntity systemUserEntity)
-            throws com.github.fge.jsonpatch.JsonPatchException, com.fasterxml.jackson.core.JsonProcessingException {
-        JsonNode patched = jsonPatch.apply(objectMapper.convertValue(systemUserEntity, JsonNode.class));
-        return objectMapper.treeToValue(patched, SystemUserEntity.class);
-    }
-
-    public List<UserLoginProcedureEntity> userLoginProcedure(SystemUserEntity systemUserEntity) {
-        log.info("Inside userLoginProcedure method of SystemUserService");
-        List<UserLoginProcedureEntity> user = userLoginProcedureRepository.userLoginProcedure(systemUserEntity.getUserName(), systemUserEntity.getPassword());
-        if (!user.isEmpty()) {
-            return user;
-        } else {
-            throw new CustomNotFoundException("SystemUser with phone - " + systemUserEntity.getUserName() + " - not found");
-        }
     }
 
     public List<SystemUserFunctionalGroupsProcedureEntity> systemUserFunctionalGroupsProcedure() {
@@ -243,6 +230,16 @@ public class SystemUserService {
             return systemUserFunctionalGroups;
         } else {
             throw new CustomNotFoundException("System User Functional Group Mappings not found");
+        }
+    }
+
+    public SystemUserEntity findBySystemUserGlobalId(UUID systemUserGlobalId) {
+        log.info("Inside findBySystemUserGlobalId method of SystemUserService");
+        SystemUserEntity login = systemUserRepository.findBySystemUserGlobalId(systemUserGlobalId);
+        if (login != null) {
+            return login;
+        } else {
+            throw new CustomNotFoundException("SystemUser - " + systemUserGlobalId + " - not found");
         }
     }
 
@@ -266,6 +263,42 @@ public class SystemUserService {
             return false;
 //			throw new CustomNotFoundException("System User with email not found");
         }
+    }
+
+    public List<SystemUserEntity> findAllSystemUsers() {
+        log.info("Inside findAllSystemUsers method of SystemUserService");
+        List<SystemUserEntity> systemUsers = new ArrayList<SystemUserEntity>();
+        systemUsers.addAll(systemUserRepository.findAll());
+
+        if (systemUsers.isEmpty()) {
+            throw new CustomNoContentException("SystemUsers not found");
+        }
+
+        return systemUsers;
+    }
+
+    @Transactional
+    public SystemUserEntity patchSystemUser(UUID systemUserGlobalId, JsonPatch jsonPatch)
+            throws JsonPatchException, JsonProcessingException {
+        log.info("Inside patchSystemUser method of SystemUserService");
+        if (systemUserGlobalId.equals(0L)) {
+            throw new CustomInvalidInputException("SystemUser id - " + systemUserGlobalId + " - is not valid");
+        }
+
+        Optional<SystemUserEntity> login = Optional.ofNullable(systemUserRepository.findBySystemUserGlobalId(systemUserGlobalId));
+
+        if (login.isPresent()) {
+            SystemUserEntity loginEntity = this.applyPatchToSystemUserEntity(jsonPatch, login.get());
+            return systemUserRepository.save(loginEntity);
+        } else {
+            throw new CustomNotFoundException("FunctionalGroup with id - " + systemUserGlobalId + " - not found");
+        }
+    }
+
+    private SystemUserEntity applyPatchToSystemUserEntity(JsonPatch jsonPatch, SystemUserEntity systemUserEntity)
+            throws com.github.fge.jsonpatch.JsonPatchException, com.fasterxml.jackson.core.JsonProcessingException {
+        JsonNode patched = jsonPatch.apply(objectMapper.convertValue(systemUserEntity, JsonNode.class));
+        return objectMapper.treeToValue(patched, SystemUserEntity.class);
     }
 
     public SystemUserEntity updateSystemUser(UUID systemUserGlobalUuid, SystemUserEntity systemUserEntity) {
@@ -294,14 +327,17 @@ public class SystemUserService {
         }
     }
 
-    public Map<String, String> handleValidationExceptions(Errors errors) {
-        Map<String, String> errorsMessages = new HashMap<>();
-        errors.getAllErrors().forEach((error) -> {
-            String fieldName = ((FieldError) error).getField();
-            String errorMessage = error.getDefaultMessage();
-            errorsMessages.put(fieldName, errorMessage);
-        });
-        return errorsMessages;
+    public void deleteBySystemUserGlobalId(UUID systemUserGlobalId) {
+        log.info("Inside deleteBySystemUserGlobalId method of SystemUserService");
+        if (systemUserGlobalId.equals(0L)) {
+            throw new CustomInvalidInputException("SystemUser id - " + systemUserGlobalId + " - is not valid");
+        }
+
+        systemUserRepository.deleteById(systemUserGlobalId);
     }
 
+    public void deleteAllSystemUsers() {
+        log.info("Inside deleteAllSystemUsers method of SystemUserService");
+        systemUserRepository.deleteAll();
+    }
 }

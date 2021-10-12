@@ -75,13 +75,13 @@ public class SystemUserEntity {
 
     @JsonProperty("primary_phone")
     @ApiModelProperty(notes = "System user primary phone.", example = "256700000000")
-    @Pattern(regexp = "(07|03|02|08)\\d{8}", message = "Please enter correct number format (0712345678/0312345678/0212345678/0812345678)")
+    @Pattern(regexp = "((\\+256)\\d{9})", message = "Please enter correct number format (+256701234567)")
     @NotBlank(message = "The primary_phone field cannot be null")
     private String primaryPhone;
 
     @JsonProperty("secondary_phone")
     @ApiModelProperty(notes = "System user secondary phone.", example = "256700000000")
-    @Pattern(regexp = "(07|03|02|08)\\d{8}", message = "Please enter correct number format (0712345678/0312345678/0212345678/0812345678")
+    @Pattern(regexp = "((\\+256)\\d{9})", message = "Please enter correct number format (+256701234567)")
     private String secondaryPhone;
 
     @JsonProperty("primary_email")
@@ -163,7 +163,7 @@ public class SystemUserEntity {
 
     @JsonProperty("password")
     @ApiModelProperty(notes = "Password password.", example = "1")
-    @Size(min=8, max = 25, message = "The password should have a minimum of 8 and a maximum of 25 characters")
+    @Size(min=8, max = 250, message = "The password should have a minimum of 8 and a maximum of 25 characters")
     @NotBlank(message = "Password is required")
     private String password;
 

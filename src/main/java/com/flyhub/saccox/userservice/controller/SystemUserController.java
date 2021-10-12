@@ -2,33 +2,26 @@ package com.flyhub.saccox.userservice.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.flyhub.library.apiresponse.ApiResponseFormat;
-import com.flyhub.library.apiresponse.ErrorFormat;
 import com.flyhub.saccox.userservice.entity.SystemUserEntity;
 import com.flyhub.saccox.userservice.entity.UserLoginProcedureEntity;
 import com.flyhub.saccox.userservice.service.SystemUserService;
-import com.flyhub.saccox.userservice.visualobject.TokenEntityModel;
 import com.flyhub.saccox.userservice.visualobject.VisualObject;
 import com.github.fge.jsonpatch.JsonPatch;
 import com.github.fge.jsonpatch.JsonPatchException;
 
-import io.swagger.v3.oas.models.responses.ApiResponse;
-import javassist.tools.web.BadHttpRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
-import org.springframework.validation.FieldError;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
-import javax.validation.constraints.Null;
 import java.io.IOException;
-import java.util.HashMap;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 @RestController
@@ -48,14 +41,14 @@ public class SystemUserController {
                                               @RequestParam("primary_email") String primary_email,
                                               @RequestParam("password") String password,
                                               @RequestParam("question") String question,
-                                              @RequestParam("answer") String answer) throws IOException {
+                                              @RequestParam("answer") String answer) throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
         log.info("Inside systemUserSignup method of SystemUserController");
         VisualObject _systemUser = systemUserService.systemUserSignup(file, first_name, middle_name, last_name, primary_phone, primary_email, password, question, answer);
         return new ResponseEntity<>(new ApiResponseFormat(true, null, "SystemUser created.", _systemUser), HttpStatus.CREATED);
     }
 
     @PostMapping("/save-user")
-    public ResponseEntity<?> saveSystemUser(@Valid @RequestBody SystemUserEntity systemUserEntity, Errors errors) {
+    public ResponseEntity<?> saveSystemUser(@Valid @RequestBody SystemUserEntity systemUserEntity, Errors errors) throws NoSuchAlgorithmException, InvalidKeySpecException {
         log.info("Inside saveSystemUser method of SystemUserController");
         if (errors.hasErrors()) {
             return new ResponseEntity<>(new ApiResponseFormat(false, null, "Invalid Values passed for the fields", systemUserService.handleValidationExceptions(errors)), HttpStatus.BAD_REQUEST);
@@ -63,7 +56,6 @@ public class SystemUserController {
         VisualObject _systemUser = systemUserService.saveSystemUser(systemUserEntity);
         return new ResponseEntity<>(new ApiResponseFormat(true, null, "SystemUser created.", _systemUser), HttpStatus.CREATED);
     }
-
 
     @PostMapping("/member-online-access")
     public ResponseEntity<?> giveMemberOnlineAccess(@RequestBody SystemUserEntity systemUserEntity) {
@@ -73,10 +65,10 @@ public class SystemUserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> userLoginProcedure(@RequestBody SystemUserEntity systemUserEntity) {
+    public ResponseEntity<?> userLoginProcedure(@RequestBody SystemUserEntity systemUserEntity) throws NoSuchAlgorithmException, InvalidKeySpecException {
         log.info("Inside userLoginProcedure method of SystemUserController");
         List<UserLoginProcedureEntity> systemUser = systemUserService.userLoginProcedure(systemUserEntity);
-        return new ResponseEntity<>(new ApiResponseFormat(true, null, "SystemUser found.", systemUser), HttpStatus.CREATED);
+        return new ResponseEntity<>(new ApiResponseFormat(true, null, "Logged in successfully", systemUser), HttpStatus.OK);
     }
 
     @GetMapping("/{systemUserGlobalId}")
