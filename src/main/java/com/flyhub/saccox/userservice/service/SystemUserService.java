@@ -175,19 +175,17 @@ public class SystemUserService {
         }
     }
 
+    @Transactional
     public List<UserLoginProcedureEntity> userLoginProcedure(SystemUserEntity systemUserEntity) throws NoSuchAlgorithmException, InvalidKeySpecException {
         log.info("Inside userLoginProcedure method of SystemUserService");
         // fetch user with corresponding username
         SystemUserEntity systemUser = systemUserRepository.findByPrimaryPhoneOrPrimaryEmail(systemUserEntity.getUserName(),systemUserEntity.getUserName());
-        System.out.println("systemUser login");
-        System.out.println(systemUser);
         //Obtain the salt from the database and hash the input password
         PBEKeySpec pbeKeySpec = new PBEKeySpec(systemUserEntity.getPassword().toCharArray(), systemUser.getSaltValue(), 10, 512);
         SecretKeyFactory secretKey = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA512");
         byte[] hashedInputPassword = secretKey.generateSecret(pbeKeySpec).getEncoded();
 
         String hashedInputPasswordToString = Base64.getMimeEncoder().encodeToString(hashedInputPassword);
-        //compare the password strings
         List<UserLoginProcedureEntity> user = userLoginProcedureRepository.userLoginProcedure(systemUserEntity.getUserName(), hashedInputPasswordToString);
         if (!user.isEmpty()) {
             return user;
@@ -340,4 +338,5 @@ public class SystemUserService {
         log.info("Inside deleteAllSystemUsers method of SystemUserService");
         systemUserRepository.deleteAll();
     }
+
 }
