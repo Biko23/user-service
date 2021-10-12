@@ -8,6 +8,7 @@ import com.flyhub.saccox.userservice.entity.*;
 import com.flyhub.saccox.userservice.repository.SystemUserFunctionalGroupsProcedureRepository;
 import com.flyhub.saccox.userservice.repository.SystemUserRepository;
 import com.flyhub.saccox.userservice.repository.UserLoginProcedureRepository;
+import com.flyhub.saccox.userservice.visualobject.TokenEntityModel;
 import com.flyhub.saccox.userservice.visualobject.VisualObject;
 import com.github.fge.jsonpatch.JsonPatch;
 import com.github.fge.jsonpatch.JsonPatchException;
@@ -17,13 +18,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.Errors;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.security.SecureRandom;
 import java.util.*;
 
 @Service
@@ -75,61 +83,55 @@ public class SystemUserService {
 
         ResponseEntity<VisualObject> systemUserResponse = restTemplate.postForEntity("http://localhost:9100/api/v1/auth/system-users", systemUser, VisualObject.class);
         SystemUserEntity tokenObject = new SystemUserEntity();
-        UUID tenantGlobalId = UUID.randomUUID();
-        String tenantName = "Tenant Name";
-        UUID branchGlobalId = UUID.randomUUID();
-        UUID refreshToken = UUID.randomUUID();
         tokenObject.setSystemUserGlobalId(systemUser.getSystemUserGlobalId());
-        tokenObject.setTenantGlobalId(tenantGlobalId);
-        tokenObject.setTenantName(tenantName);
-        tokenObject.setBranchGlobalId(branchGlobalId);
-        tokenObject.setRefreshToken(refreshToken);
+        tokenObject.setTenantGlobalId(systemUser.getTenantGlobalId());
+        tokenObject.setTenantName(systemUser.getTenantName());
+        tokenObject.setBranchGlobalId(systemUser.getBranchGlobalId());
+        tokenObject.setRefreshToken(systemUser.getRefreshToken());
         VisualObject tokenResponse = restTemplate.postForObject("http://localhost:9100/api/v1/auth/tokens", tokenObject, VisualObject.class);
-        System.out.println("tokenResponse");
-        System.out.println(tokenResponse);
         return tokenResponse;
     }
 
     public VisualObject saveSystemUser(SystemUserEntity systemUserEntity) {
         log.info("Inside saveSystemUser method of SystemUserService");
+        System.out.println("systemUserEntity start");
+        System.out.println(systemUserEntity);
         SystemUserEntity userAsMember = systemUserRepository.findByMemberGlobalId(systemUserEntity.getMemberGlobalId());
+        System.out.println("userAsMember");
+        System.out.println(userAsMember);
         if (userAsMember != null) {
             // update the is_active and is_staff
             // use to update member in the system user table given the member id
             updateSystemUser(userAsMember.getSystemUserGlobalId(), userAsMember);
             SystemUserEntity tokenObject = new SystemUserEntity();
 
-            UUID tenantGlobalId = UUID.randomUUID();
-            String tenantName = "Tenant Name";
-            UUID branchGlobalId = UUID.randomUUID();
-            UUID refreshToken = UUID.randomUUID();
-
             tokenObject.setSystemUserGlobalId(userAsMember.getSystemUserGlobalId());
-            tokenObject.setTenantGlobalId(tenantGlobalId);
-            tokenObject.setTenantName(tenantName);
-            tokenObject.setBranchGlobalId(branchGlobalId);
-            tokenObject.setRefreshToken(refreshToken);
+            tokenObject.setTenantGlobalId(userAsMember.getTenantGlobalId());
+            tokenObject.setTenantName(userAsMember.getTenantName());
+            tokenObject.setBranchGlobalId(userAsMember.getBranchGlobalId());
+            tokenObject.setRefreshToken(userAsMember.getRefreshToken());
 
             VisualObject tokenResponse = restTemplate.postForObject("http://localhost:9100/api/v1/auth/tokens", tokenObject, VisualObject.class);
-
             return tokenResponse;
         } else {
+            // get a salt value using the SecureRandom class
+            SecureRandom secureRandom = new SecureRandom();
+            byte[] salt = secureRandom.generateSeed(12);
+            systemUserEntity.setSaltValue(salt);
+
             SystemUserEntity systemUser = systemUserRepository.save(systemUserEntity);
 
+            System.out.println("systemUser response");
+            System.out.println(systemUser);
             ResponseEntity<VisualObject> systemUserResponse = restTemplate.postForEntity("http://localhost:9100/api/v1/auth/system-users", systemUser, VisualObject.class);
 
             SystemUserEntity tokenObject = new SystemUserEntity();
 
-            UUID tenantGlobalId = UUID.randomUUID();
-            String tenantName = "Tenant Name";
-            UUID branchGlobalId = UUID.randomUUID();
-            UUID refreshToken = UUID.randomUUID();
-
             tokenObject.setSystemUserGlobalId(systemUser.getSystemUserGlobalId());
-            tokenObject.setTenantGlobalId(tenantGlobalId);
-            tokenObject.setTenantName(tenantName);
-            tokenObject.setBranchGlobalId(branchGlobalId);
-            tokenObject.setRefreshToken(refreshToken);
+            tokenObject.setTenantGlobalId(systemUser.getTenantGlobalId());
+            tokenObject.setTenantName(systemUser.getTenantName());
+            tokenObject.setBranchGlobalId(systemUser.getBranchGlobalId());
+            tokenObject.setRefreshToken(systemUser.getRefreshToken());
 
             VisualObject tokenResponse = restTemplate.postForObject("http://localhost:9100/api/v1/auth/tokens", tokenObject, VisualObject.class);
 
@@ -227,7 +229,6 @@ public class SystemUserService {
     public List<UserLoginProcedureEntity> userLoginProcedure(SystemUserEntity systemUserEntity) {
         log.info("Inside userLoginProcedure method of SystemUserService");
         List<UserLoginProcedureEntity> user = userLoginProcedureRepository.userLoginProcedure(systemUserEntity.getUserName(), systemUserEntity.getPassword());
-        System.out.println(user);
         if (!user.isEmpty()) {
             return user;
         } else {
@@ -267,31 +268,40 @@ public class SystemUserService {
         }
     }
 
-public SystemUserEntity updateSystemUser(UUID systemUserGlobalUuid, SystemUserEntity systemUserEntity) {
-    log.info("Inside updateSystemUser method of SystemUserService");
-    if(systemUserGlobalUuid.equals(0L)) {
-        throw new  CustomInvalidInputException("System User id - " + systemUserGlobalUuid + " - is not valid");
+    public SystemUserEntity updateSystemUser(UUID systemUserGlobalUuid, SystemUserEntity systemUserEntity) {
+        log.info("Inside updateSystemUser method of SystemUserService");
+        if (systemUserGlobalUuid.equals(0L)) {
+            throw new CustomInvalidInputException("System User id - " + systemUserGlobalUuid + " - is not valid");
+        }
+
+        Optional<SystemUserEntity> userOptional = Optional.ofNullable(systemUserRepository.findBySystemUserGlobalId(systemUserGlobalUuid));
+
+        if (userOptional.isPresent()) {
+            systemUserEntity.setSystemUserGlobalId(systemUserGlobalUuid);
+            systemUserEntity.setMemberGlobalId(systemUserEntity.getMemberGlobalId());
+            systemUserEntity.setFirstName(systemUserEntity.getFirstName());
+            systemUserEntity.setMiddleName(systemUserEntity.getMiddleName());
+            systemUserEntity.setLastName(systemUserEntity.getLastName());
+            systemUserEntity.setGender(systemUserEntity.getGender());
+            systemUserEntity.setPrimaryEmail(systemUserEntity.getPrimaryEmail());
+            systemUserEntity.setPrimaryPhone(systemUserEntity.getPrimaryPhone());
+            systemUserEntity.setPassword(systemUserEntity.getPassword());
+            systemUserEntity.setIsActive(1);
+            systemUserEntity.setIsStaff(1);
+            return systemUserRepository.save(systemUserEntity);
+        } else {
+            throw new CustomNotFoundException("System User with id - " + systemUserGlobalUuid + " - not found");
+        }
     }
 
-    Optional<SystemUserEntity> userOptional = Optional.ofNullable(systemUserRepository.findBySystemUserGlobalId(systemUserGlobalUuid));
-
-    if (userOptional.isPresent()) {
-        systemUserEntity.setSystemUserGlobalId(systemUserGlobalUuid);
-        systemUserEntity.setMemberGlobalId(systemUserEntity.getMemberGlobalId());
-        systemUserEntity.setFirstName(systemUserEntity.getFirstName());
-        systemUserEntity.setMiddleName(systemUserEntity.getMiddleName());
-        systemUserEntity.setLastName(systemUserEntity.getLastName());
-        systemUserEntity.setGender(systemUserEntity.getGender());
-        systemUserEntity.setPrimaryEmail(systemUserEntity.getPrimaryEmail());
-        systemUserEntity.setPrimaryPhone(systemUserEntity.getPrimaryPhone());
-        systemUserEntity.setPassword(systemUserEntity.getPassword());
-        systemUserEntity.setIsActive(1);
-        systemUserEntity.setIsStaff(1);
-        return systemUserRepository.save(systemUserEntity);
-    } else {
-        throw new  CustomNotFoundException("System User with id - " + systemUserGlobalUuid + " - not found");
+    public Map<String, String> handleValidationExceptions(Errors errors) {
+        Map<String, String> errorsMessages = new HashMap<>();
+        errors.getAllErrors().forEach((error) -> {
+            String fieldName = ((FieldError) error).getField();
+            String errorMessage = error.getDefaultMessage();
+            errorsMessages.put(fieldName, errorMessage);
+        });
+        return errorsMessages;
     }
-}
-
 
 }

@@ -16,5 +16,5 @@ public class VisualObject {
 	
 	private String message;
 
-	private HelperEntity data;
+	private TokenEntityModel data;
 }

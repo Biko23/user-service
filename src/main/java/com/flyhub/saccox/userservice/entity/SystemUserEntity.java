@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.*;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
@@ -50,6 +51,8 @@ public class SystemUserEntity {
 
     @JsonProperty("first_name")
     @ApiModelProperty(notes = "System user first name.", example = "John")
+    @Size(min=2, max=250, message = "The first_name field should have a minimum of 2 characters and a maximum of 250 characters")
+    @NotBlank(message = "The first_name field cannot be null")
     private String firstName;
 
     @JsonProperty("middle_name")
@@ -58,6 +61,8 @@ public class SystemUserEntity {
 
     @JsonProperty("last_name")
     @ApiModelProperty(notes = "System user last name.", example = "Doe")
+    @Size(min=2, max=250, message = "The name should have a minimum of 2 characters and a maximum of 250 characters")
+    @NotBlank(message = "The last_name field cannot be null")
     private String lastName;
 
     @JsonProperty("other_name")
@@ -70,18 +75,24 @@ public class SystemUserEntity {
 
     @JsonProperty("primary_phone")
     @ApiModelProperty(notes = "System user primary phone.", example = "256700000000")
+    @Pattern(regexp = "(07|03|02|08)\\d{8}", message = "Please enter correct number format (0712345678/0312345678/0212345678/0812345678)")
+    @NotBlank(message = "The primary_phone field cannot be null")
     private String primaryPhone;
 
     @JsonProperty("secondary_phone")
     @ApiModelProperty(notes = "System user secondary phone.", example = "256700000000")
+    @Pattern(regexp = "(07|03|02|08)\\d{8}", message = "Please enter correct number format (0712345678/0312345678/0212345678/0812345678")
     private String secondaryPhone;
 
     @JsonProperty("primary_email")
     @ApiModelProperty(notes = "System user primary email.", example = "john@gmaoil.com")
+    @Email(message = "Please enter the correct email")
+    @NotBlank(message = "The primary_email field cannot be null")
     private String primaryEmail;
 
     @JsonProperty("secondary_email")
     @ApiModelProperty(notes = "System user secondary email.", example = "a@gmail.com")
+    @Email(message = "Please enter the correct email")
     private String secondaryEmail;
 
     @JsonProperty("image_url_small")
@@ -103,6 +114,7 @@ public class SystemUserEntity {
 
     @JsonProperty("dob")
     @ApiModelProperty(notes = "System user date of birth.", example = "12-12-21")
+//    @Past(message = "Date of birth must be a past date")
     private LocalDateTime dob;
 
     @JsonProperty("gender")
@@ -151,7 +163,20 @@ public class SystemUserEntity {
 
     @JsonProperty("password")
     @ApiModelProperty(notes = "Password password.", example = "1")
+    @Size(min=8, max = 25, message = "The password should have a minimum of 8 and a maximum of 25 characters")
+    @NotBlank(message = "Password is required")
     private String password;
+
+    @JsonProperty("salt_value")
+    @ApiModelProperty(notes = "System user salt value for hashing the password.", example = "12-12-21")
+    private byte[] saltValue;
+
+    @JsonProperty("nin")
+    @ApiModelProperty(notes="")
+    @Column(unique = true)
+    @Pattern(regexp = "([CF]{2}\\d{8}[A-Z]{2}\\d{1}[A-Z]{1})|([CM]{2}\\d{8}[A-Z]{4})", message = "Please enter the correct NIN")
+    @NotBlank(message = "Nin value is required")
+    private String nin;
 
     @JsonProperty("question")
     @ApiModelProperty(notes = "Password question.", example = "Place of birth?")
