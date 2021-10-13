@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.flyhub.library.apiresponse.ApiResponseFormat;
 import com.flyhub.saccox.userservice.entity.SystemUserEntity;
 import com.flyhub.saccox.userservice.entity.UserLoginProcedureEntity;
+import com.flyhub.saccox.userservice.model.ApiResponseModel;
 import com.flyhub.saccox.userservice.service.SystemUserService;
 import com.flyhub.saccox.userservice.visualobject.VisualObject;
 import com.github.fge.jsonpatch.JsonPatch;
@@ -29,7 +30,7 @@ public class SystemUserController {
     private SystemUserService systemUserService;
 
     @PostMapping("")
-    public ResponseEntity<?> systemUserSignup(@RequestParam("file") MultipartFile file,
+    public ResponseEntity<?> systemUserSignup(@RequestParam(value ="file", required=false) MultipartFile file,
                                             @RequestParam("first_name") String first_name,
                                             @RequestParam("middle_name") String middle_name,
                                             @RequestParam("last_name") String last_name,
@@ -39,7 +40,7 @@ public class SystemUserController {
                                             @RequestParam("question") String question,
                                             @RequestParam("answer") String answer) throws IOException {
         log.info("Inside systemUserSignup method of SystemUserController");
-        VisualObject _systemUser = systemUserService.systemUserSignup(file, first_name, middle_name, last_name, primary_phone, primary_email, password, question, answer);
+        ApiResponseModel _systemUser = systemUserService.systemUserSignup(file, first_name, middle_name, last_name, primary_phone, primary_email, password, question, answer);
         return new ResponseEntity<>(new ApiResponseFormat(true, null, "SystemUser created.", _systemUser), HttpStatus.CREATED);
     }
 

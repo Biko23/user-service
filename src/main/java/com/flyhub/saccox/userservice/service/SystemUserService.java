@@ -5,9 +5,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.flyhub.saccox.userservice.entity.*;
-import com.flyhub.saccox.userservice.repository.SystemUserFunctionalGroupsProcedureRepository;
-import com.flyhub.saccox.userservice.repository.SystemUserRepository;
-import com.flyhub.saccox.userservice.repository.UserLoginProcedureRepository;
+import com.flyhub.saccox.userservice.model.ApiResponseModel;
+import com.flyhub.saccox.userservice.repository.*;
 import com.flyhub.saccox.userservice.visualobject.VisualObject;
 import com.github.fge.jsonpatch.JsonPatch;
 import com.github.fge.jsonpatch.JsonPatchException;
@@ -40,11 +39,17 @@ public class SystemUserService {
     private SystemUserFunctionalGroupsProcedureRepository systemUserFunctionalGroupsProcedureRepository;
 
     @Autowired
+    private FunctionalGroupRepository functionalGroupRepository;
+
+    @Autowired
+    private SystemUserFunctionalGroupMappingRepository systemUserFunctionalGroupMappingRepository;
+
+    @Autowired
     private RestTemplate restTemplate;
     @Autowired
     private ObjectMapper objectMapper;
 
-    public VisualObject systemUserSignup(MultipartFile file,
+    public ApiResponseModel systemUserSignup(MultipartFile file,
                                          String first_name,
                                          String middle_name,
                                          String last_name,
@@ -54,8 +59,27 @@ public class SystemUserService {
                                          String question,
                                          String answer) throws IOException {
         log.info("Inside systemUserSignup method of SystemUserService");
+
         SystemUserEntity systemUserEntity = new SystemUserEntity();
-        systemUserEntity.setImageSmall(file.getBytes());
+        if (file != null) {
+            String fileType = file.getContentType();
+            System.out.println("fileType");
+            System.out.println(fileType);
+            if (fileType.equals("image/png") || fileType.equals("image/jpg") || fileType.equals("image/jpeg")) {
+                long fileSize = file.getSize();
+                System.out.println(fileSize);
+                fileSize = fileSize/1024;
+                System.out.println(fileSize);
+                if (fileSize < 1024) {
+                    systemUserEntity.setImageSmall(file.getBytes());
+                    System.out.println(systemUserEntity.getImageSmall());
+                }else {
+                    System.out.println("Sorry file of size " + fileSize/1024 + " Mbs is too big!");
+                }
+            }else {
+                System.out.println("Sorry this file type is not accepted.");
+            }
+        }
         systemUserEntity.setFirstName(first_name);
         systemUserEntity.setMiddleName(middle_name);
         systemUserEntity.setLastName(last_name);
@@ -67,12 +91,15 @@ public class SystemUserService {
         systemUserEntity.setAnswer(answer);
         SystemUserEntity systemUser = systemUserRepository.save(systemUserEntity);
         //get the admin functional group
-        VisualObject functionalGroupResponse = restTemplate.getForObject("http://localhost:9100/api/v1/user/functional-groups/internal-admin-group", VisualObject.class);
+        FunctionalGroupEntity functionalGroup = functionalGroupRepository.findByNameContains("nternal Admin");
+//        VisualObject functionalGroupResponse = restTemplate.getForObject("http://localhost:9100/api/v1/user/functional-groups/internal-admin-group", VisualObject.class);
         SystemUserFunctionalGroupMappingEntity systemUserFunctionalGroupMapping = new SystemUserFunctionalGroupMappingEntity();
         // assign internal admin group to system user
-        systemUserFunctionalGroupMapping.setFunctionalGroupGlobalId(functionalGroupResponse.getData().getFunctionalGroupGlobalId());
+        systemUserFunctionalGroupMapping.setFunctionalGroupGlobalId(functionalGroup.getFunctionalGroupGlobalId());
+//        systemUserFunctionalGroupMapping.setFunctionalGroupGlobalId(functionalGroupResponse.getData().getFunctionalGroupGlobalId());
         systemUserFunctionalGroupMapping.setSystemUserGlobalId(systemUser.getSystemUserGlobalId());
-        ResponseEntity<SystemUserFunctionalGroupMappingEntity> systemUserFunctionalGroupMappingResponse = restTemplate.postForEntity("http://localhost:9100/api/v1/user/system-user-functional-group-mappings", systemUserFunctionalGroupMapping, SystemUserFunctionalGroupMappingEntity.class);
+        systemUserFunctionalGroupMappingRepository.save(systemUserFunctionalGroupMapping);
+//        ResponseEntity<SystemUserFunctionalGroupMappingEntity> systemUserFunctionalGroupMappingResponse = restTemplate.postForEntity("http://localhost:9100/api/v1/user/system-user-functional-group-mappings", systemUserFunctionalGroupMapping, SystemUserFunctionalGroupMappingEntity.class);
 
         ResponseEntity<VisualObject> systemUserResponse = restTemplate.postForEntity("http://localhost:9100/api/v1/auth/system-users", systemUser, VisualObject.class);
         SystemUserEntity tokenObject = new SystemUserEntity();
@@ -85,7 +112,7 @@ public class SystemUserService {
         tokenObject.setTenantName(tenantName);
         tokenObject.setBranchGlobalId(branchGlobalId);
         tokenObject.setRefreshToken(refreshToken);
-        VisualObject tokenResponse = restTemplate.postForObject("http://localhost:9100/api/v1/auth/tokens", tokenObject, VisualObject.class);
+        ApiResponseModel tokenResponse = restTemplate.postForObject("http://localhost:9100/api/v1/auth/tokens", tokenObject, ApiResponseModel.class);
         System.out.println("tokenResponse");
         System.out.println(tokenResponse);
         return tokenResponse;
@@ -154,6 +181,7 @@ public class SystemUserService {
         return savedMemberResponse;
     }
 
+    @Transactional
     public SystemUserEntity findBySystemUserGlobalId(UUID systemUserGlobalId) {
         log.info("Inside findBySystemUserGlobalId method of SystemUserService");
         SystemUserEntity login = systemUserRepository.findBySystemUserGlobalId(systemUserGlobalId);
