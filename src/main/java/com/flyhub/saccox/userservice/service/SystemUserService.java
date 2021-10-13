@@ -52,6 +52,12 @@ public class SystemUserService {
     private SystemUserFunctionalGroupsProcedureRepository systemUserFunctionalGroupsProcedureRepository;
 
     @Autowired
+    private SystemUserFunctionalGroupMappingService systemUserFunctionalGroupMappingService;
+
+    @Autowired
+    private FunctionalGroupService functionalGroupService;
+
+    @Autowired
     private RestTemplate restTemplate;
     @Autowired
     private ObjectMapper objectMapper;
@@ -86,26 +92,25 @@ public class SystemUserService {
         systemUserEntity.setPassword(password);
         systemUserEntity.setQuestion(question);
         systemUserEntity.setAnswer(answer);
-        systemUserEntity.setNin("CF12345678YH9T");
         // get a salt value using the SecureRandom class
         SecureRandom secureRandom = new SecureRandom();
         byte[] salt = secureRandom.generateSeed(12);
         systemUserEntity.setSaltValue(salt);
         // hash the password with the salt
         PBEKeySpec pbeKeySpec = new PBEKeySpec(systemUserEntity.getPassword().toCharArray(), salt, 10, 512);
-        SecretKeyFactory skf = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA512");
-        byte[] hash = skf.generateSecret(pbeKeySpec).getEncoded();
+        SecretKeyFactory secretKey = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA512");
+        byte[] hash = secretKey.generateSecret(pbeKeySpec).getEncoded();
         //converting to string to store into database
         String hashedPassword = Base64.getMimeEncoder().encodeToString(hash);
         systemUserEntity.setPassword(hashedPassword);
         SystemUserEntity systemUser = systemUserRepository.save(systemUserEntity);
         //get the admin functional group
-        VisualObject functionalGroupResponse = restTemplate.getForObject("http://localhost:9100/api/v1/user/functional-groups/internal-admin-group", VisualObject.class);
+        FunctionalGroupEntity adminFunctionalGroup = functionalGroupService.findInternalAdminFunctionalGroup();
         SystemUserFunctionalGroupMappingEntity systemUserFunctionalGroupMapping = new SystemUserFunctionalGroupMappingEntity();
         // assign internal admin group to system user
-        systemUserFunctionalGroupMapping.setFunctionalGroupGlobalId(functionalGroupResponse.getData().getFunctionalGroupGlobalId());
+        systemUserFunctionalGroupMapping.setFunctionalGroupGlobalId(adminFunctionalGroup.getFunctionalGroupGlobalId());
         systemUserFunctionalGroupMapping.setSystemUserGlobalId(systemUser.getSystemUserGlobalId());
-        ResponseEntity<SystemUserFunctionalGroupMappingEntity> systemUserFunctionalGroupMappingResponse = restTemplate.postForEntity("http://localhost:9100/api/v1/user/system-user-functional-group-mappings", systemUserFunctionalGroupMapping, SystemUserFunctionalGroupMappingEntity.class);
+        systemUserFunctionalGroupMappingService.saveSystemUserFunctionalGroupMapping(systemUserFunctionalGroupMapping);
 
         ResponseEntity<VisualObject> systemUserResponse = restTemplate.postForEntity("http://localhost:9100/api/v1/auth/system-users", systemUser, VisualObject.class);
         SystemUserEntity tokenObject = new SystemUserEntity();
@@ -118,10 +123,9 @@ public class SystemUserService {
         return tokenResponse;
     }
 
+    @Transactional
     public VisualObject saveSystemUser(SystemUserEntity systemUserEntity) throws NoSuchAlgorithmException, InvalidKeySpecException {
         log.info("Inside saveSystemUser method of SystemUserService");
-        System.out.println("systemUserEntity service received");
-        System.out.println(systemUserEntity);
         if (systemUserEntity.getMemberGlobalId() != null) {
         SystemUserEntity userAsMember = systemUserRepository.findByMemberGlobalId(systemUserEntity.getMemberGlobalId());
 
@@ -145,22 +149,28 @@ public class SystemUserService {
             systemUserEntity.setSaltValue(salt);
             // hash the password with the salt
             PBEKeySpec pbeKeySpec = new PBEKeySpec(systemUserEntity.getPassword().toCharArray(), salt, 10, 512);
-            SecretKeyFactory skf = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA512");
-            byte[] hash = skf.generateSecret(pbeKeySpec).getEncoded();
+            SecretKeyFactory secretKey = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA512");
+            byte[] hash = secretKey.generateSecret(pbeKeySpec).getEncoded();
             //converting to string to store into database
             String hashedPassword = Base64.getMimeEncoder().encodeToString(hash);
             systemUserEntity.setPassword(hashedPassword);
             SystemUserEntity systemUser = systemUserRepository.save(systemUserEntity);
             //get the admin functional group
-            VisualObject functionalGroupResponse = restTemplate.getForObject("http://localhost:9100/api/v1/user/functional-groups/internal-admin-group", VisualObject.class);
+            FunctionalGroupEntity adminFunctionalGroup = functionalGroupService.findInternalAdminFunctionalGroup();
             SystemUserFunctionalGroupMappingEntity systemUserFunctionalGroupMapping = new SystemUserFunctionalGroupMappingEntity();
             // assign internal admin group to system user
-            systemUserFunctionalGroupMapping.setFunctionalGroupGlobalId(functionalGroupResponse.getData().getFunctionalGroupGlobalId());
+            systemUserFunctionalGroupMapping.setFunctionalGroupGlobalId(adminFunctionalGroup.getFunctionalGroupGlobalId());
             systemUserFunctionalGroupMapping.setSystemUserGlobalId(systemUser.getSystemUserGlobalId());
-            ResponseEntity<SystemUserFunctionalGroupMappingEntity> systemUserFunctionalGroupMappingResponse = restTemplate.postForEntity("http://localhost:9100/api/v1/user/system-user-functional-group-mappings", systemUserFunctionalGroupMapping, SystemUserFunctionalGroupMappingEntity.class);
-
+            systemUserFunctionalGroupMapping.setIsActive(1);
+            systemUserFunctionalGroupMappingService.saveSystemUserFunctionalGroupMapping(systemUserFunctionalGroupMapping);
+            //posting to auth
             ResponseEntity<VisualObject> systemUserResponse = restTemplate.postForEntity("http://localhost:9100/api/v1/auth/system-users", systemUser, VisualObject.class);
-
+            SystemUserFunctionalGroupMappingEntity authSystemUserFunctionalGroupMapping = new SystemUserFunctionalGroupMappingEntity();
+            // assign internal admin group to system user
+            authSystemUserFunctionalGroupMapping.setFunctionalGroupGlobalId(adminFunctionalGroup.getFunctionalGroupGlobalId());
+            authSystemUserFunctionalGroupMapping.setSystemUserGlobalId(systemUserResponse.getBody().getData().getSystemUserGlobalId());
+            authSystemUserFunctionalGroupMapping.setIsActive(1);
+            ResponseEntity<VisualObject> systemUserFunctionalGroupResponse = restTemplate.postForEntity("http://localhost:9100/api/v1/auth/system-user-functional-group-mappings", authSystemUserFunctionalGroupMapping, VisualObject.class);
             SystemUserEntity tokenObject = new SystemUserEntity();
 
             tokenObject.setSystemUserGlobalId(systemUser.getSystemUserGlobalId());
@@ -168,9 +178,12 @@ public class SystemUserService {
             tokenObject.setTenantName(systemUser.getTenantName());
             tokenObject.setBranchGlobalId(systemUser.getBranchGlobalId());
             tokenObject.setRefreshToken(systemUser.getRefreshToken());
+            System.out.println("tokenObject");
+            System.out.println(tokenObject);
 
             VisualObject tokenResponse = restTemplate.postForObject("http://localhost:9100/api/v1/auth/tokens", tokenObject, VisualObject.class);
-
+            System.out.println("tokenResponse");
+            System.out.println(tokenResponse);
             return tokenResponse;
         }
     }

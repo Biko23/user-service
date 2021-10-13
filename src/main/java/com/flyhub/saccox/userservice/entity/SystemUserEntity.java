@@ -163,7 +163,7 @@ public class SystemUserEntity {
 
     @JsonProperty("password")
     @ApiModelProperty(notes = "Password password.", example = "1")
-    @Size(min=8, max = 250, message = "The password should have a minimum of 8 and a maximum of 25 characters")
+    @Size(min=8, max = 250, message = "The password should have a minimum of 8 and a maximum of 250 characters")
     @NotBlank(message = "Password is required")
     private String password;
 
@@ -175,7 +175,6 @@ public class SystemUserEntity {
     @ApiModelProperty(notes="")
     @Column(unique = true)
     @Pattern(regexp = "([CF]{2}\\d{8}[A-Z]{2}\\d{1}[A-Z]{1})|([CM]{2}\\d{8}[A-Z]{4})", message = "Please enter the correct NIN")
-    @NotBlank(message = "Nin value is required")
     private String nin;
 
     @JsonProperty("question")
@@ -224,4 +223,6 @@ public class SystemUserEntity {
     @JsonProperty("refresh_token")
     @ApiModelProperty(notes = "Refresh token.", example = "UUID", required = true)
     private UUID refreshToken;
+
+
 }
