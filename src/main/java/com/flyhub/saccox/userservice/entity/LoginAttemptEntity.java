@@ -31,10 +31,10 @@ public class LoginAttemptEntity {
     @ApiModelProperty(notes = "Unique identifier of a login attempt entity. Auto generated.", example = "1")
     private UUID loginAttemptGlobalId;
 
-    @JsonProperty("system_user_id")
+    @JsonProperty("system_user_global_id")
     @ApiModelProperty(notes = "System user foreign key.", example = "1", required = true)
     @NotNull(message = "user ID field is required")
-    private SystemUserEntity systemUserEntity;
+    private UUID systemUserGlobalId;
 
     @JsonProperty("password")
     @ApiModelProperty(notes = "Login attempt password.", example = "12345678")

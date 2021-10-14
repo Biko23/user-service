@@ -44,11 +44,11 @@ public class SystemUserController {
                                               @RequestParam("primary_email") @Email(message = "Please enter the correct email") @NotBlank(message = "The primary_email field cannot be null") String primary_email,
                                               @RequestParam("password") @NotBlank(message = "Password is required") @Size(min=8, max = 250, message = "The password should have a minimum of 8 and a maximum of 250 characters") String password,
                                               @RequestParam("question") String question,
-                                              @RequestParam("answer") String answer, Errors errors) throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
+                                              @RequestParam("answer") String answer) throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
         log.info("Inside systemUserSignup method of SystemUserController");
-        if (errors.hasErrors()) {
-            return new ResponseEntity<>(new ApiResponseFormat(false, null, "Invalid Values passed for the fields", systemUserService.handleValidationExceptions(errors)), HttpStatus.BAD_REQUEST);
-        }
+//        if (errors.hasErrors()) {
+//            return new ResponseEntity<>(new ApiResponseFormat(false, null, "Invalid Values passed for the fields", systemUserService.handleValidationExceptions(errors)), HttpStatus.BAD_REQUEST);
+//        }
         VisualObject _systemUser = systemUserService.systemUserSignup(file, first_name, middle_name, last_name, primary_phone, primary_email, password, question, answer);
         return new ResponseEntity<>(new ApiResponseFormat(true, null, "SystemUser created.", _systemUser), HttpStatus.CREATED);
     }
