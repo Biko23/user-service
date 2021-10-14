@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
@@ -39,6 +40,7 @@ public class FunctionalGroupEntity {
 
     @JsonProperty("name")
     @ApiModelProperty(notes = "Functional group name.", example = "1")
+    @NotBlank(message = "The name field should be blank")
     private String name;
 
     @JsonProperty("description")
