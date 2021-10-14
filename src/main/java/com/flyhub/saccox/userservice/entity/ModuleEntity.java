@@ -7,6 +7,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
@@ -31,7 +33,15 @@ public class ModuleEntity {
 
     @JsonProperty("name")
     @ApiModelProperty(notes = "Module name.", example = "Finance | Payrol")
+    @Size(min=2, max=250, message = "The module name should have a minimum of 2 characters and a maximum of 250 characters")
+    @NotBlank(message = "The name field should be blank")
     private String name;
+
+    @JsonProperty("description")
+    @ApiModelProperty(notes = "Functional group name.", example = "1")
+    @Size(min=2, max=250, message = "The module description should have a minimum of 2 characters and a maximum of 250 characters")
+    @NotBlank(message = "The description field should be blank")
+    private String description;
 
     @JsonProperty("is_active")
     @ApiModelProperty(notes = "Module active.", example = "1 | 0")

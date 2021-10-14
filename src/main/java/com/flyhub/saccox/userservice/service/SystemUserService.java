@@ -1,6 +1,5 @@
 package com.flyhub.saccox.userservice.service;
 
-import aj.org.objectweb.asm.TypeReference;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -8,25 +7,17 @@ import com.flyhub.saccox.userservice.entity.*;
 import com.flyhub.saccox.userservice.repository.SystemUserFunctionalGroupsProcedureRepository;
 import com.flyhub.saccox.userservice.repository.SystemUserRepository;
 import com.flyhub.saccox.userservice.repository.UserLoginProcedureRepository;
-import com.flyhub.saccox.userservice.visualobject.TokenEntityModel;
 import com.flyhub.saccox.userservice.visualobject.VisualObject;
 import com.github.fge.jsonpatch.JsonPatch;
 import com.github.fge.jsonpatch.JsonPatchException;
 import com.flyhub.saccox.userservice.exception.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 

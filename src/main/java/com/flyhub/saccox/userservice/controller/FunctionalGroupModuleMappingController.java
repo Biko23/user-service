@@ -11,14 +11,19 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.Errors;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 @RestController
+@Validated
 @RequestMapping("/api/v1/user/functional-group-module-mappings")
 @Slf4j
 public class FunctionalGroupModuleMappingController {
@@ -27,8 +32,11 @@ public class FunctionalGroupModuleMappingController {
     private FunctionalGroupModuleMappingService functionalGroupModuleMappingService;
 
     @PostMapping("")
-    public ResponseEntity<?> saveFunctionalGroupModuleMapping(@RequestBody FunctionalGroupModuleMappingEntity systemUserEntity) {
+    public ResponseEntity<?> saveFunctionalGroupModuleMapping(@Valid @RequestBody FunctionalGroupModuleMappingEntity systemUserEntity, Errors errors) {
         log.info("Inside saveFunctionalGroupModuleMapping method of FunctionalGroupModuleMappingController");
+        if (errors.hasErrors()) {
+            return new ResponseEntity<>(new ApiResponseFormat(false, null, "Invalid Values passed for the fields", functionalGroupModuleMappingService.handleValidationExceptions(errors)), HttpStatus.BAD_REQUEST);
+        }
         FunctionalGroupModuleMappingEntity _systemUserEntity = functionalGroupModuleMappingService.saveFunctionalGroupModuleMapping(systemUserEntity);
         return new ResponseEntity<>(new ApiResponseFormat(true, null, "Functional group module mapping created.", _systemUserEntity), HttpStatus.CREATED);
     }
@@ -53,14 +61,20 @@ public class FunctionalGroupModuleMappingController {
     }
 
     @PutMapping("/{functionalGroupModuleMappingGlobalId}")
-    public ResponseEntity<?> updateFunctionalGroupModuleMapping(@PathVariable("functionalGroupModuleMappingGlobalId") UUID functionalGroupModuleMappingGlobalId, @RequestBody FunctionalGroupModuleMappingEntity systemUserEntity) {
+    public ResponseEntity<?> updateFunctionalGroupModuleMapping(@PathVariable("functionalGroupModuleMappingGlobalId") @NotNull(message = "Please provide the functional group module mapping ID") UUID functionalGroupModuleMappingGlobalId, @Valid @RequestBody FunctionalGroupModuleMappingEntity systemUserEntity, Errors errors) {
         log.info("Inside updateFunctionalGroupModuleMapping method of FunctionalGroupModuleMappingController");
+        if (errors.hasErrors()) {
+            return new ResponseEntity<>(new ApiResponseFormat(false, null, "Invalid Values passed for the fields", functionalGroupModuleMappingService.handleValidationExceptions(errors)), HttpStatus.BAD_REQUEST);
+        }
         return new ResponseEntity<>(new ApiResponseFormat(true, null, "Functional group module mapping updated.", functionalGroupModuleMappingService.updateFunctionalGroupModuleMapping(functionalGroupModuleMappingGlobalId, systemUserEntity)), HttpStatus.OK);
     }
 
     @PatchMapping(path = "/{functionalGroupModuleMappingGlobalId}", consumes = "application/json-patch+json")
-    public ResponseEntity<?> patchFunctionalGroupModuleMapping(@PathVariable("functionalGroupModuleMappingGlobalId") UUID functionalGroupModuleMappingGlobalId, @RequestBody JsonPatch jsonPatch) throws JsonPatchException, JsonProcessingException {
+    public ResponseEntity<?> patchFunctionalGroupModuleMapping(@PathVariable("functionalGroupModuleMappingGlobalId") @NotNull(message = "Please provide the functional group module mapping ID") UUID functionalGroupModuleMappingGlobalId, @Valid @RequestBody JsonPatch jsonPatch, Errors errors) throws JsonPatchException, JsonProcessingException {
         log.info("Inside patchFunctionalGroupModuleMapping method of FunctionalGroupModuleMappingController");
+        if (errors.hasErrors()) {
+            return new ResponseEntity<>(new ApiResponseFormat(false, null, "Invalid Values passed for the fields", functionalGroupModuleMappingService.handleValidationExceptions(errors)), HttpStatus.BAD_REQUEST);
+        }
         return new ResponseEntity<>(new ApiResponseFormat(true, null, "Mapping updated.", functionalGroupModuleMappingService.patchFunctionalGroupModuleMapping(functionalGroupModuleMappingGlobalId, jsonPatch)), HttpStatus.OK);
     }
 

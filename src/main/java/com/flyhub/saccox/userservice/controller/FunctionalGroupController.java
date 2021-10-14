@@ -13,14 +13,19 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.Errors;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 @RestController
+@Validated
 @RequestMapping("/api/v1/user/functional-groups")
 @Slf4j
 public class FunctionalGroupController {
@@ -29,8 +34,11 @@ public class FunctionalGroupController {
 	private FunctionalGroupService functionalGroupService;
 
     @PostMapping("")
-    public ResponseEntity<?> saveFunctionalGroup(@RequestBody FunctionalGroupEntity functionalGroupEntity) {
+    public ResponseEntity<?> saveFunctionalGroup(@Valid @RequestBody FunctionalGroupEntity functionalGroupEntity, Errors errors) {
         log.info("Inside saveFunctionalGroup method of FunctionalGroupController");
+        if (errors.hasErrors()) {
+            return new ResponseEntity<>(new ApiResponseFormat(false, null, "Invalid Values passed for the fields", functionalGroupService.handleValidationExceptions(errors)), HttpStatus.BAD_REQUEST);
+        }
         FunctionalGroupEntity _functionalGroup = functionalGroupService.saveFunctionalGroup(functionalGroupEntity);
         return new ResponseEntity<>(new ApiResponseFormat(true, null, "FunctionalGroup created.", _functionalGroup), HttpStatus.CREATED);
     }
@@ -67,8 +75,11 @@ public class FunctionalGroupController {
 //    }
 
     @PatchMapping(path = "/{functionalGroupGlobalId}", consumes = "application/json-patch+json")
-    public ResponseEntity<?> patchFunctionalGroup(@PathVariable("functionalGroupGlobalId") UUID functionalGroupGlobalId, @RequestBody JsonPatch jsonPatch) throws JsonPatchException, JsonProcessingException {
+    public ResponseEntity<?> patchFunctionalGroup(@PathVariable("functionalGroupGlobalId") @NotNull(message = "Please provide the functional group ID") UUID functionalGroupGlobalId, @Valid @RequestBody JsonPatch jsonPatch, Errors errors) throws JsonPatchException, JsonProcessingException {
         log.info("Inside partialUpdateFunctionalGroup method of FunctionalGroupController");
+        if (errors.hasErrors()) {
+            return new ResponseEntity<>(new ApiResponseFormat(false, null, "Invalid Values passed for the fields", functionalGroupService.handleValidationExceptions(errors)), HttpStatus.BAD_REQUEST);
+        }
         return new ResponseEntity<>(new ApiResponseFormat(true, null, "FunctionalGroup updated.", functionalGroupService.patchFunctionalGroup(functionalGroupGlobalId, jsonPatch)), HttpStatus.OK);
     }
 

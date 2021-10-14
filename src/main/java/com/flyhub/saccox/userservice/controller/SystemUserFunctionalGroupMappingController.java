@@ -13,14 +13,19 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.Errors;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 @RestController
+@Validated
 @RequestMapping("/api/v1/user/system-user-functional-group-mappings")
 @Slf4j
 public class SystemUserFunctionalGroupMappingController {
@@ -29,8 +34,11 @@ public class SystemUserFunctionalGroupMappingController {
     private SystemUserFunctionalGroupMappingService systemUserFunctionalGroupMappingService;
 
     @PostMapping("")
-    public ResponseEntity<?> saveSystemUserFunctionalGroupMapping(@RequestBody SystemUserFunctionalGroupMappingEntity systemUserFunctionalGroupMappingEntity) {
+    public ResponseEntity<?> saveSystemUserFunctionalGroupMapping(@Valid @RequestBody SystemUserFunctionalGroupMappingEntity systemUserFunctionalGroupMappingEntity, Errors errors) {
         log.info("Inside saveSystemUserFunctionalGroupMapping method of SystemUserFunctionalGroupMappingController");
+        if (errors.hasErrors()) {
+            return new ResponseEntity<>(new ApiResponseFormat(false, null, "Invalid Values passed for the fields", systemUserFunctionalGroupMappingService.handleValidationExceptions(errors)), HttpStatus.BAD_REQUEST);
+        }
         SystemUserFunctionalGroupMappingEntity _systemUserFunctionalGroupMapping = systemUserFunctionalGroupMappingService.saveSystemUserFunctionalGroupMapping(systemUserFunctionalGroupMappingEntity);
         return new ResponseEntity<>(new ApiResponseFormat(true, null, "SystemUserFunctionalGroupMapping created.", _systemUserFunctionalGroupMapping), HttpStatus.CREATED);
     }
@@ -49,8 +57,11 @@ public class SystemUserFunctionalGroupMappingController {
     }
 
     @PatchMapping(path = "/{systemUserFunctionalGroupMappingGlobalId}", consumes = "application/json-patch+json")
-    public ResponseEntity<?> patchSystemUserFunctionalGroupMapping(@PathVariable("systemUserFunctionalGroupMappingGlobalId") UUID systemUserFunctionalGroupMappingGlobalId, @RequestBody JsonPatch jsonPatch) throws JsonPatchException, JsonProcessingException {
+    public ResponseEntity<?> patchSystemUserFunctionalGroupMapping(@PathVariable("systemUserFunctionalGroupMappingGlobalId") @NotNull(message = "Please provide the system user functional group mapping ID") UUID systemUserFunctionalGroupMappingGlobalId, @Valid @RequestBody JsonPatch jsonPatch, Errors errors) throws JsonPatchException, JsonProcessingException {
         log.info("Inside partialUpdateSystemUserFunctionalGroupMapping method of SystemUserFunctionalGroupMappingController");
+        if (errors.hasErrors()) {
+            return new ResponseEntity<>(new ApiResponseFormat(false, null, "Invalid Values passed for the fields", systemUserFunctionalGroupMappingService.handleValidationExceptions(errors)), HttpStatus.BAD_REQUEST);
+        }
         return new ResponseEntity<>(new ApiResponseFormat(true, null, "SystemUserFunctionalGroupMapping updated.", systemUserFunctionalGroupMappingService.patchSystemUserFunctionalGroupMapping(systemUserFunctionalGroupMappingGlobalId, jsonPatch)), HttpStatus.OK);
     }
 

@@ -7,6 +7,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
@@ -32,26 +35,35 @@ public class FunctionalGroupModuleMappingEntity {
 
     @JsonProperty("name")
     @ApiModelProperty(notes = "Functional group module mapping name.", example = "")
+    @Size(min=2, max=250, message = "The name should have a minimum of 2 characters and a maximum of 250 characters")
+    @NotBlank(message = "The name field cannot be null")
     private String name;
 
     @JsonProperty("description")
     @ApiModelProperty(notes = "Functional group module mapping description.", example = "")
+    @Size(min=2, max=250, message = "The Functional group module mapping description should have a minimum of 2 characters and a maximum of 250 characters")
     private String description;
 
     @JsonProperty("functional_group_global_id")
     @ApiModelProperty(notes = "Functional group foreign key.", example = "1", required = true)
+    @NotNull(message = "Please provide the functional group ID")
     private UUID functionalGroupGlobalId;
 
     @JsonProperty("functional_group_name")
     @ApiModelProperty(notes = "Functional group name foreign key.", example = "1", required = true)
+    @Size(min=2, max=250, message = "The functional group name should have a minimum of 2 characters and a maximum of 250 characters")
+    @NotBlank(message = "Please enter the functional group name")
     private String functionalGroupName;
 
     @JsonProperty("module_global_id")
     @ApiModelProperty(notes = "Module foreign key.", example = "1", required = true)
+    @NotNull(message = "Please provide the module ID")
     private UUID moduleGlobalId;
 
     @JsonProperty("module_name")
     @ApiModelProperty(notes = "Module foreign key.", example = "1", required = true)
+    @Size(min=2, max=250, message = "The module name should have a minimum of 2 characters and a maximum of 250 characters")
+    @NotBlank(message = "Please enter the module name")
     private String moduleName;
 
     @JsonProperty("can_search")

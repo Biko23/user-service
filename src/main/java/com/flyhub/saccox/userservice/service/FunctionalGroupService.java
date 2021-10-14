@@ -13,11 +13,10 @@ import com.flyhub.saccox.userservice.repository.FunctionalGroupRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.Errors;
+import org.springframework.validation.FieldError;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -27,8 +26,16 @@ public class FunctionalGroupService {
     private FunctionalGroupRepository functionalGroupRepository;
 	@Autowired
 	private ObjectMapper objectMapper;
-    
 
+	public Map<String, String> handleValidationExceptions(Errors errors) {
+		Map<String, String> errorsMessages = new HashMap<>();
+		errors.getAllErrors().forEach((error) -> {
+			String fieldName = ((FieldError) error).getField();
+			String errorMessage = error.getDefaultMessage();
+			errorsMessages.put(fieldName, errorMessage);
+		});
+		return errorsMessages;
+	}
 
 	public FunctionalGroupEntity saveFunctionalGroup(FunctionalGroupEntity functionalGroupEntity) {
 		log.info("Inside saveFunctionalGroup method of FunctionalGroupService");
