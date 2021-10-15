@@ -12,14 +12,19 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.Errors;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 @RestController
+@Validated
 @RequestMapping("/api/v1/user/login-attempt")
 @Slf4j
 public class LoginAttemptController {
@@ -28,8 +33,11 @@ public class LoginAttemptController {
     private LoginAttemptService loginAttemptService;
 
     @PostMapping("")
-    public ResponseEntity<?> saveLoginAttempt(@RequestBody LoginAttemptEntity loginAttemptEntity) {
+    public ResponseEntity<?> saveLoginAttempt(@Valid @RequestBody LoginAttemptEntity loginAttemptEntity, Errors errors) {
         log.info("Inside saveLoginAttempt method of LoginAttemptController");
+        if (errors.hasErrors()) {
+            return new ResponseEntity<>(new ApiResponseFormat(false, null, "Invalid Values passed for the fields", loginAttemptService.handleValidationExceptions(errors)), HttpStatus.BAD_REQUEST);
+        }
         LoginAttemptEntity _loginAttempt = loginAttemptService.saveLoginAttempt(loginAttemptEntity);
         return new ResponseEntity<>(new ApiResponseFormat(true, null, "LoginAttempt created.", _loginAttempt), HttpStatus.CREATED);
     }
@@ -54,8 +62,11 @@ public class LoginAttemptController {
 //    }
 
     @PatchMapping(path = "/{loginAttemptGlobalId}", consumes = "application/json-patch+json")
-    public ResponseEntity<?> patchLoginAttempt(@PathVariable("loginAttemptGlobalId") UUID loginAttemptGlobalId, @RequestBody JsonPatch jsonPatch) throws JsonPatchException, JsonProcessingException {
+    public ResponseEntity<?> patchLoginAttempt(@PathVariable("loginAttemptGlobalId") @NotNull(message = "Please provide the attempt ID") UUID loginAttemptGlobalId, @Valid @RequestBody JsonPatch jsonPatch, Errors errors) throws JsonPatchException, JsonProcessingException {
         log.info("Inside partialUpdateLoginAttempt method of LoginAttemptController");
+        if (errors.hasErrors()) {
+            return new ResponseEntity<>(new ApiResponseFormat(false, null, "Invalid Values passed for the fields", loginAttemptService.handleValidationExceptions(errors)), HttpStatus.BAD_REQUEST);
+        }
         return new ResponseEntity<>(new ApiResponseFormat(true, null, "LoginAttempt updated.", loginAttemptService.patchLoginAttempt(loginAttemptGlobalId, jsonPatch)), HttpStatus.OK);
     }
 

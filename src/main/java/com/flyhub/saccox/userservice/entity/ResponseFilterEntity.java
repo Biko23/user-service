@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
@@ -40,6 +41,7 @@ public class ResponseFilterEntity {
     
     @JsonProperty("tenant_global_id")
     @ApiModelProperty(notes = "Tenant foreign key.", example = "1")
+    @NotNull(message = "tenant id is required")
     private UUID tenantGlobalId;
     
     @JsonProperty("tenant_name")

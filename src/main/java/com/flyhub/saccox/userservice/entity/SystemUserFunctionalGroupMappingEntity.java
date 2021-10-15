@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
@@ -31,10 +32,12 @@ public class SystemUserFunctionalGroupMappingEntity {
 
     @JsonProperty("system_user_global_id")
     @ApiModelProperty(notes = "System user foreign key.", example = "1")
+    @NotNull(message = "The system user Id field can not be null")
     private UUID systemUserGlobalId;
 
     @JsonProperty("functional_group_global_id")
     @ApiModelProperty(notes = "Functional group foreign key.", example = "1")
+    @NotNull(message = "The functional group Id field can not be null")
     private UUID functionalGroupGlobalId;
 
     @JsonProperty("is_active")

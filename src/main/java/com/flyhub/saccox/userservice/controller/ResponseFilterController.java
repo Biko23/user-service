@@ -12,14 +12,19 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.Errors;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 @RestController
+@Validated
 @RequestMapping("/api/v1/user/response-filters")
 @Slf4j
 public class ResponseFilterController {
@@ -28,8 +33,11 @@ public class ResponseFilterController {
     private ResponseFilterService responseFilterService;
 
     @PostMapping("")
-    public ResponseEntity<?> saveResponseFilter(@RequestBody ResponseFilterEntity responseFilterEntity) {
+    public ResponseEntity<?> saveResponseFilter(@Valid @RequestBody ResponseFilterEntity responseFilterEntity, Errors errors) {
         log.info("Inside saveResponseFilter method of ResponseFilterController");
+        if (errors.hasErrors()) {
+            return new ResponseEntity<>(new ApiResponseFormat(false, null, "Invalid Values passed for the fields", responseFilterService.handleValidationExceptions(errors)), HttpStatus.BAD_REQUEST);
+        }
         ResponseFilterEntity _responseFilter = responseFilterService.saveResponseFilter(responseFilterEntity);
         return new ResponseEntity<>(new ApiResponseFormat(true, null, "ResponseFilter created.", _responseFilter), HttpStatus.CREATED);
     }
@@ -54,8 +62,11 @@ public class ResponseFilterController {
 //    }
 
     @PatchMapping(path = "/{responseFilterGlobalId}", consumes = "application/json-patch+json")
-    public ResponseEntity<?> patchResponseFilter(@PathVariable("responseFilterGlobalId") UUID responseFilterGlobalId, @RequestBody JsonPatch jsonPatch) throws JsonPatchException, JsonProcessingException {
+    public ResponseEntity<?> patchResponseFilter(@PathVariable("responseFilterGlobalId") @NotNull(message = "Please provide the response filter ID") UUID responseFilterGlobalId, @Valid @RequestBody JsonPatch jsonPatch, Errors errors) throws JsonPatchException, JsonProcessingException {
         log.info("Inside partialUpdateResponseFilter method of ResponseFilterController");
+        if (errors.hasErrors()) {
+            return new ResponseEntity<>(new ApiResponseFormat(false, null, "Invalid Values passed for the fields", responseFilterService.handleValidationExceptions(errors)), HttpStatus.BAD_REQUEST);
+        }
         return new ResponseEntity<>(new ApiResponseFormat(true, null, "ResponseFilter updated.", responseFilterService.patchResponseFilter(responseFilterGlobalId, jsonPatch)), HttpStatus.OK);
     }
 

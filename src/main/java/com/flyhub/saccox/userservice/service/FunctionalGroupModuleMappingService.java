@@ -14,11 +14,10 @@ import com.github.fge.jsonpatch.JsonPatchException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.Errors;
+import org.springframework.validation.FieldError;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -32,6 +31,16 @@ public class FunctionalGroupModuleMappingService {
 
     @Autowired
     private ObjectMapper objectMapper;
+
+    public Map<String, String> handleValidationExceptions(Errors errors) {
+        Map<String, String> errorsMessages = new HashMap<>();
+        errors.getAllErrors().forEach((error) -> {
+            String fieldName = ((FieldError) error).getField();
+            String errorMessage = error.getDefaultMessage();
+            errorsMessages.put(fieldName, errorMessage);
+        });
+        return errorsMessages;
+    }
 
     public FunctionalGroupModuleMappingEntity saveFunctionalGroupModuleMapping(FunctionalGroupModuleMappingEntity functionalGroupModuleMappingEntity) {
         log.info("Inside saveFunctionalGroupModuleMapping method of FunctionalGroupModuleMappingService");

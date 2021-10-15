@@ -1,8 +1,8 @@
-INSERT INTO module (module_global_id,name,is_active) VALUES ('e844e561-b746-4735-b482-32f0c59507c0','Tenant',1);
-INSERT INTO module (module_global_id,name,is_active) VALUES ('f96411b0-9684-402e-8f25-fd85f6f29ff1','Tenant Member',1);
-INSERT INTO module (module_global_id,name,is_active) VALUES ('e9645cca-cc8e-4db2-b678-3febf1cdc915','Tenant Staff',1);
-INSERT INTO module (module_global_id,name,is_active) VALUES ('409af2d8-a05a-4a77-8745-5943169626c4','Loan',1);
-INSERT INTO module (module_global_id,name,is_active) VALUES ('ff82ab91-ca87-4307-85b5-466ad563b8fc','Savings',1);
+INSERT INTO module (module_global_id,name,description,is_active) VALUES ('e844e561-b746-4735-b482-32f0c59507c0','Tenant','This module is about tenant management',1);
+INSERT INTO module (module_global_id,name,description,is_active) VALUES ('f96411b0-9684-402e-8f25-fd85f6f29ff1','Tenant Member','This module is about tenant members management',1);
+INSERT INTO module (module_global_id,name,description,is_active) VALUES ('e9645cca-cc8e-4db2-b678-3febf1cdc915','Tenant Staff','This module is about tenant staff management',1);
+INSERT INTO module (module_global_id,name,description,is_active) VALUES ('409af2d8-a05a-4a77-8745-5943169626c4','Loan','This module is about loan management',1);
+INSERT INTO module (module_global_id,name,description,is_active) VALUES ('ff82ab91-ca87-4307-85b5-466ad563b8fc','Savings','This module is about savings management',1);
 
 INSERT INTO functional_group (functional_group_global_id,name,description,is_default,is_active) VALUES ('a703ff6e-f31a-403b-a543-4186b7564cf6','Member','This is the member group upon online access request',1,1);
 INSERT INTO functional_group (functional_group_global_id,name,description,is_default,is_active) VALUES ('d5b56d76-cae5-4f91-95c6-e974a2e55049','Internal Admin','This is the default group on user sign up',1,1);

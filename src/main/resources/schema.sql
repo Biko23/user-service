@@ -5,6 +5,7 @@ CREATE TABLE public.module
     access_location character varying(255) COLLATE pg_catalog."default",
     created_by uuid,
     created_on timestamp without time zone DEFAULT CURRENT_TIMESTAMP(0),
+    description character varying(255) COLLATE pg_catalog."default",
     hard_delete integer DEFAULT 0,
     is_active integer DEFAULT 1,
     modified_by uuid,
