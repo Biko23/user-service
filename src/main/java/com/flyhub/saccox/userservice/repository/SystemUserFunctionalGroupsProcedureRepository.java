@@ -15,5 +15,4 @@ import java.util.UUID;
 public interface SystemUserFunctionalGroupsProcedureRepository extends JpaRepository<SystemUserFunctionalGroupsProcedureEntity, UUID> {
 	@Query(value="select * from SystemUserFunctionalGroupsProcedure()", nativeQuery=true)
     List<SystemUserFunctionalGroupsProcedureEntity> systemUserFunctionalGroupsProcedure();
-
 }
