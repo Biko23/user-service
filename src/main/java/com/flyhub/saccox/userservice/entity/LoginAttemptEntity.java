@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
@@ -30,11 +31,10 @@ public class LoginAttemptEntity {
     @ApiModelProperty(notes = "Unique identifier of a login attempt entity. Auto generated.", example = "1")
     private UUID loginAttemptGlobalId;
 
-    @JsonProperty("system_user_id")
+    @JsonProperty("system_user_global_id")
     @ApiModelProperty(notes = "System user foreign key.", example = "1", required = true)
-    @ManyToOne
-    @JoinColumn(name="system_user_id", nullable=false)
-    private SystemUserEntity systemUserEntity;
+    @NotNull(message = "user ID field is required")
+    private UUID systemUserGlobalId;
 
     @JsonProperty("password")
     @ApiModelProperty(notes = "Login attempt password.", example = "12345678")
@@ -54,6 +54,7 @@ public class LoginAttemptEntity {
 
     @JsonProperty("tenant_global_id")
     @ApiModelProperty(notes = "Tenant foreign key.", example = "1")
+    @NotNull(message = "tenant id is required")
     private UUID tenantGlobalId;
     
     @JsonProperty("tenant_name")

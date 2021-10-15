@@ -12,14 +12,19 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.Errors;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 @RestController
+@Validated
 @RequestMapping("/api/v1/user/modules")
 @Slf4j
 public class ModuleController {
@@ -28,8 +33,11 @@ public class ModuleController {
     private ModuleService moduleService;
 
     @PostMapping("")
-    public ResponseEntity<?> saveModule(@RequestBody ModuleEntity moduleEntity) {
+    public ResponseEntity<?> saveModule(@Valid @RequestBody ModuleEntity moduleEntity, Errors errors) {
         log.info("Inside saveModule method of ModuleController");
+        if (errors.hasErrors()) {
+            return new ResponseEntity<>(new ApiResponseFormat(false, null, "Invalid Values passed for the fields", moduleService.handleValidationExceptions(errors)), HttpStatus.BAD_REQUEST);
+        }
         ModuleEntity _module = moduleService.saveModule(moduleEntity);
         return new ResponseEntity<>(new ApiResponseFormat(true, null, "Module created.", _module), HttpStatus.CREATED);
     }
@@ -54,8 +62,11 @@ public class ModuleController {
 //    }
 
     @PatchMapping(path = "/{moduleGlobalId}", consumes = "application/json-patch+json")
-    public ResponseEntity<?> patchModule(@PathVariable("moduleGlobalId") UUID moduleGlobalId, @RequestBody JsonPatch jsonPatch) throws JsonPatchException, JsonProcessingException {
+    public ResponseEntity<?> patchModule(@PathVariable("moduleGlobalId") @NotNull(message = "Please provide the module ID") UUID moduleGlobalId, @Valid  @RequestBody JsonPatch jsonPatch, Errors errors) throws JsonPatchException, JsonProcessingException {
         log.info("Inside partialUpdateModule method of ModuleController");
+        if (errors.hasErrors()) {
+            return new ResponseEntity<>(new ApiResponseFormat(false, null, "Invalid Values passed for the fields", moduleService.handleValidationExceptions(errors)), HttpStatus.BAD_REQUEST);
+        }
         return new ResponseEntity<>(new ApiResponseFormat(true, null, "Module updated.", moduleService.patchModule(moduleGlobalId, jsonPatch)), HttpStatus.OK);
     }
 
