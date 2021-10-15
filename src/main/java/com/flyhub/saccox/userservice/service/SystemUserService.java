@@ -125,6 +125,7 @@ public class SystemUserService {
         systemUserFunctionalGroupMappingService.saveSystemUserFunctionalGroupMapping(systemUserFunctionalGroupMapping);
 
         ResponseEntity<VisualObject> systemUserResponse = restTemplate.postForEntity("http://localhost:9100/api/v1/auth/system-users", systemUser, VisualObject.class);
+//        ResponseEntity<VisualObject> systemUserFunctionalGroupModuleMappingResponse = restTemplate.postForEntity("http://localhost:9100/api/v1/auth/system-users", systemUser, VisualObject.class);
         SystemUserEntity tokenObject = new SystemUserEntity();
         tokenObject.setSystemUserGlobalId(systemUser.getSystemUserGlobalId());
         tokenObject.setTenantGlobalId(systemUser.getTenantGlobalId());
