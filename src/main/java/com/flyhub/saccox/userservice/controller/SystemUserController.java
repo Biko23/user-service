@@ -62,7 +62,7 @@ public class SystemUserController {
     }
 
     @PostMapping("/member-online-access")
-    public ResponseEntity<?> giveMemberOnlineAccess(@RequestBody SystemUserEntity systemUserEntity) {
+    public ResponseEntity<?> giveMemberOnlineAccess(@RequestBody SystemUserEntity systemUserEntity) throws InvalidKeySpecException, NoSuchAlgorithmException {
         log.info("Inside giveMemberOnlineAccess method of SystemUserController");
         SystemUserEntity systemUser = systemUserService.giveMemberOnlineAccess(systemUserEntity);
         return new ResponseEntity<>(new ApiResponseFormat(true, null, "SystemUser created.", systemUser), HttpStatus.CREATED);

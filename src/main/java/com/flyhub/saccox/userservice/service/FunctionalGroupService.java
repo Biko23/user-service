@@ -1,5 +1,6 @@
 package com.flyhub.saccox.userservice.service;
 
+import com.flyhub.saccox.userservice.visualobject.VisualObject;
 import com.github.fge.jsonpatch.JsonPatch;
 import com.github.fge.jsonpatch.JsonPatchException;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -12,9 +13,11 @@ import com.flyhub.saccox.userservice.exception.CustomNotFoundException;
 import com.flyhub.saccox.userservice.repository.FunctionalGroupRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.*;
 
@@ -26,6 +29,9 @@ public class FunctionalGroupService {
     private FunctionalGroupRepository functionalGroupRepository;
 	@Autowired
 	private ObjectMapper objectMapper;
+
+	@Autowired
+	private RestTemplate restTemplate;
 
 	public Map<String, String> handleValidationExceptions(Errors errors) {
 		Map<String, String> errorsMessages = new HashMap<>();
@@ -39,7 +45,9 @@ public class FunctionalGroupService {
 
 	public FunctionalGroupEntity saveFunctionalGroup(FunctionalGroupEntity functionalGroupEntity) {
 		log.info("Inside saveFunctionalGroup method of FunctionalGroupService");
-		return functionalGroupRepository.save(functionalGroupEntity);
+		FunctionalGroupEntity userFunctionalGroupResponse = functionalGroupRepository.save(functionalGroupEntity);
+		ResponseEntity<VisualObject> authFunctionalGroupResponse = restTemplate.postForEntity("http://localhost:9100/api/v1/auth/functional-groups", userFunctionalGroupResponse, VisualObject.class);
+		return userFunctionalGroupResponse;
 	}
 	
 	public FunctionalGroupEntity findByFunctionalGroupGlobalId(UUID functionalGroupGlobalId) {

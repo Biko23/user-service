@@ -9,13 +9,16 @@ import com.flyhub.saccox.userservice.entity.UserLoginProcedureEntity;
 import com.flyhub.saccox.userservice.repository.FunctionalGroupModuleMappingProcedureRepository;
 import com.flyhub.saccox.userservice.repository.FunctionalGroupModuleMappingRepository;
 import com.flyhub.saccox.userservice.exception.*;
+import com.flyhub.saccox.userservice.visualobject.VisualObject;
 import com.github.fge.jsonpatch.JsonPatch;
 import com.github.fge.jsonpatch.JsonPatchException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.*;
 
@@ -32,6 +35,9 @@ public class FunctionalGroupModuleMappingService {
     @Autowired
     private ObjectMapper objectMapper;
 
+    @Autowired
+    private RestTemplate restTemplate;
+
     public Map<String, String> handleValidationExceptions(Errors errors) {
         Map<String, String> errorsMessages = new HashMap<>();
         errors.getAllErrors().forEach((error) -> {
@@ -44,7 +50,9 @@ public class FunctionalGroupModuleMappingService {
 
     public FunctionalGroupModuleMappingEntity saveFunctionalGroupModuleMapping(FunctionalGroupModuleMappingEntity functionalGroupModuleMappingEntity) {
         log.info("Inside saveFunctionalGroupModuleMapping method of FunctionalGroupModuleMappingService");
-        return functionalGroupModuleMappingRepository.save(functionalGroupModuleMappingEntity);
+        FunctionalGroupModuleMappingEntity userFunctionalGroupModuleMappingResponse = functionalGroupModuleMappingRepository.save(functionalGroupModuleMappingEntity);
+        ResponseEntity<VisualObject> authFunctionalGroupModuleMappingResponse = restTemplate.postForEntity("http://localhost:9100/api/v1/auth/functional-group-module-mappings", userFunctionalGroupModuleMappingResponse, VisualObject.class);
+        return userFunctionalGroupModuleMappingResponse;
     }
 
     public List<FunctionalGroupModuleMappingEntity> saveMultipleFunctionalGroupModuleMappings(List<FunctionalGroupModuleMappingEntity> functionalGroupModuleMappingEntity) {
@@ -134,7 +142,7 @@ public class FunctionalGroupModuleMappingService {
     }
 
     public List<FunctionalGroupModuleMappingProcedureEntity> functionalGroupModuleMappingProcedure() {
-        log.info("Inside functionalGroupModuleMappingProcedure method of SystemUserService");
+        log.info("Inside functionalGroupModuleMappingProcedure method of FunctionalGroupModuleMappingService");
         List<FunctionalGroupModuleMappingProcedureEntity> mappings = functionalGroupModuleMappingProcedureRepository.functionalGroupModuleMappingProcedure();
 
         if (!mappings.isEmpty()) {
