@@ -22,11 +22,20 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
 import java.util.*;
+import java.util.List;
 
 @Service
 @Slf4j
@@ -52,6 +61,28 @@ public class SystemUserService {
     @Autowired
     private ObjectMapper objectMapper;
 
+    public void writeMyFile(MultipartFile file, Path dir) {
+        Path filepath = Paths.get(dir.toString(), file.getOriginalFilename());
+
+        try (OutputStream os = Files.newOutputStream(filepath)) {
+            os.write(file.getBytes());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    public BufferedImage createThumbnail(File file) throws Exception {
+        BufferedImage img = ImageIO.read(file);
+        BufferedImage thumb = new BufferedImage(100, 200,
+                BufferedImage.TYPE_INT_RGB);
+
+        Graphics2D g2d = (Graphics2D) thumb.getGraphics();
+        g2d.drawImage(img, 0, 0, thumb.getWidth() - 1, thumb.getHeight() - 1, 0, 0,
+                img.getWidth() - 1, img.getHeight() - 1, null);
+        g2d.dispose();
+        ImageIO.write(thumb, "PNG", new File("thumb.png"));
+        return thumb;
+    }
+
     public Map<String, String> handleValidationExceptions(Errors errors) {
         Map<String, String> errorsMessages = new HashMap<>();
         errors.getAllErrors().forEach((error) -> {
@@ -70,9 +101,10 @@ public class SystemUserService {
                                          String primary_email,
                                          String password,
                                          String question,
-                                         String answer) throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
+                                         String answer) throws Exception {
         log.info("Inside systemUserSignup method of SystemUserService");
 
+//        imgPath = ""
         SystemUserEntity systemUserEntity = new SystemUserEntity();
         if (file != null) {
             String fileType = file.getContentType();
@@ -84,6 +116,10 @@ public class SystemUserService {
                 fileSize = fileSize/1024;
                 System.out.println(fileSize);
                 if (fileSize < 1024) {
+//                    writeMyFile(file, Path imgPath)
+//                    systemUserEntity.setImageLarge(file.getBytes());
+//                    BufferedImage myImg = createThumbnail((File) file);
+//                    systemUserEntity.setImageSmall(myImg);
                     systemUserEntity.setImageSmall(file.getBytes());
                     System.out.println(systemUserEntity.getImageSmall());
                 }else {

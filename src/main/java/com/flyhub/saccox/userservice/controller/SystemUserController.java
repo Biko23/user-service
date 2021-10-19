@@ -45,7 +45,7 @@ public class SystemUserController {
                                               @RequestParam("primary_email") @Email(message = "Please enter the correct email") @NotBlank(message = "The primary_email field cannot be null") String primary_email,
                                               @RequestParam("password") @NotBlank(message = "Password is required") @Size(min=8, max = 250, message = "The password should have a minimum of 8 and a maximum of 250 characters") String password,
                                               @RequestParam("question") String question,
-                                              @RequestParam("answer") String answer) throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
+                                              @RequestParam("answer") String answer) throws Exception {
         log.info("Inside systemUserSignup method of SystemUserController");
         ApiResponseModel _systemUser = systemUserService.systemUserSignup(file, first_name, middle_name, last_name, primary_phone, primary_email, password, question, answer);
         return new ResponseEntity<>(new ApiResponseFormat(true, null, "SystemUser created.", _systemUser), HttpStatus.CREATED);

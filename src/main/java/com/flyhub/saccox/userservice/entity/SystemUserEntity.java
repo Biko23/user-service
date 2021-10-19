@@ -114,7 +114,7 @@ public class SystemUserEntity {
 
     @JsonProperty("image_Large")
     @ApiModelProperty(notes="")
-    private Byte ImageLarge;
+    private byte[] ImageLarge;
 
     @JsonProperty("dob")
     @ApiModelProperty(notes = "System user date of birth.", example = "12-12-21")
