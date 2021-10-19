@@ -83,18 +83,6 @@ public class SystemUserService {
             return null;
         }
     }
-//    public BufferedImage createThumbnail(File file) throws Exception {
-//        BufferedImage img = ImageIO.read(file);
-//        BufferedImage thumb = new BufferedImage(100, 200,
-//                BufferedImage.TYPE_INT_RGB);
-//
-//        Graphics2D g2d = (Graphics2D) thumb.getGraphics();
-//        g2d.drawImage(img, 0, 0, thumb.getWidth() - 1, thumb.getHeight() - 1, 0, 0,
-//                img.getWidth() - 1, img.getHeight() - 1, null);
-//        g2d.dispose();
-//        ImageIO.write(thumb, "PNG", new File("thumb.png"));
-//        return thumb;
-//    }
 
     public Map<String, String> handleValidationExceptions(Errors errors) {
         Map<String, String> errorsMessages = new HashMap<>();
@@ -116,8 +104,6 @@ public class SystemUserService {
                                          String question,
                                          String answer) throws Exception {
         log.info("Inside systemUserSignup method of SystemUserService");
-
-//        imgPath = ""
         SystemUserEntity systemUserEntity = new SystemUserEntity();
         if (file != null) {
             String fileType = file.getContentType();
@@ -171,16 +157,11 @@ public class SystemUserService {
         // assign internal admin group to system user
         systemUserFunctionalGroupMapping.setFunctionalGroupGlobalId(adminFunctionalGroup.getFunctionalGroupGlobalId());
         systemUserFunctionalGroupMapping.setSystemUserGlobalId(systemUser.getSystemUserGlobalId());
+        systemUserFunctionalGroupMapping.setIsActive(1);
         systemUserFunctionalGroupMappingService.saveSystemUserFunctionalGroupMapping(systemUserFunctionalGroupMapping);
 
 
         ResponseEntity<VisualObject> systemUserResponse = restTemplate.postForEntity("http://localhost:9100/api/v1/auth/system-users", systemUser, VisualObject.class);
-//        ResponseEntity<VisualObject> systemUserFunctionalGroupModuleMappingResponse = restTemplate.postForEntity("http://localhost:9100/api/v1/auth/system-users", systemUser, VisualObject.class);
-        SystemUserFunctionalGroupMappingEntity authSystemUserFunctionalGroupMapping = new SystemUserFunctionalGroupMappingEntity();
-        authSystemUserFunctionalGroupMapping.setFunctionalGroupGlobalId(adminFunctionalGroup.getFunctionalGroupGlobalId());
-        authSystemUserFunctionalGroupMapping.setSystemUserGlobalId(systemUserResponse.getBody().getData().getSystemUserGlobalId());
-        authSystemUserFunctionalGroupMapping.setIsActive(1);
-        ResponseEntity<VisualObject> systemUserFunctionalGroupResponse = restTemplate.postForEntity("http://localhost:9100/api/v1/auth/system-user-functional-group-mappings", authSystemUserFunctionalGroupMapping, VisualObject.class);
         SystemUserEntity tokenObject = new SystemUserEntity();
         tokenObject.setSystemUserGlobalId(systemUser.getSystemUserGlobalId());
         tokenObject.setTenantGlobalId(systemUser.getTenantGlobalId());
