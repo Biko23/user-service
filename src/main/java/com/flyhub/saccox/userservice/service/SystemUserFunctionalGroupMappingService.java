@@ -6,14 +6,17 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.flyhub.saccox.userservice.entity.SystemUserFunctionalGroupMappingEntity;
 import com.flyhub.saccox.userservice.entity.SystemUserFunctionalGroupMappingEntity;
 import com.flyhub.saccox.userservice.repository.SystemUserFunctionalGroupMappingRepository;
+import com.flyhub.saccox.userservice.visualobject.VisualObject;
 import com.github.fge.jsonpatch.JsonPatch;
 import com.github.fge.jsonpatch.JsonPatchException;
 import com.flyhub.saccox.userservice.exception.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.*;
 
@@ -25,6 +28,9 @@ public class SystemUserFunctionalGroupMappingService {
     private SystemUserFunctionalGroupMappingRepository systemUserFunctionalGroupMappingRepository;
 	@Autowired
 	private ObjectMapper objectMapper;
+
+	@Autowired
+	private RestTemplate restTemplate;
 
 	public Map<String, String> handleValidationExceptions(Errors errors) {
 		Map<String, String> errorsMessages = new HashMap<>();
@@ -38,7 +44,9 @@ public class SystemUserFunctionalGroupMappingService {
 
 	public SystemUserFunctionalGroupMappingEntity saveSystemUserFunctionalGroupMapping(SystemUserFunctionalGroupMappingEntity systemUserFunctionalGroupMappingEntity) {
 		log.info("Inside saveSystemUserFunctionalGroupMapping method of SystemUserFunctionalGroupMappingService");
-		return systemUserFunctionalGroupMappingRepository.save(systemUserFunctionalGroupMappingEntity);
+		SystemUserFunctionalGroupMappingEntity systemUserFunctionalGroupMapping = systemUserFunctionalGroupMappingRepository.save(systemUserFunctionalGroupMappingEntity);
+		ResponseEntity<VisualObject> authSystemUserFunctionalGroupResponse = restTemplate.postForEntity("http://localhost:9100/api/v1/auth/system-user-functional-group-mappings", systemUserFunctionalGroupMapping, VisualObject.class);
+		return systemUserFunctionalGroupMapping;
 	}
 	
 	public SystemUserFunctionalGroupMappingEntity findBySystemUserFunctionalGroupMappingGlobalId(UUID systemUserFunctionalGroupMappingGlobalId) {

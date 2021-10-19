@@ -133,8 +133,6 @@ public class SystemUserService {
                     writeMyFile(file, systemUserPictures);
                     String myPicture = "C:\\Users\\A241908\\Documents\\workspace\\saccoX\\user-service\\src\\main\\resources\\static\\img\\" + file.getOriginalFilename();
                     File myThumbnail = createThumbnail(new File(myPicture), 400, 400);
-                    System.out.println("myThumbnail");
-                    System.out.println(myThumbnail);
                     systemUserEntity.setImageSmall(Files.readAllBytes(myThumbnail.toPath()));
                     myThumbnail.delete();
                 }else {
@@ -242,13 +240,12 @@ public class SystemUserService {
 
             //posting to auth
             ResponseEntity<VisualObject> systemUserResponse = restTemplate.postForEntity("http://localhost:9100/api/v1/auth/system-users", systemUser, VisualObject.class);
-            SystemUserFunctionalGroupMappingEntity authSystemUserFunctionalGroupMapping = new SystemUserFunctionalGroupMappingEntity();
-
-            // assign internal admin group to system user
-            authSystemUserFunctionalGroupMapping.setFunctionalGroupGlobalId(adminFunctionalGroup.getFunctionalGroupGlobalId());
-            authSystemUserFunctionalGroupMapping.setSystemUserGlobalId(systemUserResponse.getBody().getData().getSystemUserGlobalId());
-            authSystemUserFunctionalGroupMapping.setIsActive(1);
-            ResponseEntity<VisualObject> systemUserFunctionalGroupResponse = restTemplate.postForEntity("http://localhost:9100/api/v1/auth/system-user-functional-group-mappings", authSystemUserFunctionalGroupMapping, VisualObject.class);
+//            SystemUserFunctionalGroupMappingEntity authSystemUserFunctionalGroupMapping = new SystemUserFunctionalGroupMappingEntity();
+//            // assign internal admin group to system user
+//            authSystemUserFunctionalGroupMapping.setFunctionalGroupGlobalId(adminFunctionalGroup.getFunctionalGroupGlobalId());
+//            authSystemUserFunctionalGroupMapping.setSystemUserGlobalId(systemUserResponse.getBody().getData().getSystemUserGlobalId());
+//            authSystemUserFunctionalGroupMapping.setIsActive(1);
+//            ResponseEntity<VisualObject> systemUserFunctionalGroupResponse = restTemplate.postForEntity("http://localhost:9100/api/v1/auth/system-user-functional-group-mappings", authSystemUserFunctionalGroupMapping, VisualObject.class);
             SystemUserEntity tokenObject = new SystemUserEntity();
 
             tokenObject.setSystemUserGlobalId(systemUser.getSystemUserGlobalId());
@@ -282,19 +279,55 @@ public class SystemUserService {
         }
     }
 
-    public SystemUserEntity giveMemberOnlineAccess(SystemUserEntity systemUserEntity) {
+    public SystemUserEntity giveMemberOnlineAccess(SystemUserEntity systemUserEntity) throws InvalidKeySpecException, NoSuchAlgorithmException {
         log.info("Inside giveMemberOnlineAccess method of SystemUserService");
-        SystemUserEntity savedMemberResponse = systemUserRepository.save(systemUserEntity);
+        //before saving add the salt, is_active and is_staff
+        System.out.println("systemUserEntity");
+        System.out.println(systemUserEntity);
+        // get a salt value using the SecureRandom class
+        SecureRandom secureRandom = new SecureRandom();
+        byte[] salt = secureRandom.generateSeed(12);
+        // hash the password with the salt
+        PBEKeySpec pbeKeySpec = new PBEKeySpec("123456789".toCharArray(), salt, 10, 512);
+        SecretKeyFactory secretKey = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA512");
+        byte[] hash = secretKey.generateSecret(pbeKeySpec).getEncoded();
+        //converting to string to store into database
+        String hashedPassword = Base64.getMimeEncoder().encodeToString(hash);
+        SystemUserEntity saveMember = new SystemUserEntity();
+        saveMember.setFirstName(systemUserEntity.getFirstName());
+        saveMember.setLastName(systemUserEntity.getLastName());
+        saveMember.setMiddleName(systemUserEntity.getMiddleName());
+        saveMember.setMemberGlobalId(systemUserEntity.getMemberGlobalId());
+        saveMember.setPrimaryEmail(systemUserEntity.getPrimaryEmail());
+        saveMember.setPrimaryPhone(systemUserEntity.getPrimaryPhone());
+        saveMember.setPassword(hashedPassword);
+        saveMember.setSaltValue(salt);
+        saveMember.setTenantGlobalId(systemUserEntity.getTenantGlobalId());
+        saveMember.setTenantName(systemUserEntity.getTenantName());
+        saveMember.setIsStaff(1);
+        saveMember.setIsActive(1);
+
+        //save system user in user
+        SystemUserEntity savedMemberResponse = systemUserRepository.save(saveMember);
+        //save system user in auth
         ResponseEntity<VisualObject> systemUserResponse = restTemplate.postForEntity("http://localhost:9100/api/v1/auth/system-users", savedMemberResponse, VisualObject.class);
 
-        VisualObject functionalGroupResponse = restTemplate.getForObject("http://localhost:9100/api/v1/user/functional-groups/member-online-group", VisualObject.class);
+        //get member online functional group
+        FunctionalGroupEntity functionalGroupResponse=functionalGroupService.findMemberOnlineAccessFunctionalGroup();
 
+        // set system user functional group mapping in user
         SystemUserFunctionalGroupMappingEntity memberToSystemUserFunctionalGroupMapping = new SystemUserFunctionalGroupMappingEntity();
-
-        memberToSystemUserFunctionalGroupMapping.setFunctionalGroupGlobalId(functionalGroupResponse.getData().getFunctionalGroupGlobalId());
+        memberToSystemUserFunctionalGroupMapping.setFunctionalGroupGlobalId(functionalGroupResponse.getFunctionalGroupGlobalId());
         memberToSystemUserFunctionalGroupMapping.setSystemUserGlobalId(savedMemberResponse.getSystemUserGlobalId());
+        memberToSystemUserFunctionalGroupMapping.setIsActive(1);
+        systemUserFunctionalGroupMappingService.saveSystemUserFunctionalGroupMapping(memberToSystemUserFunctionalGroupMapping);
 
-        ResponseEntity<SystemUserFunctionalGroupMappingEntity> systemUserFunctionalGroupMappingResponse = restTemplate.postForEntity("http://localhost:9100/api/v1/user/system-user-functional-group-mappings", memberToSystemUserFunctionalGroupMapping, SystemUserFunctionalGroupMappingEntity.class);
+        // set system user functional group mapping in auth
+//        SystemUserFunctionalGroupMappingEntity authSystemUserFunctionalGroupMapping = new SystemUserFunctionalGroupMappingEntity();
+//        authSystemUserFunctionalGroupMapping.setFunctionalGroupGlobalId(functionalGroupResponse.getFunctionalGroupGlobalId());
+//        authSystemUserFunctionalGroupMapping.setSystemUserGlobalId(systemUserResponse.getBody().getData().getSystemUserGlobalId());
+//        authSystemUserFunctionalGroupMapping.setIsActive(1);
+//        ResponseEntity<VisualObject> systemUserFunctionalGroupResponse = restTemplate.postForEntity("http://localhost:9100/api/v1/auth/system-user-functional-group-mappings", authSystemUserFunctionalGroupMapping, VisualObject.class);
         return savedMemberResponse;
     }
 
@@ -372,7 +405,7 @@ public class SystemUserService {
     }
 
     private SystemUserEntity applyPatchToSystemUserEntity(JsonPatch jsonPatch, SystemUserEntity systemUserEntity)
-            throws com.github.fge.jsonpatch.JsonPatchException, com.fasterxml.jackson.core.JsonProcessingException {
+            throws JsonPatchException,JsonProcessingException {
         JsonNode patched = jsonPatch.apply(objectMapper.convertValue(systemUserEntity, JsonNode.class));
         return objectMapper.treeToValue(patched, SystemUserEntity.class);
     }
