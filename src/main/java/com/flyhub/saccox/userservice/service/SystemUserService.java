@@ -197,7 +197,7 @@ public class SystemUserService {
     public VisualObject saveSystemUser(SystemUserEntity systemUserEntity) throws NoSuchAlgorithmException, InvalidKeySpecException {
         log.info("Inside saveSystemUser method of SystemUserService");
         if (systemUserEntity.getMemberGlobalId() != null) {
-        SystemUserEntity userAsMember = systemUserRepository.findByMemberGlobalId(systemUserEntity.getMemberGlobalId());
+            SystemUserEntity userAsMember = systemUserRepository.findByMemberGlobalId(systemUserEntity.getMemberGlobalId());
 
             // update the is_active and is_staff
             // use to update member in the system user table given the member id
@@ -216,26 +216,34 @@ public class SystemUserService {
             // get a salt value using the SecureRandom class
             SecureRandom secureRandom = new SecureRandom();
             byte[] salt = secureRandom.generateSeed(12);
-            systemUserEntity.setSaltValue(salt);
+
             // hash the password with the salt
             PBEKeySpec pbeKeySpec = new PBEKeySpec(systemUserEntity.getPassword().toCharArray(), salt, 10, 512);
             SecretKeyFactory secretKey = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA512");
             byte[] hash = secretKey.generateSecret(pbeKeySpec).getEncoded();
+
             //converting to string to store into database
             String hashedPassword = Base64.getMimeEncoder().encodeToString(hash);
+
+            systemUserEntity.setSaltValue(salt);
             systemUserEntity.setPassword(hashedPassword);
+
             SystemUserEntity systemUser = systemUserRepository.save(systemUserEntity);
+
             //get the admin functional group
             FunctionalGroupEntity adminFunctionalGroup = functionalGroupService.findInternalAdminFunctionalGroup();
-            SystemUserFunctionalGroupMappingEntity systemUserFunctionalGroupMapping = new SystemUserFunctionalGroupMappingEntity();
+
             // assign internal admin group to system user
+            SystemUserFunctionalGroupMappingEntity systemUserFunctionalGroupMapping = new SystemUserFunctionalGroupMappingEntity();
             systemUserFunctionalGroupMapping.setFunctionalGroupGlobalId(adminFunctionalGroup.getFunctionalGroupGlobalId());
             systemUserFunctionalGroupMapping.setSystemUserGlobalId(systemUser.getSystemUserGlobalId());
             systemUserFunctionalGroupMapping.setIsActive(1);
             systemUserFunctionalGroupMappingService.saveSystemUserFunctionalGroupMapping(systemUserFunctionalGroupMapping);
+
             //posting to auth
             ResponseEntity<VisualObject> systemUserResponse = restTemplate.postForEntity("http://localhost:9100/api/v1/auth/system-users", systemUser, VisualObject.class);
             SystemUserFunctionalGroupMappingEntity authSystemUserFunctionalGroupMapping = new SystemUserFunctionalGroupMappingEntity();
+
             // assign internal admin group to system user
             authSystemUserFunctionalGroupMapping.setFunctionalGroupGlobalId(adminFunctionalGroup.getFunctionalGroupGlobalId());
             authSystemUserFunctionalGroupMapping.setSystemUserGlobalId(systemUserResponse.getBody().getData().getSystemUserGlobalId());
@@ -248,12 +256,9 @@ public class SystemUserService {
             tokenObject.setTenantName(systemUser.getTenantName());
             tokenObject.setBranchGlobalId(systemUser.getBranchGlobalId());
             tokenObject.setRefreshToken(systemUser.getRefreshToken());
-            System.out.println("tokenObject");
-            System.out.println(tokenObject);
 
             VisualObject tokenResponse = restTemplate.postForObject("http://localhost:9100/api/v1/auth/tokens", tokenObject, VisualObject.class);
-            System.out.println("tokenResponse");
-            System.out.println(tokenResponse);
+
             return tokenResponse;
         }
     }
@@ -291,18 +296,6 @@ public class SystemUserService {
 
         ResponseEntity<SystemUserFunctionalGroupMappingEntity> systemUserFunctionalGroupMappingResponse = restTemplate.postForEntity("http://localhost:9100/api/v1/user/system-user-functional-group-mappings", memberToSystemUserFunctionalGroupMapping, SystemUserFunctionalGroupMappingEntity.class);
         return savedMemberResponse;
-    }
-
-    @Transactional
-    public List<SystemUserEntity> findAllStaff() {
-        log.info("Inside findAllSystemUsers method of SystemUserService");
-        List<SystemUserEntity> staff = new ArrayList<SystemUserEntity>();
-        staff.addAll(systemUserRepository.findAllStaff());
-        if (staff.isEmpty()) {
-            throw new CustomNoContentException("System Users not found");
-        }
-
-        return staff;
     }
 
     public List<SystemUserFunctionalGroupsProcedureEntity> systemUserFunctionalGroupsProcedure() {
