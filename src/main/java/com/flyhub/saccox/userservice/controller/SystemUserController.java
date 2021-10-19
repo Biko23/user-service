@@ -28,7 +28,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@Validated
+//@Validated
 @RequestMapping("/api/v1/user/system-users")
 @Slf4j
 public class SystemUserController {

@@ -11,8 +11,10 @@ import com.github.fge.jsonpatch.JsonPatch;
 import com.github.fge.jsonpatch.JsonPatchException;
 import com.flyhub.saccox.userservice.exception.*;
 import lombok.extern.slf4j.Slf4j;
+import nonapi.io.github.classgraph.utils.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Errors;
@@ -25,9 +27,7 @@ import javax.crypto.spec.PBEKeySpec;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -63,25 +63,38 @@ public class SystemUserService {
 
     public void writeMyFile(MultipartFile file, Path dir) {
         Path filepath = Paths.get(dir.toString(), file.getOriginalFilename());
-
         try (OutputStream os = Files.newOutputStream(filepath)) {
             os.write(file.getBytes());
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-    public BufferedImage createThumbnail(File file) throws Exception {
-        BufferedImage img = ImageIO.read(file);
-        BufferedImage thumb = new BufferedImage(100, 200,
-                BufferedImage.TYPE_INT_RGB);
-
-        Graphics2D g2d = (Graphics2D) thumb.getGraphics();
-        g2d.drawImage(img, 0, 0, thumb.getWidth() - 1, thumb.getHeight() - 1, 0, 0,
-                img.getWidth() - 1, img.getHeight() - 1, null);
-        g2d.dispose();
-        ImageIO.write(thumb, "PNG", new File("thumb.png"));
-        return thumb;
+    public static File createThumbnail(File inputImgFile, int thumbnail_width, int thumbnail_height){
+        File outputFile=null;
+        try {
+            BufferedImage img = new BufferedImage(thumbnail_width, thumbnail_height, BufferedImage.TYPE_INT_RGB);
+            img.createGraphics().drawImage(ImageIO.read(inputImgFile).getScaledInstance(thumbnail_width, thumbnail_height, Image.SCALE_SMOOTH),0,0,null);
+            outputFile=new File(inputImgFile.getParentFile()+File.separator+"thumbnail_"+inputImgFile.getName());
+            ImageIO.write(img, "jpg", outputFile);
+            inputImgFile.delete();
+            return outputFile;
+        } catch (IOException e) {
+            System.out.println("Exception while generating thumbnail "+e.getMessage());
+            return null;
+        }
     }
+//    public BufferedImage createThumbnail(File file) throws Exception {
+//        BufferedImage img = ImageIO.read(file);
+//        BufferedImage thumb = new BufferedImage(100, 200,
+//                BufferedImage.TYPE_INT_RGB);
+//
+//        Graphics2D g2d = (Graphics2D) thumb.getGraphics();
+//        g2d.drawImage(img, 0, 0, thumb.getWidth() - 1, thumb.getHeight() - 1, 0, 0,
+//                img.getWidth() - 1, img.getHeight() - 1, null);
+//        g2d.dispose();
+//        ImageIO.write(thumb, "PNG", new File("thumb.png"));
+//        return thumb;
+//    }
 
     public Map<String, String> handleValidationExceptions(Errors errors) {
         Map<String, String> errorsMessages = new HashMap<>();
@@ -112,19 +125,21 @@ public class SystemUserService {
             System.out.println(fileType);
             if (fileType.equals("image/png") || fileType.equals("image/jpg") || fileType.equals("image/jpeg")) {
                 long fileSize = file.getSize();
-                System.out.println(fileSize);
-                fileSize = fileSize/1024;
-                System.out.println(fileSize);
-                if (fileSize < 1024) {
-//                    writeMyFile(file, Path imgPath)
-//                    systemUserEntity.setImageLarge(file.getBytes());
-//                    BufferedImage myImg = createThumbnail((File) file);
-//                    systemUserEntity.setImageSmall(myImg);
-                    systemUserEntity.setImageSmall(file.getBytes());
-                    System.out.println(systemUserEntity.getImageSmall());
+                long fileSizeKb = fileSize/1024;
+                long fileSizeMb = fileSizeKb/1024;
+                if (fileSizeMb < 1) {
+                    systemUserEntity.setImageLarge(file.getBytes());
+                    Path systemUserPictures = Paths.get("C:\\Users\\A241908\\Documents\\workspace\\saccoX\\user-service\\src\\main\\resources\\static\\img");
+                    writeMyFile(file, systemUserPictures);
+                    String myPicture = "C:\\Users\\A241908\\Documents\\workspace\\saccoX\\user-service\\src\\main\\resources\\static\\img\\" + file.getOriginalFilename();
+                    File myThumbnail = createThumbnail(new File(myPicture), 400, 400);
+                    System.out.println("myThumbnail");
+                    System.out.println(myThumbnail);
+                    systemUserEntity.setImageSmall(Files.readAllBytes(myThumbnail.toPath()));
+                    myThumbnail.delete();
                 }else {
-                    System.out.println("Sorry file of size " + fileSize/1024 + " Mbs is too big!");
-                    throw new CustomNotAuthorisedException("Sorry file of size " + fileSize/1024 + " Mbs is too big. Please upload an image of less than 1MB");
+                    System.out.println("Sorry file of size " + fileSizeMb + " Mbs is too big!");
+                    throw new CustomNotAuthorisedException("Sorry file of size " + fileSizeMb + " Mbs is too big. Please upload an image of less than 1MB");
                 }
             }else {
                 System.out.println("Sorry this file type is not accepted.");
@@ -300,6 +315,7 @@ public class SystemUserService {
         }
     }
 
+    @Transactional
     public SystemUserEntity findBySystemUserGlobalId(UUID systemUserGlobalId) {
         log.info("Inside findBySystemUserGlobalId method of SystemUserService");
         SystemUserEntity login = systemUserRepository.findBySystemUserGlobalId(systemUserGlobalId);
