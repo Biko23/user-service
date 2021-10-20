@@ -8,7 +8,7 @@ table(
     first_name varchar,
     middle_name varchar,
     last_name varchar,
-    primary_phone varchar,
+    primary_phone text,
     primary_email varchar
 ) as '
 begin
@@ -21,7 +21,7 @@ return query
         system_user.first_name,
         system_user.middle_name,
         system_user.last_name,
-        system_user.primary_phone,
+        replace(system_user.primary_phone, ''+256'', ''0'') as primary_phone,
         system_user.primary_email
     FROM
         system_user,system_user_functional_group_mapping
@@ -29,7 +29,8 @@ return query
     WHERE
         system_user.system_user_global_id = system_user_functional_group_mapping.system_user_global_id AND
         system_user.is_staff = 1 AND
-        system_user_functional_group_mapping.soft_delete = 0
+        system_user_functional_group_mapping.soft_delete = 0 AND
+        functional_group.is_default = 0
     GROUP BY
         system_user.system_user_global_id;
 end;

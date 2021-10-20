@@ -16,4 +16,6 @@ public interface SystemUserRepository extends JpaRepository<SystemUserEntity, UU
     SystemUserEntity findByPrimaryEmailOrSecondaryEmail(String primaryEmail, String secondaryEmail);
     SystemUserEntity findByMemberGlobalId(UUID memberGlobalId);
     SystemUserEntity findByPrimaryPhoneOrPrimaryEmail(String primaryPhone, String primaryEmail);
+    @Query(value = "SELECT * FROM system_user s WHERE s.is_staff = 0", nativeQuery = true)
+    List<SystemUserEntity> findOnlineMembers();
 }
