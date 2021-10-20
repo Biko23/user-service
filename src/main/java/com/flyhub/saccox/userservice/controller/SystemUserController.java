@@ -87,7 +87,11 @@ public class SystemUserController {
         log.info("Inside systemUserFunctionalGroupsProcedure method of SystemUserController");
         return new ResponseEntity<>(new ApiResponseFormat(true, null, "System user(s) found.", systemUserService.systemUserFunctionalGroupsProcedure()), HttpStatus.OK);
     }
-
+    @GetMapping("/online-members")
+    public ResponseEntity<?> findAllOnlineMembers() {
+        log.info("Inside findAllOnlineMembers method of SystemUserController");
+        return new ResponseEntity<>(new ApiResponseFormat(true, null, "Online members found.", systemUserService.findAllOnlineMembers()), HttpStatus.OK);
+    }
     @GetMapping("")
     public ResponseEntity<?> findAllSystemUsers() {
         log.info("Inside findAllSystemUsers method of SystemUserController");

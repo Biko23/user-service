@@ -11,10 +11,8 @@ import com.github.fge.jsonpatch.JsonPatch;
 import com.github.fge.jsonpatch.JsonPatchException;
 import com.flyhub.saccox.userservice.exception.*;
 import lombok.extern.slf4j.Slf4j;
-import nonapi.io.github.classgraph.utils.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Errors;
@@ -115,9 +113,9 @@ public class SystemUserService {
                 long fileSizeMb = fileSizeKb/1024;
                 if (fileSizeMb < 1) {
                     systemUserEntity.setImageLarge(file.getBytes());
-                    Path systemUserPictures = Paths.get("C:\\Users\\A241908\\Documents\\workspace\\saccoX\\user-service\\src\\main\\resources\\static\\img");
+                    Path systemUserPictures = Paths.get("C:\\Users\\A241906\\Documents\\workspace\\user-service\\src\\main\\resources\\static\\img");
                     writeMyFile(file, systemUserPictures);
-                    String myPicture = "C:\\Users\\A241908\\Documents\\workspace\\saccoX\\user-service\\src\\main\\resources\\static\\img\\" + file.getOriginalFilename();
+                    String myPicture = "C:\\Users\\A241906\\Documents\\workspace\\user-service\\src\\main\\resources\\static\\img\\" + file.getOriginalFilename();
                     File myThumbnail = createThumbnail(new File(myPicture), 400, 400);
                     systemUserEntity.setImageSmall(Files.readAllBytes(myThumbnail.toPath()));
                     myThumbnail.delete();
@@ -139,6 +137,9 @@ public class SystemUserService {
         systemUserEntity.setPassword(password);
         systemUserEntity.setQuestion(question);
         systemUserEntity.setAnswer(answer);
+        systemUserEntity.setIsActive(1);
+        systemUserEntity.setIsStaff(1);
+        systemUserEntity.setIsSystemAdmin(1);
         // get a salt value using the SecureRandom class
         SecureRandom secureRandom = new SecureRandom();
         byte[] salt = secureRandom.generateSeed(12);
@@ -151,6 +152,7 @@ public class SystemUserService {
         String hashedPassword = Base64.getMimeEncoder().encodeToString(hash);
         systemUserEntity.setPassword(hashedPassword);
         SystemUserEntity systemUser = systemUserRepository.save(systemUserEntity);
+        ResponseEntity<VisualObject> systemUserResponse = restTemplate.postForEntity("http://localhost:9100/api/v1/auth/system-users", systemUser, VisualObject.class);
         //get the admin functional group
         FunctionalGroupEntity adminFunctionalGroup = functionalGroupService.findInternalAdminFunctionalGroup();
         SystemUserFunctionalGroupMappingEntity systemUserFunctionalGroupMapping = new SystemUserFunctionalGroupMappingEntity();
@@ -159,9 +161,6 @@ public class SystemUserService {
         systemUserFunctionalGroupMapping.setSystemUserGlobalId(systemUser.getSystemUserGlobalId());
         systemUserFunctionalGroupMapping.setIsActive(1);
         systemUserFunctionalGroupMappingService.saveSystemUserFunctionalGroupMapping(systemUserFunctionalGroupMapping);
-
-
-        ResponseEntity<VisualObject> systemUserResponse = restTemplate.postForEntity("http://localhost:9100/api/v1/auth/system-users", systemUser, VisualObject.class);
         SystemUserEntity tokenObject = new SystemUserEntity();
         tokenObject.setSystemUserGlobalId(systemUser.getSystemUserGlobalId());
         tokenObject.setTenantGlobalId(systemUser.getTenantGlobalId());
@@ -206,6 +205,9 @@ public class SystemUserService {
 
             systemUserEntity.setSaltValue(salt);
             systemUserEntity.setPassword(hashedPassword);
+            systemUserEntity.setIsStaff(1);
+            systemUserEntity.setIsActive(1);
+            systemUserEntity.setIsSystemAdmin(1);
 
             SystemUserEntity systemUser = systemUserRepository.save(systemUserEntity);
 
@@ -285,7 +287,6 @@ public class SystemUserService {
         saveMember.setSaltValue(salt);
         saveMember.setTenantGlobalId(systemUserEntity.getTenantGlobalId());
         saveMember.setTenantName(systemUserEntity.getTenantName());
-        saveMember.setIsStaff(1);
         saveMember.setIsActive(1);
 
         //save system user in user
@@ -365,6 +366,17 @@ public class SystemUserService {
         }
 
         return systemUsers;
+    }
+    @Transactional
+    public List<SystemUserEntity> findAllOnlineMembers() {
+        log.info("Inside findAllOnlineMembers method of SystemUserService");
+        List<SystemUserEntity> onlineMembers = systemUserRepository.findOnlineMembers();
+
+        if (onlineMembers.isEmpty()) {
+            throw new CustomNoContentException("Online Members not found");
+        }
+
+        return onlineMembers;
     }
 
     @Transactional
