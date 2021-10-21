@@ -142,8 +142,17 @@ public class SystemUserEntity {
     private int isSystemAdmin;
 
     @JsonProperty("is_staff")
-    @ApiModelProperty(notes = "Is Tenant staff.", example = "1 | 0")
+    @ApiModelProperty(notes = "Is user staff.", example = "1 | 0")
     private int isStaff;
+
+    @JsonProperty("ever_logged_in")
+    @ApiModelProperty(notes = "Has user ever logged in", example = "1 | 0")
+    @Column(columnDefinition = "integer default 0")
+    private int everLoggedIn;
+
+    @JsonProperty("log_in_date")
+    @ApiModelProperty(notes = "User's first log in date", example = "12-12-21")
+    private LocalDateTime logInDate;
 
     @JsonProperty("employment_date")
     @ApiModelProperty(notes = "System user date of employment.", example = "12-12-21")

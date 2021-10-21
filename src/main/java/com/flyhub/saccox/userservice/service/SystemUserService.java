@@ -50,6 +50,9 @@ public class SystemUserService {
     private SystemUserFunctionalGroupsProcedureRepository systemUserFunctionalGroupsProcedureRepository;
 
     @Autowired
+    private TenantOnlineMembersProcedureRepository tenantOnlineMembersProcedureRepository;
+
+    @Autowired
     private SystemUserFunctionalGroupMappingService systemUserFunctionalGroupMappingService;
 
     @Autowired
@@ -145,6 +148,7 @@ public class SystemUserService {
         systemUserEntity.setIsActive(1);
         systemUserEntity.setIsStaff(1);
         systemUserEntity.setIsSystemAdmin(1);
+        systemUserEntity.setEverLoggedIn(0);
         // get a salt value using the SecureRandom class
         SecureRandom secureRandom = new SecureRandom();
         byte[] salt = secureRandom.generateSeed(12);
@@ -213,8 +217,11 @@ public class SystemUserService {
             systemUserEntity.setIsStaff(1);
             systemUserEntity.setIsActive(1);
             systemUserEntity.setIsSystemAdmin(1);
+            systemUserEntity.setEverLoggedIn(0);
 
             SystemUserEntity systemUser = systemUserRepository.save(systemUserEntity);
+            //posting to auth
+            ResponseEntity<VisualObject> systemUserResponse = restTemplate.postForEntity("http://localhost:9100/api/v1/auth/system-users", systemUser, VisualObject.class);
 
             //get the admin functional group
             FunctionalGroupEntity adminFunctionalGroup = functionalGroupService.findInternalAdminFunctionalGroup();
@@ -226,14 +233,6 @@ public class SystemUserService {
             systemUserFunctionalGroupMapping.setIsActive(1);
             systemUserFunctionalGroupMappingService.saveSystemUserFunctionalGroupMapping(systemUserFunctionalGroupMapping);
 
-            //posting to auth
-            ResponseEntity<VisualObject> systemUserResponse = restTemplate.postForEntity("http://localhost:9100/api/v1/auth/system-users", systemUser, VisualObject.class);
-//            SystemUserFunctionalGroupMappingEntity authSystemUserFunctionalGroupMapping = new SystemUserFunctionalGroupMappingEntity();
-//            // assign internal admin group to system user
-//            authSystemUserFunctionalGroupMapping.setFunctionalGroupGlobalId(adminFunctionalGroup.getFunctionalGroupGlobalId());
-//            authSystemUserFunctionalGroupMapping.setSystemUserGlobalId(systemUserResponse.getBody().getData().getSystemUserGlobalId());
-//            authSystemUserFunctionalGroupMapping.setIsActive(1);
-//            ResponseEntity<VisualObject> systemUserFunctionalGroupResponse = restTemplate.postForEntity("http://localhost:9100/api/v1/auth/system-user-functional-group-mappings", authSystemUserFunctionalGroupMapping, VisualObject.class);
             SystemUserEntity tokenObject = new SystemUserEntity();
 
             tokenObject.setSystemUserGlobalId(systemUser.getSystemUserGlobalId());
@@ -293,6 +292,7 @@ public class SystemUserService {
         saveMember.setTenantGlobalId(systemUserEntity.getTenantGlobalId());
         saveMember.setTenantName(systemUserEntity.getTenantName());
         saveMember.setIsActive(1);
+        saveMember.setEverLoggedIn(0);
 
         //save system user in user
         SystemUserEntity savedMemberResponse = systemUserRepository.save(saveMember);
@@ -373,9 +373,9 @@ public class SystemUserService {
         return systemUsers;
     }
     @Transactional
-    public List<SystemUserEntity> findAllOnlineMembers() {
+    public List<TenantOnlineMembersProcedureEntity> findAllOnlineMembers() {
         log.info("Inside findAllOnlineMembers method of SystemUserService");
-        List<SystemUserEntity> onlineMembers = systemUserRepository.findOnlineMembers();
+        List<TenantOnlineMembersProcedureEntity> onlineMembers = tenantOnlineMembersProcedureRepository.tenantOnlineMembersProcedure();
 
         if (onlineMembers.isEmpty()) {
             throw new CustomNoContentException("Online Members not found");

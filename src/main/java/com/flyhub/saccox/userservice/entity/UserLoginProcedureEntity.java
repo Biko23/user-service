@@ -10,8 +10,6 @@ import java.util.UUID;
 @Entity
 @Data
 public class UserLoginProcedureEntity {
-
-
 	private UUID system_user_global_id;
 
 	private String primary_phone;
