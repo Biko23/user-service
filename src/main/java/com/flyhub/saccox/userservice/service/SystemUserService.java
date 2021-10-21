@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
 import org.springframework.web.client.RestTemplate;
@@ -113,9 +114,13 @@ public class SystemUserService {
                 long fileSizeMb = fileSizeKb/1024;
                 if (fileSizeMb < 1) {
                     systemUserEntity.setImageLarge(file.getBytes());
-                    Path systemUserPictures = Paths.get("C:\\Users\\A241906\\Documents\\workspace\\user-service\\src\\main\\resources\\static\\img");
+                    Path systemUserPictures = Paths.get("src", "main", "resources", "static", "img");
+                    String absolutePath = systemUserPictures.toFile().getAbsolutePath();
+                    System.out.println(absolutePath);
+//                    Assert.aser
+//                    Assert.assertTrue(absolutePath.endsWith("src/test/resources"));
                     writeMyFile(file, systemUserPictures);
-                    String myPicture = "C:\\Users\\A241906\\Documents\\workspace\\user-service\\src\\main\\resources\\static\\img\\" + file.getOriginalFilename();
+                    String myPicture = absolutePath + "\\" + file.getOriginalFilename();
                     File myThumbnail = createThumbnail(new File(myPicture), 400, 400);
                     systemUserEntity.setImageSmall(Files.readAllBytes(myThumbnail.toPath()));
                     myThumbnail.delete();
