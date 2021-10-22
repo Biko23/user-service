@@ -149,11 +149,6 @@ public class SystemUserEntity {
     @Column(columnDefinition = "integer default 0")
     private int isStaff;
 
-    @JsonProperty("is_online_member")
-    @ApiModelProperty(notes = "Is user member.", example = "1 | 0")
-    @Column(columnDefinition = "integer default 0")
-    private int isMember;
-
     @JsonProperty("ever_logged_in")
     @ApiModelProperty(notes = "Has user ever logged in", example = "1 | 0")
     @Column(columnDefinition = "integer default 0")
