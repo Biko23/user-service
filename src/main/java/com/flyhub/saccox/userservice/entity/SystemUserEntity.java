@@ -87,6 +87,7 @@ public class SystemUserEntity {
     @JsonProperty("secondary_phone")
     @ApiModelProperty(notes = "System user secondary phone.", example = "256700000000")
     @Pattern(regexp = "((\\+256)\\d{9})", message = "Please enter correct number format (+256701234567)")
+    @Nullable
     private String secondaryPhone;
 
     @JsonProperty("primary_email")
@@ -98,6 +99,7 @@ public class SystemUserEntity {
     @JsonProperty("secondary_email")
     @ApiModelProperty(notes = "System user secondary email.", example = "a@gmail.com")
     @Email(message = "Please enter the correct email")
+    @Nullable
     private String secondaryEmail;
 
     @JsonProperty("image_url_small")
@@ -144,7 +146,13 @@ public class SystemUserEntity {
 
     @JsonProperty("is_staff")
     @ApiModelProperty(notes = "Is user staff.", example = "1 | 0")
+    @Column(columnDefinition = "integer default 0")
     private int isStaff;
+
+    @JsonProperty("is_online_member")
+    @ApiModelProperty(notes = "Is user member.", example = "1 | 0")
+    @Column(columnDefinition = "integer default 0")
+    private int isMember;
 
     @JsonProperty("ever_logged_in")
     @ApiModelProperty(notes = "Has user ever logged in", example = "1 | 0")

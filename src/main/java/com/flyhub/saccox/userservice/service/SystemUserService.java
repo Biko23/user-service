@@ -183,21 +183,24 @@ public class SystemUserService {
     @Transactional
     public VisualObject saveSystemUser(SystemUserEntity systemUserEntity) throws NoSuchAlgorithmException, InvalidKeySpecException {
         log.info("Inside saveSystemUser method of SystemUserService");
-        if (systemUserEntity.getMemberGlobalId() != null) {
+        System.out.println(systemUserEntity);
+        if (systemUserEntity.getMemberGlobalId() != null ) { // works for online member being registered as staff
+            System.out.println(systemUserEntity);
             SystemUserEntity userAsMember = systemUserRepository.findByMemberGlobalId(systemUserEntity.getMemberGlobalId());
+            System.out.println(userAsMember);
+                // update the is_active and is_staff
+                // use to update member in the system user table given the member id
+                updateSystemUser(userAsMember.getSystemUserGlobalId(), userAsMember);
+                SystemUserEntity tokenObject = new SystemUserEntity();
 
-            // update the is_active and is_staff
-            // use to update member in the system user table given the member id
-            updateSystemUser(userAsMember.getSystemUserGlobalId(), userAsMember);
-            SystemUserEntity tokenObject = new SystemUserEntity();
+                tokenObject.setSystemUserGlobalId(userAsMember.getSystemUserGlobalId());
+                tokenObject.setTenantGlobalId(userAsMember.getTenantGlobalId());
+                tokenObject.setTenantName(userAsMember.getTenantName());
+                tokenObject.setBranchGlobalId(userAsMember.getBranchGlobalId());
+                tokenObject.setRefreshToken(userAsMember.getRefreshToken());
 
-            tokenObject.setSystemUserGlobalId(userAsMember.getSystemUserGlobalId());
-            tokenObject.setTenantGlobalId(userAsMember.getTenantGlobalId());
-            tokenObject.setTenantName(userAsMember.getTenantName());
-            tokenObject.setBranchGlobalId(userAsMember.getBranchGlobalId());
-            tokenObject.setRefreshToken(userAsMember.getRefreshToken());
+                VisualObject tokenResponse = restTemplate.postForObject("http://localhost:9100/api/v1/auth/tokens", tokenObject, VisualObject.class);
 
-            VisualObject tokenResponse = restTemplate.postForObject("http://localhost:9100/api/v1/auth/tokens", tokenObject, VisualObject.class);
             return tokenResponse;
         } else {
             // get a salt value using the SecureRandom class
