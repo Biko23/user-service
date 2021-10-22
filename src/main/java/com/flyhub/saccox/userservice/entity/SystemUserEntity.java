@@ -1,6 +1,7 @@
 package com.flyhub.saccox.userservice.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.sun.istack.Nullable;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -187,8 +188,8 @@ public class SystemUserEntity {
     @JsonProperty("nin")
     @ApiModelProperty(notes="")
     @Column(unique = true)
-//    @Pattern(regexp = "([CF]{2}\\d{8}[A-Z]{2}\\d{1}[A-Z]{1})|([CM]{2}\\d{8}[A-Z]{4})", message = "Please enter the correct NIN")
-//    @NotBlank(message = "Nin value is required")
+    @Pattern(regexp = "([CF]{2}\\d{8}[A-Z]{2}\\d{1}[A-Z]{1})|([CM]{2}\\d{8}[A-Z]{4})", message = "Please enter the correct NIN")
+    @Nullable
     private String nin;
 
     @JsonProperty("question")
