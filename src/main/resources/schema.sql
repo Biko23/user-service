@@ -13,7 +13,7 @@ CREATE TABLE public.user_module
     soft_delete integer DEFAULT 0,
     updated_on timestamp without time zone DEFAULT CURRENT_TIMESTAMP(0),
     working_time character varying(255) COLLATE pg_catalog."default",
-    CONSTRAINT module_pkey PRIMARY KEY (module_global_id)
+    CONSTRAINT user_module_pkey PRIMARY KEY (module_global_id)
 );
 
 DROP TABLE IF EXISTS user_functional_group;
@@ -32,7 +32,7 @@ CREATE TABLE public.user_functional_group
     soft_delete integer DEFAULT 0,
     tenant_global_id uuid,
     updated_on timestamp without time zone DEFAULT CURRENT_TIMESTAMP(0),
-    CONSTRAINT functional_group_pkey PRIMARY KEY (functional_group_global_id)
+    CONSTRAINT user_functional_group_pkey PRIMARY KEY (functional_group_global_id)
 );
 
 DROP TABLE IF EXISTS user_functional_group_module_mapping;
@@ -63,5 +63,5 @@ CREATE TABLE public.user_functional_group_module_mapping
     tenant_global_id uuid,
     tenant_name character varying(255) COLLATE pg_catalog."default",
     updated_on timestamp without time zone DEFAULT CURRENT_TIMESTAMP(0),
-    CONSTRAINT functional_group_module_mapping_pkey PRIMARY KEY (functional_group_module_mapping_global_id)
+    CONSTRAINT user_functional_group_module_mapping_pkey PRIMARY KEY (functional_group_module_mapping_global_id)
 );
