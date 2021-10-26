@@ -1,4 +1,4 @@
-create or replace function UserFunctionalGroupModuleMappingProcedure()
+create or replace function user_functional_group_module_mapping()
 returns
 table(
     functional_group_module_mapping_global_id uuid,
