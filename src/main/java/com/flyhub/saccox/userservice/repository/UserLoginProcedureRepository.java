@@ -11,6 +11,6 @@ import com.flyhub.saccox.userservice.entity.UserLoginProcedureEntity;
 
 @Repository
 public interface UserLoginProcedureRepository extends JpaRepository<UserLoginProcedureEntity, String> {
-	@Query(value="select * from UserLoginProcedure(:username, :pass)", nativeQuery=true)
+	@Query(value="select * from UserUserLoginProcedure(:username, :pass)", nativeQuery=true)
     List<UserLoginProcedureEntity> userLoginProcedure(@Param("username") String username, @Param("pass") String password);
 }

@@ -1,5 +1,5 @@
-DROP TABLE IF EXISTS module;
-CREATE TABLE public.module
+DROP TABLE IF EXISTS user_module;
+CREATE TABLE public.user_module
 (
     module_global_id uuid NOT NULL,
     access_location character varying(255) COLLATE pg_catalog."default",
@@ -16,8 +16,8 @@ CREATE TABLE public.module
     CONSTRAINT module_pkey PRIMARY KEY (module_global_id)
 );
 
-DROP TABLE IF EXISTS functional_group;
-CREATE TABLE public.functional_group
+DROP TABLE IF EXISTS user_functional_group;
+CREATE TABLE public.user_functional_group
 (
     functional_group_global_id uuid NOT NULL,
     branch_name character varying(255) COLLATE pg_catalog."default",
@@ -35,8 +35,8 @@ CREATE TABLE public.functional_group
     CONSTRAINT functional_group_pkey PRIMARY KEY (functional_group_global_id)
 );
 
-DROP TABLE IF EXISTS functional_group_module_mapping;
-CREATE TABLE public.functional_group_module_mapping
+DROP TABLE IF EXISTS user_functional_group_module_mapping;
+CREATE TABLE public.user_functional_group_module_mapping
 (
     functional_group_module_mapping_global_id uuid NOT NULL,
     can_create integer DEFAULT 0,

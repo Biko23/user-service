@@ -21,7 +21,7 @@ import java.util.UUID;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "response_filter")
+@Table(name = "user_response_filter")
 public class ResponseFilterEntity {
 
     @Id

@@ -1,12 +1,12 @@
 package com.flyhub.saccox.userservice.service;
 
+import com.flyhub.saccox.userservice.entity.FunctionalGroupEntity;
 import com.flyhub.saccox.userservice.visualobject.VisualObject;
 import com.github.fge.jsonpatch.JsonPatch;
 import com.github.fge.jsonpatch.JsonPatchException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.flyhub.saccox.userservice.entity.FunctionalGroupEntity;
 import com.flyhub.saccox.userservice.exception.CustomInvalidInputException;
 import com.flyhub.saccox.userservice.exception.CustomNoContentException;
 import com.flyhub.saccox.userservice.exception.CustomNotFoundException;

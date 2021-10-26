@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.flyhub.saccox.userservice.entity.FunctionalGroupModuleMappingEntity;
 import com.flyhub.saccox.userservice.entity.FunctionalGroupModuleMappingProcedureEntity;
-import com.flyhub.saccox.userservice.entity.UserLoginProcedureEntity;
 import com.flyhub.saccox.userservice.repository.FunctionalGroupModuleMappingProcedureRepository;
 import com.flyhub.saccox.userservice.repository.FunctionalGroupModuleMappingRepository;
 import com.flyhub.saccox.userservice.exception.*;

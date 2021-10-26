@@ -1,52 +1,52 @@
-create or replace function FunctionalGroupModuleMappingProcedure()
+create or replace function UserFunctionalGroupModuleMappingProcedure()
 returns
 table(
-functional_group_module_mapping_global_id uuid,
-functional_group_name varchar,
-functional_group_description varchar,
-functional_group_global_id uuid,
-module_name varchar,
-module_global_id uuid,
-can_create integer,
-can_email integer,
-can_print integer,
-can_retrieve integer,
-can_search integer,
-can_sms integer,
-can_update integer,
-can_soft_delete integer
+    functional_group_module_mapping_global_id uuid,
+    functional_group_name varchar,
+    functional_group_description varchar,
+    functional_group_global_id uuid,
+    module_name varchar,
+    module_global_id uuid,
+    can_create integer,
+    can_email integer,
+    can_print integer,
+    can_retrieve integer,
+    can_search integer,
+    can_sms integer,
+    can_update integer,
+    can_soft_delete integer
 ) as '
 
 begin
 
 return query
-SELECT
-functional_group_module_mapping.functional_group_module_mapping_global_id,
-functional_group.name AS functional_group_name,
-functional_group.description AS functional_group_description,
-functional_group.functional_group_global_id,
-module.name AS module_name,
-functional_group_module_mapping.module_global_id,
-functional_group_module_mapping.can_create,
-functional_group_module_mapping.can_email,
-functional_group_module_mapping.can_print,
-functional_group_module_mapping.can_retrieve,
-functional_group_module_mapping.can_search,
-functional_group_module_mapping.can_sms,
-functional_group_module_mapping.can_update,
-functional_group_module_mapping.can_soft_delete
-FROM
-functional_group_module_mapping,
-functional_group,
-module
-WHERE
-functional_group_module_mapping.functional_group_global_id = functional_group.functional_group_global_id
-AND
-functional_group_module_mapping.module_global_id = module.module_global_id
-AND
-functional_group_module_mapping.soft_delete = 0
-AND
-functional_group.is_default = 0;
+    SELECT
+        user_functional_group_module_mapping.functional_group_module_mapping_global_id,
+        user_functional_group.name AS functional_group_name,
+        user_functional_group.description AS functional_group_description,
+        user_functional_group.functional_group_global_id,
+        user_module.name AS module_name,
+        user_functional_group_module_mapping.module_global_id,
+        user_functional_group_module_mapping.can_create,
+        user_functional_group_module_mapping.can_email,
+        user_functional_group_module_mapping.can_print,
+        user_functional_group_module_mapping.can_retrieve,
+        user_functional_group_module_mapping.can_search,
+        user_functional_group_module_mapping.can_sms,
+        user_functional_group_module_mapping.can_update,
+        user_functional_group_module_mapping.can_soft_delete
+    FROM
+        user_functional_group_module_mapping,
+        user_functional_group,
+        user_module
+    WHERE
+        user_functional_group_module_mapping.functional_group_global_id = user_functional_group.functional_group_global_id
+    AND
+        user_functional_group_module_mapping.module_global_id = user_module.module_global_id
+    AND
+        user_functional_group_module_mapping.soft_delete = 0
+    AND
+        user_functional_group.is_default = 0;
 
 end;
 '

@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.flyhub.saccox.userservice.entity.ResponseFilterEntity;
-import com.flyhub.saccox.userservice.entity.ResponseFilterEntity;
 import com.flyhub.saccox.userservice.repository.ResponseFilterRepository;
 import com.github.fge.jsonpatch.JsonPatch;
 import com.github.fge.jsonpatch.JsonPatchException;

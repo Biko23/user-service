@@ -22,7 +22,7 @@ import java.util.UUID;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "module")
+@Table(name = "user_module")
 public class ModuleEntity {
 
     @Id

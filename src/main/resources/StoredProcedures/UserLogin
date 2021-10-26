@@ -1,56 +1,58 @@
-create or replace function UserLoginProcedure(username text, pass text) 
+create or replace function UserUserLoginProcedure(username text, pass text)
 returns 
 table(
-system_user_global_id UUID,
-primary_phone varchar,
-first_name varchar, 	
-middle_name varchar,
-last_name varchar,
-functional_group_name varchar,
-module_name varchar,
-functional_group_module_name text,
-can_create integer,
-can_email integer,
-can_hard_delete integer,
-can_print integer,
-can_retrieve integer,
-can_sms integer,
-can_search integer,
-can_soft_delete integer,
-can_update integer
+    system_user_global_id UUID,
+    primary_phone varchar,
+    first_name varchar,
+    middle_name varchar,
+    last_name varchar,
+    functional_group_name varchar,
+    module_name varchar,
+    functional_group_module_name text,
+    can_create integer,
+    can_email integer,
+    can_hard_delete integer,
+    can_print integer,
+    can_retrieve integer,
+    can_sms integer,
+    can_search integer,
+    can_soft_delete integer,
+    can_update integer
 ) as '
 
 begin
 
 return query
 	SELECT
-system_user.system_user_global_id,
-system_user.primary_phone,
-system_user.first_name,
-system_user.middle_name,
-system_user.last_name,
-functional_group.name as functional_group_name,
-module.name as module_name,
-CONCAT(functional_group.name,module.name) AS functional_group_module_name,
-COALESCE(functional_group_module_mapping.can_create, 0) AS can_create,
-COALESCE(functional_group_module_mapping.can_email, 0) AS can_email,
-COALESCE(functional_group_module_mapping.can_hard_delete, 0) AS can_hard_delete,
-COALESCE(functional_group_module_mapping.can_print, 0) AS can_print,
-COALESCE(functional_group_module_mapping.can_retrieve, 0) AS can_retrieve,
-COALESCE(functional_group_module_mapping.can_sms, 0) AS can_sms,
-COALESCE(functional_group_module_mapping.can_search, 0) AS can_search,
-COALESCE(functional_group_module_mapping.can_soft_delete, 0) AS can_soft_delete,
-COALESCE(functional_group_module_mapping.can_update, 0) AS can_update
-FROM 
-system_user
-LEFT JOIN system_user_functional_group_mapping ON system_user_functional_group_mapping.system_user_global_id = system_user.system_user_global_id
-LEFT JOIN functional_group ON functional_group.functional_group_global_id = system_user_functional_group_mapping.functional_group_global_id
-LEFT JOIN functional_group_module_mapping ON functional_group_module_mapping.functional_group_global_id = functional_group.functional_group_global_id
-LEFT JOIN module ON functional_group_module_mapping.module_global_id = module.module_global_id
-WHERE
-system_user.password = pass AND
-(system_user.primary_email = username OR
-system_user.primary_phone = username);
+        user_system_user.system_user_global_id,
+        user_system_user.primary_phone,
+        user_system_user.first_name,
+        user_system_user.middle_name,
+        user_system_user.last_name,
+        user_functional_group.name as functional_group_name,
+        user_module.name as module_name,
+        CONCAT(user_functional_group.name,module.name) AS functional_group_module_name,
+        COALESCE(user_functional_group_module_mapping.can_create, 0) AS can_create,
+        COALESCE(user_functional_group_module_mapping.can_email, 0) AS can_email,
+        COALESCE(user_functional_group_module_mapping.can_hard_delete, 0) AS can_hard_delete,
+        COALESCE(user_functional_group_module_mapping.can_print, 0) AS can_print,
+        COALESCE(user_functional_group_module_mapping.can_retrieve, 0) AS can_retrieve,
+        COALESCE(user_functional_group_module_mapping.can_sms, 0) AS can_sms,
+        COALESCE(user_functional_group_module_mapping.can_search, 0) AS can_search,
+        COALESCE(user_functional_group_module_mapping.can_soft_delete, 0) AS can_soft_delete,
+        COALESCE(user_functional_group_module_mapping.can_update, 0) AS can_update
+    FROM
+        user_system_user
+    LEFT JOIN user_system_user_functional_group_mapping ON user_system_user_functional_group_mapping.system_user_global_id = user_system_user.system_user_global_id
+    LEFT JOIN user_functional_group ON user_functional_group.functional_group_global_id = user_system_user_functional_group_mapping.functional_group_global_id
+    LEFT JOIN user_functional_group_module_mapping ON user_functional_group_module_mapping.functional_group_global_id = user_functional_group.functional_group_global_id
+    LEFT JOIN user_module ON user_functional_group_module_mapping.module_global_id = user_module.module_global_id
+    WHERE
+        user_system_user.password = pass
+    AND
+        (user_system_user.primary_email = username
+    OR
+        user_system_user.primary_phone = username);
 
 end;
 '

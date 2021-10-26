@@ -21,7 +21,7 @@ import java.util.UUID;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "system_user_functional_group_mapping")
+@Table(name = "user_system_user_functional_group_mapping")
 public class SystemUserFunctionalGroupMappingEntity {
 
     @Id

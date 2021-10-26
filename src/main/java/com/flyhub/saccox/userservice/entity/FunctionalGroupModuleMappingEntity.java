@@ -23,7 +23,7 @@ import java.util.UUID;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "functional_group_module_mapping")
+@Table(name = "user_functional_group_module_mapping")
 public class FunctionalGroupModuleMappingEntity {
 
     @Id

@@ -1,4 +1,4 @@
-create or replace function TenantOnlineMembersProcedure()
+create or replace function UserTenantOnlineMembersProcedure()
 returns
 table(
     system_user_global_id uuid,
@@ -11,16 +11,22 @@ table(
 ) as '
 begin
 return query
-SELECT
-system_user.system_user_global_id,
-system_user.first_name,
-system_user.last_name,
-REPLACE(system_user.primary_phone, ''+256'', ''0'') AS primary_phone,
-system_user.primary_email,
-CASE WHEN system_user.ever_logged_in = 1 THEN ''Yes'' ELSE ''No'' end AS login_status,
-COALESCE(TO_CHAR(system_user.log_in_date,''DD-MM-YYYY HH12:MI:SS''), ''-'') AS login_date
-FROM system_user
-WHERE is_staff =0 ;
+    SELECT
+        user_system_user.system_user_global_id,
+        user_system_user.first_name,
+        user_system_user.last_name,
+        REPLACE(user_system_user.primary_phone, ''+256'', ''0'') AS primary_phone,
+        user_system_user.primary_email,
+        CASE
+            WHEN
+                user_system_user.ever_logged_in = 1 THEN ''Yes''
+            ELSE ''No''
+            end AS login_status,
+        COALESCE(TO_CHAR(user_system_user.log_in_date,''DD-MM-YYYY HH12:MI:SS''), ''-'') AS login_date
+    FROM
+        user_system_user
+    WHERE
+        is_staff =0 ;
 end;
 '
 language plpgsql

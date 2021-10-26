@@ -1,4 +1,4 @@
-create or replace function SystemUserFunctionalGroupsProcedure()
+create or replace function UserSystemUserFunctionalGroupsProcedure()
 returns
 table(
     system_user_global_id uuid,
@@ -14,25 +14,25 @@ table(
 begin
 return query
     SELECT
-        system_user.system_user_global_id,
-        ARRAY_AGG(system_user_functional_group_mapping.system_user_functional_group_mapping_global_id) AS system_user_functional_group_mapping_global_ids,
-        ARRAY_AGG(system_user_functional_group_mapping.functional_group_global_id) AS functional_group_global_ids,
-        ARRAY_AGG(functional_group.name) AS functional_group_names,
-        system_user.first_name,
-        system_user.middle_name,
-        system_user.last_name,
-        replace(system_user.primary_phone, ''+256'', ''0'') as primary_phone,
-        system_user.primary_email
+        user_system_user.system_user_global_id,
+        ARRAY_AGG(user_system_user_functional_group_mapping.system_user_functional_group_mapping_global_id) AS system_user_functional_group_mapping_global_ids,
+        ARRAY_AGG(user_system_user_functional_group_mapping.functional_group_global_id) AS functional_group_global_ids,
+        ARRAY_AGG(user_functional_group.name) AS functional_group_names,
+        user_system_user.first_name,
+        user_system_user.middle_name,
+        user_system_user.last_name,
+        replace(user_system_user.primary_phone, ''+256'', ''0'') as primary_phone,
+        user_system_user.primary_email
     FROM
-        system_user,system_user_functional_group_mapping
-        LEFT JOIN functional_group ON functional_group.functional_group_global_id = system_user_functional_group_mapping.functional_group_global_id
+        user_system_user,user_system_user_functional_group_mapping
+        LEFT JOIN user_functional_group ON user_functional_group.functional_group_global_id = user_system_user_functional_group_mapping.functional_group_global_id
     WHERE
-        system_user.system_user_global_id = system_user_functional_group_mapping.system_user_global_id AND
-        system_user.is_staff = 1 AND
-        system_user_functional_group_mapping.soft_delete = 0 AND
-        functional_group.is_default = 0
+        user_system_user.system_user_global_id = user_system_user_functional_group_mapping.system_user_global_id AND
+        user_system_user.is_staff = 1 AND
+        user_system_user_functional_group_mapping.soft_delete = 0 AND
+        user_functional_group.is_default = 0
     GROUP BY
-        system_user.system_user_global_id;
+        user_system_user.system_user_global_id;
 end;
 '
 language plpgsql

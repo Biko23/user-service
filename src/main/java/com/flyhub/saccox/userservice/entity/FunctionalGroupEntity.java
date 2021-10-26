@@ -23,7 +23,7 @@ import java.util.UUID;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "functional_group")
+@Table(name = "user_functional_group")
 public class FunctionalGroupEntity {
 
     @Id

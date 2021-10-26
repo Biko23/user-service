@@ -23,7 +23,7 @@ import java.util.UUID;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "system_user")
+@Table(name = "user_system_user")
 public class SystemUserEntity {
 
     @Id

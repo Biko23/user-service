@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.flyhub.saccox.userservice.entity.SystemUserFunctionalGroupMappingEntity;
-import com.flyhub.saccox.userservice.entity.SystemUserFunctionalGroupMappingEntity;
 import com.flyhub.saccox.userservice.repository.SystemUserFunctionalGroupMappingRepository;
 import com.flyhub.saccox.userservice.visualobject.VisualObject;
 import com.github.fge.jsonpatch.JsonPatch;

@@ -3,7 +3,6 @@ package com.flyhub.saccox.userservice.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.flyhub.saccox.userservice.entity.FunctionalGroupEntity;
 import com.flyhub.saccox.userservice.entity.LoginAttemptEntity;
 import com.flyhub.saccox.userservice.repository.LoginAttemptRepository;
 import com.github.fge.jsonpatch.JsonPatch;

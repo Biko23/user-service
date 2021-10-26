@@ -21,7 +21,7 @@ import java.util.UUID;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "login_attempt")
+@Table(name = "user_login_attempt")
 public class LoginAttemptEntity {
 
     @Id

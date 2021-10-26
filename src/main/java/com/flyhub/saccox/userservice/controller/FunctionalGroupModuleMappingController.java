@@ -3,7 +3,6 @@ package com.flyhub.saccox.userservice.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.flyhub.library.apiresponse.ApiResponseFormat;
 import com.flyhub.saccox.userservice.entity.FunctionalGroupModuleMappingEntity;
-import com.flyhub.saccox.userservice.entity.FunctionalGroupModuleMappingProcedureEntity;
 import com.flyhub.saccox.userservice.service.FunctionalGroupModuleMappingService;
 import com.github.fge.jsonpatch.JsonPatch;
 import com.github.fge.jsonpatch.JsonPatchException;
@@ -17,9 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @RestController

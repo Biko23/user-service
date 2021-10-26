@@ -8,7 +8,7 @@ import java.util.UUID;
 
 @Entity
 @Data
-public class SystemUserFunctionalGroupsProcedureEntity{
+public class SystemUserFunctionalGroupsProcedureEntity {
 
 	@Id
 	private UUID system_user_global_id;
