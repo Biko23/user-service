@@ -1,4 +1,4 @@
-create or replace function UserUserLoginProcedure(username text, pass text)
+create or replace function user_user_login_procedure(username text, pass text)
 returns 
 table(
     system_user_global_id UUID,

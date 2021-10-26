@@ -10,6 +10,6 @@ import java.util.UUID;
 
 @Repository
 public interface FunctionalGroupModuleMappingProcedureRepository extends JpaRepository<FunctionalGroupModuleMappingProcedureEntity, UUID> {
-	@Query(value="select * from UserFunctionalGroupModuleMappingProcedure()", nativeQuery=true)
+	@Query(value="select * from user_functional_group_module_mapping_procedure()", nativeQuery=true)
     List<FunctionalGroupModuleMappingProcedureEntity> functionalGroupModuleMappingProcedure();
 }

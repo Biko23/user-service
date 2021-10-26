@@ -1,4 +1,4 @@
-create or replace function UserTenantOnlineMembersProcedure()
+create or replace function user_tenant_online_members_procedure()
 returns
 table(
     system_user_global_id uuid,
