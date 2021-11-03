@@ -10,6 +10,6 @@ import java.util.UUID;
 
 @Repository
 public interface TenantOnlineMembersProcedureRepository extends JpaRepository<TenantOnlineMembersProcedureEntity, UUID> {
-	@Query(value="select * from UserTenantOnlineMembersProcedure()", nativeQuery=true)
+	@Query(value="select * from user_tenant_online_members_procedure()", nativeQuery=true)
     List<TenantOnlineMembersProcedureEntity> tenantOnlineMembersProcedure();
 }

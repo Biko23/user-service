@@ -1,4 +1,4 @@
-create or replace function UserSystemUserFunctionalGroupsProcedure()
+create or replace function user_system_user_functional_groups_procedure()
 returns
 table(
     system_user_global_id uuid,
