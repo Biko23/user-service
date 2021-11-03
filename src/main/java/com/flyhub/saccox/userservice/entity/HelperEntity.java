@@ -10,6 +10,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 public class HelperEntity {
+
     @JsonProperty("functional_group_global_id")
     private UUID functionalGroupGlobalId;
 
@@ -18,4 +19,5 @@ public class HelperEntity {
 
     @JsonProperty("member_global_id")
     private UUID memberGlobalId;
+
 }

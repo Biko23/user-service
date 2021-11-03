@@ -29,6 +29,7 @@ public class ModuleEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @JsonProperty("module_global_id")
     @ApiModelProperty(notes = "Unique identifier of a module entity. Auto generated.", example = "1")
+    @Column(columnDefinition = "uuid DEFAULT uuid_generate_v4()")
     private UUID moduleGlobalId;
 
     @JsonProperty("name")
@@ -85,4 +86,5 @@ public class ModuleEntity {
     @ApiModelProperty(notes = "Hard delete.", example = "1 | 0")
     @Column(columnDefinition = "integer default 0")
     private int hardDelete;
+
 }
