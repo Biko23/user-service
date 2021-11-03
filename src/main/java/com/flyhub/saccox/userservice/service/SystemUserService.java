@@ -221,7 +221,11 @@ public class SystemUserService {
             systemUserEntity.setIsSystemAdmin(1);
             systemUserEntity.setEverLoggedIn(0);
 
+            System.out.println("before saving user");
+            System.out.println(systemUserEntity);
             SystemUserEntity systemUser = systemUserRepository.save(systemUserEntity);
+            System.out.println("saved user");
+            System.out.println(systemUser);
             //posting to auth
             ResponseEntity<VisualObject> systemUserResponse = restTemplate.postForEntity("http://localhost:9100/api/v1/auth/system-users", systemUser, VisualObject.class);
 

@@ -16,6 +16,8 @@ public class FunctionalGroupModuleMappingProcedureEntity {
 
 	private String functional_group_description;
 
+	private String supervised_by;
+
 	private UUID functional_group_global_id;
 
 	private String module_name;

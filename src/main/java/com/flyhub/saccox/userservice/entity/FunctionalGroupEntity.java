@@ -62,6 +62,19 @@ public class FunctionalGroupEntity {
     @Column(columnDefinition = "integer default 1")
     private int isActive;
 
+    @JsonProperty("has_supervisor")
+    @ApiModelProperty(notes = "This for if a functional group has a supervisor", example = "1 | 0")
+    @Column(columnDefinition = "integer default 0")
+    private int hasSupervisor;
+
+    @JsonProperty("supervisor_group_global_id")
+    @ApiModelProperty(notes = "The functional group id that supervises this group", example = "1")
+    private UUID supervisorGroupGlobalId;
+
+    @JsonProperty("supervisor_group_name")
+    @ApiModelProperty(notes = "This is the supervisor functional group name", example = "Accountant | Manager")
+    private String supervisorGroupName;
+
     @JsonProperty("created_by")
     @ApiModelProperty(notes = "User who created this record.", example = "1")
     private UUID createdBy;

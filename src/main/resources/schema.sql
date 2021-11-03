@@ -27,9 +27,12 @@ CREATE TABLE public.user_functional_group
     hard_delete integer DEFAULT 0,
     is_default integer DEFAULT 0,
     is_active integer DEFAULT 1,
+    has_supervisor integer DEFAULT 0,
     modified_by uuid,
     name character varying(255) COLLATE pg_catalog."default",
     soft_delete integer DEFAULT 0,
+    supervisor_group_global_id uuid,
+    supervisor_group_name character varying(255) COLLATE pg_catalog."default",
     tenant_global_id uuid,
     updated_on timestamp without time zone DEFAULT CURRENT_TIMESTAMP(0),
     CONSTRAINT user_functional_group_pkey PRIMARY KEY (functional_group_global_id)
