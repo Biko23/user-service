@@ -1,0 +1,5 @@
+CREATE TRIGGER user_system_user_tenant_id_update_trigger
+AFTER INSERT
+ON tenant
+FOR EACH ROW
+EXECUTE PROCEDURE user_system_user_tenant_id_update_trigger_func();

@@ -1,0 +1,11 @@
+CREATE OR REPLACE FUNCTION user_system_user_tenant_id_update_trigger_func()
+RETURNS trigger AS
+$$
+BEGIN
+	UPDATE user_system_user
+	SET tenant_global_id = NEW.tenant_global_id
+	WHERE system_user_global_id = NEW.created_by;
+RETURN NEW;
+END;
+$$
+LANGUAGE 'plpgsql';

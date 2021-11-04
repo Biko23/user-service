@@ -1,0 +1,23 @@
+CREATE OR REPLACE FUNCTION user_functional_group_supervisor_id_update_trigger_func()
+RETURNS trigger AS
+$$
+BEGIN
+	UPDATE
+		user_functional_group
+	SET
+		supervisor_group_global_id = (
+			SELECT
+				functional_group_global_id
+			FROM
+				user_functional_group
+			WHERE
+				tenant_global_id = NEW.tenant_global_id AND
+				name = NEW.supervisor_group_name
+		)
+	WHERE
+		tenant_global_id = NEW.tenant_global_id AND
+		supervisor_group_name = NEW.supervisor_group_name;
+RETURN NEW;
+END;
+$$
+LANGUAGE 'plpgsql';

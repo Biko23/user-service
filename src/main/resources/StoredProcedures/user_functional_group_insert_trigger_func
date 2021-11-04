@@ -42,6 +42,7 @@ BEGIN
 	) VALUES (
 		NEW.tenant_global_id,'Cashier','This is the sacco cashiers group',1,'7fe809ca-f26f-46c2-96a5-543c1548bf28','Accountant',0,1
 	);
+RETURN NEW;
 END;
 $$
 LANGUAGE 'plpgsql';
