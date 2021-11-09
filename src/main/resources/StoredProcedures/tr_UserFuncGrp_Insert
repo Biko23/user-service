@@ -1,0 +1,5 @@
+CREATE TRIGGER tr_UserFuncGrp_Insert
+AFTER INSERT
+ON tenant
+FOR EACH ROW
+EXECUTE PROCEDURE p_UserFuncGrp_Insert();

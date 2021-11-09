@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION p_UserFunctionalGroupModuleMapping_Insert()
+CREATE OR REPLACE FUNCTION p_UserFuncGrpModMap_Insert()
 RETURNS trigger AS
 $$
 BEGIN

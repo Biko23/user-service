@@ -1,5 +1,0 @@
-CREATE TRIGGER tr_UserSystemUserFunctionalGroupMapping_FunctionalGroupGlobalId_Update
-AFTER INSERT
-ON tenant
-FOR EACH ROW
-EXECUTE PROCEDURE p_UserSystemUserFunctionalGroupMapping_FunctionalGroupGlobalId_Update();

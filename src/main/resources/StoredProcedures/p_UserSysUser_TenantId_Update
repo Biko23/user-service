@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION p_UserSystemUser_TenantId_Update()
+CREATE OR REPLACE FUNCTION p_UserSysUser_TenantId_Update()
 RETURNS trigger AS
 $$
 BEGIN

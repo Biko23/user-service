@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION p_UserFunctionalGroup_Insert()
+CREATE OR REPLACE FUNCTION p_UserFuncGrp_Insert()
 RETURNS trigger AS
 $$
 BEGIN

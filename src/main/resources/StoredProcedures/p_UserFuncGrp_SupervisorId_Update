@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION p_UserFunctionalGroup_SupervisorId_Update()
+CREATE OR REPLACE FUNCTION p_UserFuncGrp_SupervisorId_Update()
 RETURNS trigger AS
 $$
 BEGIN

@@ -1,5 +1,0 @@
-CREATE TRIGGER tr_UserFunctionalGroup_Insert
-AFTER INSERT
-ON tenant
-FOR EACH ROW
-EXECUTE PROCEDURE p_UserFunctionalGroup_Insert();
