@@ -1,5 +1,0 @@
-CREATE TRIGGER user_functional_group_supervisor_id_update_trigger
-AFTER INSERT
-ON user_functional_group
-FOR EACH ROW
-EXECUTE PROCEDURE user_functional_group_supervisor_id_update_trigger_func();

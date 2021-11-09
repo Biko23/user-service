@@ -1,0 +1,5 @@
+CREATE TRIGGER tr_UserFunctionalGroup_SupervisorId_Update
+AFTER INSERT
+ON user_functional_group
+FOR EACH ROW
+EXECUTE PROCEDURE p_UserFunctionalGroup_SupervisorId_Update();

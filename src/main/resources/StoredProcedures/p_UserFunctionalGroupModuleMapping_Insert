@@ -1,49 +1,28 @@
-CREATE OR REPLACE FUNCTION user_functional_group_insert_trigger_func()
+CREATE OR REPLACE FUNCTION p_UserFunctionalGroupModuleMapping_Insert()
 RETURNS trigger AS
 $$
 BEGIN
-	IF NEW.functional_group_name IS 'Member' THEN
+	IF NEW.name = 'Member' THEN
 		INSERT INTO user_functional_group_module_mapping (
 			name,description,functional_group_name,functional_group_global_id,module_name,module_global_id,
 			can_create,can_email,can_hard_delete,can_print,can_retrieve,can_search,can_sms,can_soft_delete,can_update,is_active
 		) VALUES (
 			'Member Mapping','Member mapping description','Member',NEW.functional_group_global_id,'Tenant','e844e561-b746-4735-b482-32f0c59507c0',
 			'0','0','0','0','0','0','0','0','0',1
-		);
-		INSERT INTO user_functional_group_module_mapping (
-			name,description,functional_group_name,functional_group_global_id,module_name,module_global_id,
-			can_create,can_email,can_hard_delete,can_print,can_retrieve,can_search,can_sms,can_soft_delete,can_update,is_active
-		)
-		VALUES (
+		), (
 			'Member Mapping','Member mapping description','Member',NEW.functional_group_global_id,'Tenant Member','f96411b0-9684-402e-8f25-fd85f6f29ff1',
 			'0','0','0','0','0','0','0','0','1',1
-		);
-		INSERT INTO user_functional_group_module_mapping (
-			name,description,functional_group_name,functional_group_global_id,module_name,module_global_id,
-			can_create,can_email,can_hard_delete,can_print,can_retrieve,can_search,can_sms,can_soft_delete,can_update,is_active
-		)
-		VALUES (
+		),(
 			'Member Mapping','Member mapping description','Member',NEW.functional_group_global_id,'Tenant Staff','e9645cca-cc8e-4db2-b678-3febf1cdc915',
 			'0','0','0','0','0','0','0','0','0',1
-		);
-		INSERT INTO user_functional_group_module_mapping (
-			name,description,functional_group_name,functional_group_global_id,module_name,module_global_id,
-			can_create,can_email,can_hard_delete,can_print,can_retrieve,can_search,can_sms,can_soft_delete,can_update,is_active
-		)
-		VALUES (
+		),(
 			'Member Mapping','Member mapping description','Member',NEW.functional_group_global_id,'Loan','409af2d8-a05a-4a77-8745-5943169626c4',
 			'1','0','0','0','0','0','0','0','1',1
-		);
-		INSERT INTO user_functional_group_module_mapping (
-			name,description,functional_group_name,functional_group_global_id,module_name,module_global_id,
-			can_create,can_email,can_hard_delete,can_print,can_retrieve,can_search,can_sms,can_soft_delete,can_update,is_active
-		)
-		VALUES (
+		),(
 			'Member Mapping','Member mapping description','Member',NEW.functional_group_global_id,'Transactions','ff82ab91-ca87-4307-85b5-466ad563b8fc',
 			'1','0','0','0','1','0','0','0','0',1
 		);
-    END IF;
-	IF NEW.functional_group_name IS 'Internal Admin' THEN
+	ELSEIF NEW.name = 'Internal Admin' THEN
 		INSERT INTO user_functional_group_module_mapping (
 			name,description,functional_group_name,functional_group_global_id,module_name,module_global_id,
 			can_create,can_email,can_hard_delete,can_print,can_retrieve,can_search,can_sms,can_soft_delete,can_update,is_active
@@ -51,40 +30,20 @@ BEGIN
 		VALUES (
 			'Internal Admin Mapping','Internal Admin mapping description','Internal Admin',NEW.functional_group_global_id,'Tenant','e844e561-b746-4735-b482-32f0c59507c0',
 			'1','1','1','1','1','1','1','1','1',1
-		);
-		INSERT INTO user_functional_group_module_mapping (
-			name,description,functional_group_name,functional_group_global_id,module_name,module_global_id,
-			can_create,can_email,can_hard_delete,can_print,can_retrieve,can_search,can_sms,can_soft_delete,can_update,is_active
-		)
-		VALUES (
+		),(
 			'Internal Admin Mapping','Internal Admin mapping description','Internal Admin',NEW.functional_group_global_id,'Tenant Member','f96411b0-9684-402e-8f25-fd85f6f29ff1',
 			'1','1','1','1','1','1','1','1','1',1
-		);
-		INSERT INTO user_functional_group_module_mapping (
-			name,description,functional_group_name,functional_group_global_id,module_name,module_global_id,
-			can_create,can_email,can_hard_delete,can_print,can_retrieve,can_search,can_sms,can_soft_delete,can_update,is_active
-		)
-		VALUES (
+		),(
 			'Internal Admin Mapping','Internal Admin mapping description','Internal Admin',NEW.functional_group_global_id,'Tenant Staff','e9645cca-cc8e-4db2-b678-3febf1cdc915',
 			'1','1','1','1','1','1','1','1','1',1
-		);
-		INSERT INTO user_functional_group_module_mapping (
-			name,description,functional_group_name,functional_group_global_id,module_name,module_global_id,
-			can_create,can_email,can_hard_delete,can_print,can_retrieve,can_search,can_sms,can_soft_delete,can_update,is_active
-		)
-		VALUES (
+		),(
 			'Internal Admin Mapping','Internal Admin mapping description','Internal Admin',NEW.functional_group_global_id,'Loan','409af2d8-a05a-4a77-8745-5943169626c4',
 			'1','1','1','1','1','1','1','1','1',1
-		);
-		INSERT INTO user_functional_group_module_mapping (
-			name,description,functional_group_name,functional_group_global_id,module_name,module_global_id,
-			can_create,can_email,can_hard_delete,can_print,can_retrieve,can_search,can_sms,can_soft_delete,can_update,is_active)
-		VALUES (
+		),(
 			'Internal Admin Mapping','Internal Admin mapping description','Internal Admin',NEW.functional_group_global_id,'Transactions','ff82ab91-ca87-4307-85b5-466ad563b8fc',
 			'1','1','1','1','1','1','1','1','1',1
 		);
-	END IF;
-	IF NEW.functional_group_name IS 'Annual General Assembly' THEN
+	ELSEIF NEW.name = 'Annual General Assembly' THEN
 		INSERT INTO user_functional_group_module_mapping (
 			name,description,functional_group_name,functional_group_global_id,module_name,module_global_id,
 			can_create,can_email,can_hard_delete,can_print,can_retrieve,can_search,can_sms,can_soft_delete,can_update,is_active
@@ -92,41 +51,20 @@ BEGIN
 		VALUES (
 			'Annual General Assembly Mapping','Annual General Assembly mapping description','Annual General Assembly',NEW.functional_group_global_id,'Tenant','e844e561-b746-4735-b482-32f0c59507c0',
 			'0','0','0','0','0','0','0','0','0',1
-		);
-		INSERT INTO user_functional_group_module_mapping (
-			name,description,functional_group_name,functional_group_global_id,module_name,module_global_id,
-			can_create,can_email,can_hard_delete,can_print,can_retrieve,can_search,can_sms,can_soft_delete,can_update,is_active
-		)
-		VALUES (
+		),(
 			'Annual General Assembly Mapping','Annual General Assembly mapping description','Annual General Assembly',NEW.functional_group_global_id,'Tenant Member','f96411b0-9684-402e-8f25-fd85f6f29ff1',
 			'0','0','0','1','1','1','0','0','0',1
-		);
-		INSERT INTO user_functional_group_module_mapping (
-			name,description,functional_group_name,functional_group_global_id,module_name,module_global_id,
-			can_create,can_email,can_hard_delete,can_print,can_retrieve,can_search,can_sms,can_soft_delete,can_update,is_active
-		)
-		VALUES (
+		),(
 			'Annual General Assembly Mapping','Annual General Assembly mapping description','Annual General Assembly',NEW.functional_group_global_id,'Tenant Staff','e9645cca-cc8e-4db2-b678-3febf1cdc915',
 			'0','0','0','1','1','1','0','0','0',1
-		);
-		INSERT INTO user_functional_group_module_mapping (
-			name,description,functional_group_name,functional_group_global_id,module_name,module_global_id,
-			can_create,can_email,can_hard_delete,can_print,can_retrieve,can_search,can_sms,can_soft_delete,can_update,is_active
-		)
-		VALUES (
+		),(
 			'Annual General Assembly Mapping','Annual General Assembly mapping description','Annual General Assembly',NEW.functional_group_global_id,'Loan','409af2d8-a05a-4a77-8745-5943169626c4',
 			'0','0','0','1','1','1','0','0','0',1
-		);
-		INSERT INTO user_functional_group_module_mapping (
-			name,description,functional_group_name,functional_group_global_id,module_name,module_global_id,
-			can_create,can_email,can_hard_delete,can_print,can_retrieve,can_search,can_sms,can_soft_delete,can_update,is_active
-		)
-		VALUES (
+		),(
 			'Annual General Assembly Mapping','Annual General Assembly mapping description','Annual General Assembly',NEW.functional_group_global_id,'Transactions','ff82ab91-ca87-4307-85b5-466ad563b8fc',
 			'0','0','0','1','1','1','0','0','0',1
 		);
-	END IF;
-	IF NEW.functional_group_name IS 'Audit and Supervision Committee' THEN
+	ELSEIF NEW.name = 'Audit and Supervision Committee' THEN
 		INSERT INTO user_functional_group_module_mapping (
 			name,description,functional_group_name,functional_group_global_id,module_name,module_global_id,
 			can_create,can_email,can_hard_delete,can_print,can_retrieve,can_search,can_sms,can_soft_delete,can_update,is_active
@@ -134,41 +72,20 @@ BEGIN
 		VALUES (
 			'Audit and Supervision Committee Mapping','Audit and Supervision Committee mapping description','Audit and Supervision Committee',NEW.functional_group_global_id,'Tenant','e844e561-b746-4735-b482-32f0c59507c0',
 			'0','0','0','1','1','1','0','0','0',1
-		);
-		INSERT INTO user_functional_group_module_mapping (
-			name,description,functional_group_name,functional_group_global_id,module_name,module_global_id,
-			can_create,can_email,can_hard_delete,can_print,can_retrieve,can_search,can_sms,can_soft_delete,can_update,is_active
-		)
-		VALUES (
+		),(
 			'Audit and Supervision Committee Mapping','Audit and Supervision Committee mapping description','Audit and Supervision Committee',NEW.functional_group_global_id,'Tenant Member','f96411b0-9684-402e-8f25-fd85f6f29ff1',
 			'0','0','0','1','1','1','0','0','0',1
-		);
-		INSERT INTO user_functional_group_module_mapping (
-			name,description,functional_group_name,functional_group_global_id,module_name,module_global_id,
-			can_create,can_email,can_hard_delete,can_print,can_retrieve,can_search,can_sms,can_soft_delete,can_update,is_active
-		)
-		VALUES (
+		),(
 			'Audit and Supervision Committee Mapping','Audit and Supervision Committee mapping description','Audit and Supervision Committee',NEW.functional_group_global_id,'Tenant Staff','e9645cca-cc8e-4db2-b678-3febf1cdc915',
 			'0','0','0','1','1','1','0','0','0',1
-		);
-		INSERT INTO user_functional_group_module_mapping (
-			name,description,functional_group_name,functional_group_global_id,module_name,module_global_id,
-			can_create,can_email,can_hard_delete,can_print,can_retrieve,can_search,can_sms,can_soft_delete,can_update,is_active
-		)
-		VALUES (
+		),(
 			'Audit and Supervision Committee Mapping','Audit and Supervision Committee mapping description','Audit and Supervision Committee',NEW.functional_group_global_id,'Loan','409af2d8-a05a-4a77-8745-5943169626c4',
 			'0','0','0','1','1','1','0','0','0',1
-		);
-		INSERT INTO user_functional_group_module_mapping (
-			name,description,functional_group_name,functional_group_global_id,module_name,module_global_id,
-			can_create,can_email,can_hard_delete,can_print,can_retrieve,can_search,can_sms,can_soft_delete,can_update,is_active
-		)
-		VALUES (
+		),(
 			'Audit and Supervision Committee Mapping','Audit and Supervision Committee mapping description','Audit and Supervision Committee',NEW.functional_group_global_id,'Transactions','ff82ab91-ca87-4307-85b5-466ad563b8fc',
 			'0','0','0','1','1','1','0','0','0',1
 		);
-	END IF;
-	IF NEW.functional_group_name IS 'Finance Committee' THEN
+	ELSEIF NEW.name = 'Finance Committee' THEN
 		INSERT INTO user_functional_group_module_mapping (
 			name,description,functional_group_name,functional_group_global_id,module_name,module_global_id,
 			can_create,can_email,can_hard_delete,can_print,can_retrieve,can_search,can_sms,can_soft_delete,can_update,is_active
@@ -176,41 +93,20 @@ BEGIN
 		VALUES (
 			'Finance Committee Mapping','Finance Committee mapping description','Finance Committee',NEW.functional_group_global_id,'Tenant','e844e561-b746-4735-b482-32f0c59507c0',
 			'0','0','0','1','1','1','0','0','0',1
-		);
-		INSERT INTO user_functional_group_module_mapping (
-			name,description,functional_group_name,functional_group_global_id,module_name,module_global_id,
-			can_create,can_email,can_hard_delete,can_print,can_retrieve,can_search,can_sms,can_soft_delete,can_update,is_active
-		)
-		VALUES (
+		),(
 			'Finance Committee Mapping','Finance Committee mapping description','Finance Committee',NEW.functional_group_global_id,'Tenant Member','f96411b0-9684-402e-8f25-fd85f6f29ff1',
 			'0','0','0','1','1','1','0','0','0',1
-		);
-		INSERT INTO user_functional_group_module_mapping (
-			name,description,functional_group_name,functional_group_global_id,module_name,module_global_id,
-			can_create,can_email,can_hard_delete,can_print,can_retrieve,can_search,can_sms,can_soft_delete,can_update,is_active
-		)
-		VALUES (
+		),(
 			'Finance Committee Mapping','Finance Committee mapping description','Finance Committee',NEW.functional_group_global_id,'Tenant Staff','e9645cca-cc8e-4db2-b678-3febf1cdc915',
 			'0','0','0','1','1','1','0','0','0',1
-		);
-		INSERT INTO user_functional_group_module_mapping (
-			name,description,functional_group_name,functional_group_global_id,module_name,module_global_id,
-			can_create,can_email,can_hard_delete,can_print,can_retrieve,can_search,can_sms,can_soft_delete,can_update,is_active
-		)
-		VALUES (
+		),(
 			'Finance Committee Mapping','Finance Committee mapping description','Finance Committee',NEW.functional_group_global_id,'Loan','409af2d8-a05a-4a77-8745-5943169626c4',
 			'0','0','0','1','1','1','0','0','0',1
-		);
-		INSERT INTO user_functional_group_module_mapping (
-			name,description,functional_group_name,functional_group_global_id,module_name,module_global_id,
-			can_create,can_email,can_hard_delete,can_print,can_retrieve,can_search,can_sms,can_soft_delete,can_update,is_active
-		)
-		VALUES (
+		),(
 			'Finance Committee Mapping','Finance Committee mapping description','Finance Committee',NEW.functional_group_global_id,'Transactions','ff82ab91-ca87-4307-85b5-466ad563b8fc',
 			'0','0','0','1','1','1','0','0','0',1
 		);
-	END IF;
-	IF NEW.functional_group_name IS 'Manager' THEN
+	ELSEIF NEW.name = 'Manager' THEN
 		INSERT INTO user_functional_group_module_mapping (
 			name,description,functional_group_name,functional_group_global_id,module_name,module_global_id,
 			can_create,can_email,can_hard_delete,can_print,can_retrieve,can_search,can_sms,can_soft_delete,can_update,is_active
@@ -218,41 +114,20 @@ BEGIN
 		VALUES (
 			'Manager Mapping','Manager mapping description','Manager',NEW.functional_group_global_id,'Tenant','e844e561-b746-4735-b482-32f0c59507c0',
 			'0','0','0','1','1','1','0','0','0',1
-		);
-		INSERT INTO user_functional_group_module_mapping (
-			name,description,functional_group_name,functional_group_global_id,module_name,module_global_id,
-			can_create,can_email,can_hard_delete,can_print,can_retrieve,can_search,can_sms,can_soft_delete,can_update,is_active
-		)
-		VALUES (
+		),(
 			'Manager Mapping','Manager mapping description','Manager',NEW.functional_group_global_id,'Tenant Member','f96411b0-9684-402e-8f25-fd85f6f29ff1',
 			'1','1','0','1','1','1','1','1','1',1
-		);
-		INSERT INTO user_functional_group_module_mapping (
-			name,description,functional_group_name,functional_group_global_id,module_name,module_global_id,
-			can_create,can_email,can_hard_delete,can_print,can_retrieve,can_search,can_sms,can_soft_delete,can_update,is_active
-		)
-		VALUES (
+		),(
 			'Manager Mapping','Manager mapping description','Manager',NEW.functional_group_global_id,'Tenant Staff','e9645cca-cc8e-4db2-b678-3febf1cdc915',
 			'1','1','0','1','1','1','1','1','1',1
-		);
-		INSERT INTO user_functional_group_module_mapping (
-			name,description,functional_group_name,functional_group_global_id,module_name,module_global_id,
-			can_create,can_email,can_hard_delete,can_print,can_retrieve,can_search,can_sms,can_soft_delete,can_update,is_active
-		)
-		VALUES (
+		),(
 			'Manager Mapping','Manager mapping description','Manager',NEW.functional_group_global_id,'Loan','409af2d8-a05a-4a77-8745-5943169626c4',
 			'0','1','0','1','1','1','1','1','1',1
-		);
-		INSERT INTO user_functional_group_module_mapping (
-			name,description,functional_group_name,functional_group_global_id,module_name,module_global_id,
-			can_create,can_email,can_hard_delete,can_print,can_retrieve,can_search,can_sms,can_soft_delete,can_update,is_active
-		)
-		VALUES (
+		),(
 			'Manager Mapping','Manager mapping description','Manager',NEW.functional_group_global_id,'Transactions','ff82ab91-ca87-4307-85b5-466ad563b8fc',
 			'0','1','0','1','1','1','1','1','1',1
 		);
-	END IF;
-	IF NEW.functional_group_name IS 'Accountant' THEN
+	ELSEIF NEW.name = 'Accountant' THEN
 		INSERT INTO user_functional_group_module_mapping (
 			name,description,functional_group_name,functional_group_global_id,module_name,module_global_id,
 			can_create,can_email,can_hard_delete,can_print,can_retrieve,can_search,can_sms,can_soft_delete,can_update,is_active
@@ -260,41 +135,20 @@ BEGIN
 		VALUES (
 			'Accountant Mapping','Accountant mapping description','Accountant',NEW.functional_group_global_id,'Tenant','e844e561-b746-4735-b482-32f0c59507c0',
 			'0','0','0','0','0','0','0','0','0',1
-		);
-		INSERT INTO user_functional_group_module_mapping (
-			name,description,functional_group_name,functional_group_global_id,module_name,module_global_id,
-			can_create,can_email,can_hard_delete,can_print,can_retrieve,can_search,can_sms,can_soft_delete,can_update,is_active
-		)
-		VALUES (
+		),(
 			'Accountant Mapping','Accountant mapping description','Accountant',NEW.functional_group_global_id,'Tenant Member','f96411b0-9684-402e-8f25-fd85f6f29ff1',
 			'0','0','0','1','1','1','0','0','0',1
-		);
-		INSERT INTO user_functional_group_module_mapping (
-			name,description,functional_group_name,functional_group_global_id,module_name,module_global_id,
-			can_create,can_email,can_hard_delete,can_print,can_retrieve,can_search,can_sms,can_soft_delete,can_update,is_active
-		)
-		VALUES (
+		),(
 			'Accountant Mapping','Accountant mapping description','Accountant',NEW.functional_group_global_id,'Tenant Staff','e9645cca-cc8e-4db2-b678-3febf1cdc915',
 			'0','0','0','1','1','1','0','0','0',1
-		);
-		INSERT INTO user_functional_group_module_mapping (
-			name,description,functional_group_name,functional_group_global_id,module_name,module_global_id,
-			can_create,can_email,can_hard_delete,can_print,can_retrieve,can_search,can_sms,can_soft_delete,can_update,is_active
-		)
-		VALUES (
+		),(
 			'Accountant Mapping','Accountant mapping description','Accountant',NEW.functional_group_global_id,'Loan','409af2d8-a05a-4a77-8745-5943169626c4',
 			'0','0','0','1','1','1','0','0','0',1
-		);
-		INSERT INTO user_functional_group_module_mapping (
-			name,description,functional_group_name,functional_group_global_id,module_name,module_global_id,
-			can_create,can_email,can_hard_delete,can_print,can_retrieve,can_search,can_sms,can_soft_delete,can_update,is_active
-		)
-		VALUES (
+		),(
 			'Accountant Mapping','Accountant mapping description','Accountant',NEW.functional_group_global_id,'Transactions','ff82ab91-ca87-4307-85b5-466ad563b8fc',
 			'0','0','0','1','1','1','0','0','0',1
 		);
-	END IF;
-	IF NEW.functional_group_name IS 'Cashier' THEN
+	ELSEIF NEW.name = 'Cashier' THEN
 		INSERT INTO user_functional_group_module_mapping (
 			name,description,functional_group_name,functional_group_global_id,module_name,module_global_id,
 			can_create,can_email,can_hard_delete,can_print,can_retrieve,can_search,can_sms,can_soft_delete,can_update,is_active
@@ -302,38 +156,20 @@ BEGIN
 		VALUES (
 			'Cashier Mapping','Cashier mapping description','Cashier',NEW.functional_group_global_id,'Tenant','e844e561-b746-4735-b482-32f0c59507c0',
 			'0','0','0','1','1','1','0','0','0',1
-		);
-		INSERT INTO user_functional_group_module_mapping (
-			name,description,functional_group_name,functional_group_global_id,module_name,module_global_id,
-			can_create,can_email,can_hard_delete,can_print,can_retrieve,can_search,can_sms,can_soft_delete,can_update,is_active
-		)
-		VALUES (
+		),(
 			'Cashier Mapping','Cashier mapping description','Cashier',NEW.functional_group_global_id,'Tenant Member','f96411b0-9684-402e-8f25-fd85f6f29ff1',
 			'0','0','0','1','1','1','0','0','0',1
-		);
-		INSERT INTO user_functional_group_module_mapping (
-			name,description,functional_group_name,functional_group_global_id,module_name,module_global_id,
-			can_create,can_email,can_hard_delete,can_print,can_retrieve,can_search,can_sms,can_soft_delete,can_update,is_active
-		)
-		VALUES (
+		),(
 			'Cashier Mapping','Cashier mapping description','Cashier',NEW.functional_group_global_id,'Tenant Staff','e9645cca-cc8e-4db2-b678-3febf1cdc915',
 			'0','0','0','1','1','1','0','0','0',1
-		);
-		INSERT INTO user_functional_group_module_mapping (
-			name,description,functional_group_name,functional_group_global_id,module_name,module_global_id,
-			can_create,can_email,can_hard_delete,can_print,can_retrieve,can_search,can_sms,can_soft_delete,can_update,is_active)
-		VALUES (
+		),(
 			'Cashier Mapping','Cashier mapping description','Cashier',NEW.functional_group_global_id,'Loan','409af2d8-a05a-4a77-8745-5943169626c4',
 			'0','0','0','1','1','1','0','0','0',1
-		);
-		INSERT INTO user_functional_group_module_mapping (
-			name,description,functional_group_name,functional_group_global_id,module_name,module_global_id,
-			can_create,can_email,can_hard_delete,can_print,can_retrieve,can_search,can_sms,can_soft_delete,can_update,is_active
-		)
-		VALUES (
+		),(
 			'Cashier Mapping','Cashier mapping description','Cashier',NEW.functional_group_global_id,'Transactions','ff82ab91-ca87-4307-85b5-466ad563b8fc',
 			'1','1','0','1','1','1','1','1','1',1
 		);
+	ELSE
 	END IF;
 RETURN NEW;
 END;

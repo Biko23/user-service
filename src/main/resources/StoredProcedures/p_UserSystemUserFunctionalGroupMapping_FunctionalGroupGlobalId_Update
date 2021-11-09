@@ -1,0 +1,23 @@
+CREATE OR REPLACE FUNCTION p_UserSystemUserFunctionalGroupMapping_FunctionalGroupGlobalId_Update()
+RETURNS trigger AS
+$$
+BEGIN
+	UPDATE
+	    user_system_user_functional_group_mapping
+	SET
+	    functional_group_global_id = (
+            SELECT
+                functional_group_global_id
+            FROM
+                user_functional_group
+            WHERE
+                tenant_global_id = NEW.tenant_global_id AND
+                name = 'Internal Admin'
+        )
+	WHERE
+	    system_user_global_id = NEW.created_by AND
+	    functional_group_global_id = 'd5b56d76-cae5-4f91-95c6-e974a2e55049';
+RETURN NEW;
+END;
+$$
+LANGUAGE 'plpgsql';

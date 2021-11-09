@@ -1,0 +1,5 @@
+CREATE TRIGGER tr_UserFunctionalGroupModuleMapping_Insert
+AFTER INSERT
+ON user_functional_group
+FOR EACH ROW
+EXECUTE PROCEDURE p_UserFunctionalGroupModuleMapping_Insert();
