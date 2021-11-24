@@ -51,6 +51,7 @@ public class SystemUserController {
 
     @PostMapping("/save-user")
     public ResponseEntity<?> saveSystemUser(@Valid @RequestBody SystemUserEntity systemUserEntity, Errors errors) throws NoSuchAlgorithmException, InvalidKeySpecException {
+        System.out.println(systemUserEntity);
         log.info("Inside saveSystemUser method of SystemUserController");
         if (errors.hasErrors()) {
             return new ResponseEntity<>(new ApiResponseFormat(false, null, "Invalid Values passed for the fields", systemUserService.handleValidationExceptions(errors)), HttpStatus.BAD_REQUEST);

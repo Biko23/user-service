@@ -205,8 +205,9 @@ public class SystemUserService {
             systemUserEntity.setEverLoggedIn(0);
 
             SystemUserEntity systemUser = systemUserRepository.save(systemUserEntity);
+            //posting to auth
             ResponseEntity<VisualObject> systemUserResponse = restTemplate.postForEntity("http://localhost:9100/api/v1/auth/system-users", systemUser, VisualObject.class);
-
+            //get the admin functional group
             FunctionalGroupEntity adminFunctionalGroup = functionalGroupService.findInternalAdminFunctionalGroup();
 
             SystemUserFunctionalGroupMappingEntity systemUserFunctionalGroupMapping = new SystemUserFunctionalGroupMappingEntity();
