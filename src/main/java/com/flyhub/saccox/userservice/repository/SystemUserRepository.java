@@ -11,11 +11,16 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface SystemUserRepository extends JpaRepository<SystemUserEntity, UUID> {
-    SystemUserEntity findBySystemUserGlobalId(UUID systemUserGlobalId);
-    SystemUserEntity findByPrimaryPhoneOrSecondaryPhone(String primaryPhone, String secondaryPhone);
-    SystemUserEntity findByPrimaryEmailOrSecondaryEmail(String primaryEmail, String secondaryEmail);
-    SystemUserEntity findByMemberGlobalId(UUID memberGlobalId);
+    @Query(value = "SELECT * FROM user_system_user s WHERE s.tenant_global_id = :tenantGlobalId AND s.system_user_global_id = :systemUserGlobalId", nativeQuery = true)
+    SystemUserEntity findBySystemUserGlobalId(UUID tenantGlobalId, UUID systemUserGlobalId);
+
+    @Query(value = "SELECT * FROM user_system_user s WHERE s.tenant_global_id = :tenantGlobalId AND s.member_global_id = :memberGlobalId", nativeQuery = true)
+    SystemUserEntity findByMemberGlobalId(UUID tenantGlobalId, UUID memberGlobalId);
+
+    @Query(value = "SELECT * FROM user_system_user s WHERE s.primary_phone = :primaryPhone OR s.primary_email = :primaryEmail", nativeQuery = true)
     SystemUserEntity findByPrimaryPhoneOrPrimaryEmail(String primaryPhone, String primaryEmail);
-    @Query(value = "SELECT * FROM user_system_user s WHERE s.is_staff = 0", nativeQuery = true)
-    List<SystemUserEntity> findOnlineMembers();
+
+    @Query(value = "SELECT * FROM user_system_user s WHERE s.tenant_global_id = :tenantGlobalId", nativeQuery = true)
+    List<SystemUserEntity> findAllSystemUsers(UUID tenantGlobalId);
 }
+

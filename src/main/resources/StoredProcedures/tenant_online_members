@@ -1,4 +1,5 @@
-create or replace function user_tenant_online_members_procedure()
+-- SELECT * FROM user_tenant_online_members_procedure();
+create or replace function user_tenant_online_members_procedure(tenantGlobalId uuid)
 returns
 table(
     system_user_global_id uuid,
@@ -26,6 +27,7 @@ return query
     FROM
         user_system_user
     WHERE
+        user_system_user.tenant_global_id = tenantGlobalId AND
         is_staff =0 ;
 end;
 '

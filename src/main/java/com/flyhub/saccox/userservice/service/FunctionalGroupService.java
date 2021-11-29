@@ -50,9 +50,9 @@ public class FunctionalGroupService {
 		return userFunctionalGroupResponse;
 	}
 	
-	public FunctionalGroupEntity findByFunctionalGroupGlobalId(UUID functionalGroupGlobalId) {
+	public FunctionalGroupEntity findByFunctionalGroupGlobalId(UUID tenantGlobalId, UUID functionalGroupGlobalId) {
 		log.info("Inside findByFunctionalGroupGlobalId method of FunctionalGroupService");
-		FunctionalGroupEntity functionalGroup = functionalGroupRepository.findByFunctionalGroupGlobalId(functionalGroupGlobalId);
+		FunctionalGroupEntity functionalGroup = functionalGroupRepository.findByFunctionalGroupGlobalId(tenantGlobalId,functionalGroupGlobalId);
 		if (functionalGroup != null) {
 			return functionalGroup;
 		}
@@ -85,9 +85,9 @@ public class FunctionalGroupService {
 		return functionalGroups;
 	}
 
-	public List<FunctionalGroupEntity> findAllAddedFunctionalGroups() {
+	public List<FunctionalGroupEntity> findAllAddedFunctionalGroups(UUID tenantGlobalId) {
 		log.info("Inside findAllFunctionalGroups method of FunctionalGroupService");
-		List<FunctionalGroupEntity> functionalGroups = functionalGroupRepository.findAllAddedFunctionalGroups();
+		List<FunctionalGroupEntity> functionalGroups = functionalGroupRepository.findAllAddedFunctionalGroups(tenantGlobalId);
 
 		if (functionalGroups.isEmpty()) {
 			throw new CustomNoContentException("FunctionalGroups not found");
@@ -96,7 +96,7 @@ public class FunctionalGroupService {
 		return functionalGroups;
 	}
 
-	public FunctionalGroupEntity patchFunctionalGroup(UUID functionalGroupGlobalId, JsonPatch jsonPatch)
+	public FunctionalGroupEntity patchFunctionalGroup(UUID tenantGlobalId, UUID functionalGroupGlobalId, JsonPatch jsonPatch)
 			throws JsonPatchException, JsonProcessingException {
         log.info("Inside patchFunctionalGroup method of FunctionalGroupService");
 		if (functionalGroupGlobalId.equals(0L)) {
@@ -104,7 +104,7 @@ public class FunctionalGroupService {
 		}
 
 		Optional<FunctionalGroupEntity> functionalGroup = Optional
-				.ofNullable(functionalGroupRepository.findByFunctionalGroupGlobalId(functionalGroupGlobalId));
+				.ofNullable(functionalGroupRepository.findByFunctionalGroupGlobalId(tenantGlobalId,functionalGroupGlobalId));
 
 		if (functionalGroup.isPresent()) {
 			FunctionalGroupEntity functionalGroupEntity = this.applyPatchToFunctionalGroupEntity(jsonPatch, functionalGroup.get());
