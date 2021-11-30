@@ -1,7 +1,9 @@
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
 DROP TABLE IF EXISTS user_module;
 CREATE TABLE public.user_module
 (
-    module_global_id uuid NOT NULL,
+    module_global_id uuid DEFAULT uuid_generate_v4(),
     access_location character varying(255) COLLATE pg_catalog."default",
     created_by uuid,
     created_on timestamp without time zone DEFAULT CURRENT_TIMESTAMP(0),
@@ -19,7 +21,7 @@ CREATE TABLE public.user_module
 DROP TABLE IF EXISTS user_functional_group;
 CREATE TABLE public.user_functional_group
 (
-    functional_group_global_id uuid NOT NULL,
+    functional_group_global_id uuid DEFAULT uuid_generate_v4(),
     branch_name character varying(255) COLLATE pg_catalog."default",
     created_by uuid,
     created_on timestamp without time zone DEFAULT CURRENT_TIMESTAMP(0),
@@ -41,7 +43,7 @@ CREATE TABLE public.user_functional_group
 DROP TABLE IF EXISTS user_functional_group_module_mapping;
 CREATE TABLE public.user_functional_group_module_mapping
 (
-    functional_group_module_mapping_global_id uuid NOT NULL,
+    functional_group_module_mapping_global_id uuid DEFAULT uuid_generate_v4(),
     can_create integer DEFAULT 0,
     can_email integer DEFAULT 0,
     can_hard_delete integer DEFAULT 0,

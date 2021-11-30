@@ -29,6 +29,7 @@ public class LoginAttemptEntity {
 	@GenericGenerator(name = "uuid", strategy = "uuid2")
     @JsonProperty("login_attempt_global_id")
     @ApiModelProperty(notes = "Unique identifier of a login attempt entity. Auto generated.", example = "1")
+    @Column(columnDefinition = "uuid DEFAULT uuid_generate_v4()")
     private UUID loginAttemptGlobalId;
 
     @JsonProperty("system_user_global_id")

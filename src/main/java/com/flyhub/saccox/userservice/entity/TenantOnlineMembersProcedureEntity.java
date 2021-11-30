@@ -13,6 +13,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 public class TenantOnlineMembersProcedureEntity {
+
     @Id
     private UUID system_user_global_id;
     private String first_name;
@@ -21,4 +22,5 @@ public class TenantOnlineMembersProcedureEntity {
     private String primary_email;
     private String login_status;
     private String login_date;
+
 }

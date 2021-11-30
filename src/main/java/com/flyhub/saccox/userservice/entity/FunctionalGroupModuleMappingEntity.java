@@ -31,6 +31,7 @@ public class FunctionalGroupModuleMappingEntity {
 	@GenericGenerator(name = "uuid", strategy = "uuid2")
     @JsonProperty("functional_group_module_mapping_global_id")
     @ApiModelProperty(notes = "Unique identifier of a functional group module mapping entity. Auto generated.", example = "1")
+    @Column(columnDefinition = "uuid DEFAULT uuid_generate_v4()")
     private UUID functionalGroupModuleMappingGlobalId;
 
     @JsonProperty("name")

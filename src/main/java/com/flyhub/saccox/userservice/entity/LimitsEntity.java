@@ -15,10 +15,12 @@ import java.util.UUID;
 @NoArgsConstructor
 @Table(name = "user_limits")
 public class LimitsEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @JsonProperty("limit_global_id")
     @ApiModelProperty(notes = "Unique identifier of the limit entity. Auto generated.", example = "1")
+    @Column(columnDefinition = "uuid DEFAULT uuid_generate_v4()")
     private UUID limitGlobalId;
 
     @JsonProperty("tenant_global_id")
@@ -53,7 +55,5 @@ public class LimitsEntity {
     @ApiModelProperty(notes = "Soft delete.", example = "1 | 0")
     @Column(columnDefinition = "integer default 0")
     private int softDelete;
-
-
 
 }

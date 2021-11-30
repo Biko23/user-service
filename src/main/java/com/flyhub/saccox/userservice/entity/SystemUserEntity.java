@@ -31,6 +31,7 @@ public class SystemUserEntity {
 	@GenericGenerator(name = "uuid", strategy = "uuid2")
     @JsonProperty("system_user_global_id")
     @ApiModelProperty(notes = "Unique identifier of a system user type entity. Auto generated.", example = "1")
+    @Column(columnDefinition = "uuid DEFAULT uuid_generate_v4()")
     private UUID systemUserGlobalId;
 
     @JsonProperty("tenant_global_id")
@@ -245,6 +246,5 @@ public class SystemUserEntity {
     @JsonProperty("refresh_token")
     @ApiModelProperty(notes = "Refresh token.", example = "UUID", required = true)
     private UUID refreshToken;
-
 
 }

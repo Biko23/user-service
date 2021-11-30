@@ -29,6 +29,7 @@ public class ResponseFilterEntity {
 	@GenericGenerator(name = "uuid", strategy = "uuid2")
     @JsonProperty("response_filter_global_id")
     @ApiModelProperty(notes = "Unique identifier of a response filter entity. Auto generated.", example = "1")
+    @Column(columnDefinition = "uuid DEFAULT uuid_generate_v4()")
     private UUID responseFilterGlobalId;
 
     @JsonProperty("entity")
