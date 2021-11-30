@@ -28,6 +28,7 @@ public class SystemUserFunctionalGroupMappingEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @JsonProperty("system_user_functional_group_mapping_global_id")
     @ApiModelProperty(notes = "Unique identifier of a system user functional group mapping entity. Auto generated.", example = "1")
+    @Column(columnDefinition = "uuid DEFAULT uuid_generate_v4()")
     private UUID systemUserFunctionalGroupMappingGlobalId;
 
     @JsonProperty("system_user_global_id")
@@ -74,6 +75,5 @@ public class SystemUserFunctionalGroupMappingEntity {
     @ApiModelProperty(notes = "Hard delete.", example = "1 | 0")
     @Column(columnDefinition = "integer default 0")
     private int hardDelete;
-
 
 }

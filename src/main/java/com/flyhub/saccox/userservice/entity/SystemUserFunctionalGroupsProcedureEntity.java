@@ -12,7 +12,6 @@ public class SystemUserFunctionalGroupsProcedureEntity {
 
 	@Id
 	private UUID system_user_global_id;
-
 	private String system_user_functional_group_mapping_global_ids;
 	private String functional_group_global_ids;
 	private String functional_group_names;
@@ -21,4 +20,5 @@ public class SystemUserFunctionalGroupsProcedureEntity {
 	private String last_name;
 	private String primary_phone;
 	private String primary_email;
+
 }

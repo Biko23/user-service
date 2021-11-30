@@ -30,6 +30,7 @@ public class FunctionalGroupEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @JsonProperty("functional_group_global_id")
     @ApiModelProperty(notes = "Unique identifier of a functional group entity. Auto generated.", example = "1")
+    @Column(columnDefinition = "uuid DEFAULT uuid_generate_v4()")
     private UUID functionalGroupGlobalId;
 
     @JsonProperty("tenant_global_id")
@@ -104,4 +105,5 @@ public class FunctionalGroupEntity {
     @ApiModelProperty(notes = "Hard delete.", example = "1 | 0")
     @Column(columnDefinition = "integer default 0")
     private int hardDelete;
+
 }

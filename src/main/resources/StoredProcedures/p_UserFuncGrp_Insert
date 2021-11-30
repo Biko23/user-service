@@ -1,0 +1,27 @@
+CREATE OR REPLACE FUNCTION p_UserFuncGrp_Insert()
+RETURNS trigger AS
+$$
+BEGIN
+	INSERT INTO user_functional_group (
+		tenant_global_id,name,description,has_supervisor,supervisor_group_global_id,supervisor_group_name,is_default,is_active
+	) VALUES (
+		NEW.tenant_global_id,'Member','This is the member group upon online access request',0,NULL,NULL,1,1
+	), (
+		NEW.tenant_global_id,'Internal Admin','This is the default group on auth sign up',0,NULL,NULL,1,1
+	), (
+		NEW.tenant_global_id,'Annual General Assembly','This is the sacco general assembly group',0,NULL,NULL,0,1
+	), (
+		NEW.tenant_global_id,'Audit and Supervision Committee','This is the sacco internal audit committee group',0,NULL,NULL,0,1
+	), (
+		NEW.tenant_global_id,'Finance Committee','This is the sacco finance committee group',0,NULL,NULL,0,1
+	), (
+		NEW.tenant_global_id,'Manager','This is the sacco managers group',1,'fefcb321-b7ef-424b-8692-d470b7ccf59b','Finance Committee',0,1
+	), (
+		NEW.tenant_global_id,'Accountant','This is the sacco accountants group',1,'67a34fce-dcd1-4dd1-9317-35cab18147bb','Manager',0,1
+	), (
+		NEW.tenant_global_id,'Cashier','This is the sacco cashiers group',1,'7fe809ca-f26f-46c2-96a5-543c1548bf28','Accountant',0,1
+	);
+RETURN NEW;
+END;
+$$
+LANGUAGE 'plpgsql';

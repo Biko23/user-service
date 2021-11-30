@@ -1,0 +1,5 @@
+CREATE TRIGGER tr_UserFuncGrpModMap_Insert
+AFTER INSERT
+ON user_functional_group
+FOR EACH ROW
+EXECUTE PROCEDURE p_UserFuncGrpModMap_Insert();
