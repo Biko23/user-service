@@ -56,8 +56,7 @@ public class SystemUserController {
         if (errors.hasErrors()) {
             return new ResponseEntity<>(new ApiResponseFormat(false, null, "Invalid Values passed for the fields", systemUserService.handleValidationExceptions(errors)), HttpStatus.BAD_REQUEST);
         }
-        VisualObject _systemUser = systemUserService.saveSystemUser(systemUserEntity);
-        return new ResponseEntity<>(new ApiResponseFormat(true, null, "System user created.", _systemUser), HttpStatus.CREATED);
+        return new ResponseEntity<>(new ApiResponseFormat(true, null, "System user created.", systemUserService.saveSystemUser(systemUserEntity)), HttpStatus.CREATED);
     }
 
     @PostMapping("/member-online-access")
@@ -74,36 +73,36 @@ public class SystemUserController {
         return new ResponseEntity<>(new ApiResponseFormat(true, null, "Logged in successfully", systemUser), HttpStatus.OK);
     }
 
-    @GetMapping("/{systemUserGlobalId}")
-    public ResponseEntity<?> findBySystemUserGlobalId(@PathVariable("systemUserGlobalId") UUID systemUserGlobalId) {
+    @GetMapping("/{tenantGlobalId}/{systemUserGlobalId}")
+    public ResponseEntity<?> findBySystemUserGlobalId(@PathVariable("tenantGlobalId") UUID tenantGlobalId, @PathVariable("systemUserGlobalId") UUID systemUserGlobalId) {
         log.info("Inside findBySystemUserGlobalId method of SystemUserController");
-        SystemUserEntity systemUser = systemUserService.findBySystemUserGlobalId(systemUserGlobalId);
+        SystemUserEntity systemUser = systemUserService.findBySystemUserGlobalId(tenantGlobalId,systemUserGlobalId);
         return new ResponseEntity<>(new ApiResponseFormat(true, null, "System user found.", systemUser), HttpStatus.OK);
     }
 
-    @GetMapping("/staff")
-    public ResponseEntity<?> systemUserFunctionalGroupsProcedure() {
+    @GetMapping("/{tenantGlobalId}/staff")
+    public ResponseEntity<?> systemUserFunctionalGroupsProcedure(@PathVariable("tenantGlobalId") UUID tenantGlobalId) {
         log.info("Inside systemUserFunctionalGroupsProcedure method of SystemUserController");
-        return new ResponseEntity<>(new ApiResponseFormat(true, null, "System user(s) found.", systemUserService.systemUserFunctionalGroupsProcedure()), HttpStatus.OK);
+        return new ResponseEntity<>(new ApiResponseFormat(true, null, "System user(s) found.", systemUserService.systemUserFunctionalGroupsProcedure(tenantGlobalId)), HttpStatus.OK);
     }
-    @GetMapping("/online-members")
-    public ResponseEntity<?> findAllOnlineMembers() {
+    @GetMapping("/{tenantGlobalId}/online-members")
+    public ResponseEntity<?> findAllOnlineMembers(@PathVariable("tenantGlobalId") UUID tenantGlobalId) {
         log.info("Inside findAllOnlineMembers method of SystemUserController");
-        return new ResponseEntity<>(new ApiResponseFormat(true, null, "Online members found.", systemUserService.findAllOnlineMembers()), HttpStatus.OK);
+        return new ResponseEntity<>(new ApiResponseFormat(true, null, "Online members found.", systemUserService.findAllOnlineMembers(tenantGlobalId)), HttpStatus.OK);
     }
-    @GetMapping("")
-    public ResponseEntity<?> findAllSystemUsers() {
+    @GetMapping("/{tenantGlobalId}")
+    public ResponseEntity<?> findAllSystemUsers(@PathVariable("tenantGlobalId") UUID tenantGlobalId) {
         log.info("Inside findAllSystemUsers method of SystemUserController");
-        return new ResponseEntity<>(new ApiResponseFormat(true, null, "System user(s) found.", systemUserService.findAllSystemUsers()), HttpStatus.OK);
+        return new ResponseEntity<>(new ApiResponseFormat(true, null, "System user(s) found.", systemUserService.findAllSystemUsers(tenantGlobalId)), HttpStatus.OK);
     }
 
-    @PatchMapping(path = "/{systemUserGlobalId}", consumes = "application/json-patch+json")
-    public ResponseEntity<?> patchSystemUser(@PathVariable("systemUserGlobalId") @NotNull(message = "Please provide the user ID") UUID systemUserGlobalId, @Valid @RequestBody JsonPatch jsonPatch, Errors errors) throws JsonPatchException, JsonProcessingException {
+    @PatchMapping(path = "/{tenantGlobalId}/{systemUserGlobalId}", consumes = "application/json-patch+json")
+    public ResponseEntity<?> patchSystemUser(@PathVariable("tenantGlobalId") @NotNull(message = "Please provide the user ID") UUID tenantGlobalId, @PathVariable("systemUserGlobalId") @NotNull(message = "Please provide the user ID") UUID systemUserGlobalId, @Valid @RequestBody JsonPatch jsonPatch, Errors errors) throws JsonPatchException, JsonProcessingException {
         log.info("Inside patchSystemUser method of SystemUserController");
         if (errors.hasErrors()) {
             return new ResponseEntity<>(new ApiResponseFormat(false, null, "Invalid Values passed for the fields", systemUserService.handleValidationExceptions(errors)), HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>(new ApiResponseFormat(true, null, "System user updated.", systemUserService.patchSystemUser(systemUserGlobalId, jsonPatch)), HttpStatus.OK);
+        return new ResponseEntity<>(new ApiResponseFormat(true, null, "System user updated.", systemUserService.patchSystemUser(tenantGlobalId, systemUserGlobalId, jsonPatch)), HttpStatus.OK);
     }
 
     @DeleteMapping("/{systemUserGlobalId}")
@@ -119,17 +118,4 @@ public class SystemUserController {
         systemUserService.deleteAllSystemUsers();
         return new ResponseEntity<>(new ApiResponseFormat(true, null, "System users deleted.", null), HttpStatus.OK);
     }
-
-    @GetMapping("/phone-exists/{phoneNumber}")
-    public ResponseEntity<?> findByPrimaryPhoneOrSecondaryPhone(@PathVariable("phoneNumber") String phoneNumber) {
-        log.info("Inside findByPrimaryPhoneOrSecondaryPhone method of SystemUserController");
-        return new ResponseEntity<>(new ApiResponseFormat(true, null, "System user exists.", systemUserService.findByPrimaryPhoneOrSecondaryPhone(phoneNumber)), HttpStatus.OK);
-    }
-
-    @GetMapping("/email-exists/{email}")
-    public ResponseEntity<?> findByPrimaryEmailOrSecondaryEmail(@PathVariable("email") String email) {
-        log.info("Inside findByPrimaryEmailOrSecondaryEmail method of SystemUserController");
-        return new ResponseEntity<>(new ApiResponseFormat(true, null, "System user exists.", systemUserService.findByPrimaryEmailOrSecondaryEmail(email)), HttpStatus.OK);
-    }
-
 }

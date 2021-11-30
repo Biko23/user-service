@@ -170,24 +170,90 @@ public class SystemUserService {
     @Transactional
     public VisualObject saveSystemUser(SystemUserEntity systemUserEntity) throws NoSuchAlgorithmException, InvalidKeySpecException {
         log.info("Inside saveSystemUser method of SystemUserService");
-        System.out.println(systemUserEntity);
-        if (systemUserEntity.getMemberGlobalId() != null ) { // works for online member being registered as staff
-            System.out.println(systemUserEntity);
-            SystemUserEntity userAsMember = systemUserRepository.findByMemberGlobalId(systemUserEntity.getMemberGlobalId());
-            System.out.println(userAsMember);
-                updateSystemUser(userAsMember.getSystemUserGlobalId(), userAsMember);
-                SystemUserEntity tokenObject = new SystemUserEntity();
+//<<<<<<< HEAD
+//        System.out.println(systemUserEntity);
+//        if (systemUserEntity.getMemberGlobalId() != null ) { // works for online member being registered as staff
+//            System.out.println(systemUserEntity);
+//            SystemUserEntity userAsMember = systemUserRepository.findByMemberGlobalId(systemUserEntity.getMemberGlobalId());
+//            System.out.println(userAsMember);
+//                updateSystemUser(userAsMember.getSystemUserGlobalId(), userAsMember);
+//                SystemUserEntity tokenObject = new SystemUserEntity();
+//
+//                tokenObject.setSystemUserGlobalId(userAsMember.getSystemUserGlobalId());
+//                tokenObject.setTenantGlobalId(userAsMember.getTenantGlobalId());
+//                tokenObject.setTenantName(userAsMember.getTenantName());
+//                tokenObject.setBranchGlobalId(userAsMember.getBranchGlobalId());
+//                tokenObject.setRefreshToken(userAsMember.getRefreshToken());
+//
+//                VisualObject tokenResponse = restTemplate.postForObject("http://localhost:9100/api/v1/auth/tokens", tokenObject, VisualObject.class);
+//
+//            return tokenResponse;
+//        } else {
+//=======
+        if (systemUserEntity.getMemberGlobalId() != null & systemUserEntity.getIsStaff() == 0) { // works for online member being registered as staff
+            SystemUserEntity userAsMember = systemUserRepository.findByMemberGlobalId(systemUserEntity.getTenantGlobalId(), systemUserEntity.getMemberGlobalId());
+            // update the is_active and is_staff
+            // use to update member in the system user table given the member id
+            updateSystemUser(userAsMember.getTenantGlobalId(), userAsMember.getSystemUserGlobalId(), userAsMember);
+            SystemUserEntity tokenObject = new SystemUserEntity();
 
-                tokenObject.setSystemUserGlobalId(userAsMember.getSystemUserGlobalId());
-                tokenObject.setTenantGlobalId(userAsMember.getTenantGlobalId());
-                tokenObject.setTenantName(userAsMember.getTenantName());
-                tokenObject.setBranchGlobalId(userAsMember.getBranchGlobalId());
-                tokenObject.setRefreshToken(userAsMember.getRefreshToken());
+            tokenObject.setSystemUserGlobalId(userAsMember.getSystemUserGlobalId());
+            tokenObject.setTenantGlobalId(userAsMember.getTenantGlobalId());
+            tokenObject.setTenantName(userAsMember.getTenantName());
+            tokenObject.setBranchGlobalId(userAsMember.getBranchGlobalId());
+            tokenObject.setRefreshToken(userAsMember.getRefreshToken());
 
-                VisualObject tokenResponse = restTemplate.postForObject("http://localhost:9100/api/v1/auth/tokens", tokenObject, VisualObject.class);
+            VisualObject tokenResponse = restTemplate.postForObject("http://localhost:9100/api/v1/auth/tokens", tokenObject, VisualObject.class);
 
             return tokenResponse;
-        } else {
+        }
+        else if (systemUserEntity.getMemberGlobalId() != null & systemUserEntity.getIsStaff() == 1) { // works for existing member being registered as staff
+            // get a salt value using the SecureRandom class
+            SecureRandom secureRandom = new SecureRandom();
+            byte[] salt = secureRandom.generateSeed(12);
+
+            // hash the password with the salt
+            PBEKeySpec pbeKeySpec = new PBEKeySpec(systemUserEntity.getPassword().toCharArray(), salt, 10, 512);
+            SecretKeyFactory secretKey = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA512");
+            byte[] hash = secretKey.generateSecret(pbeKeySpec).getEncoded();
+
+            //converting to string to store into database
+            String hashedPassword = Base64.getMimeEncoder().encodeToString(hash);
+
+            systemUserEntity.setSaltValue(salt);
+            systemUserEntity.setPassword(hashedPassword);
+            systemUserEntity.setIsStaff(1);
+            systemUserEntity.setIsActive(1);
+            systemUserEntity.setIsSystemAdmin(1);
+            systemUserEntity.setEverLoggedIn(0);
+            SystemUserEntity systemUser = systemUserRepository.save(systemUserEntity);
+            //posting to auth
+            ResponseEntity<VisualObject> systemUserResponse = restTemplate.postForEntity("http://localhost:9100/api/v1/auth/system-users", systemUser, VisualObject.class);
+            //get the admin functional group
+            FunctionalGroupEntity adminFunctionalGroup = functionalGroupService.findInternalAdminFunctionalGroup();
+
+            // assign internal admin group to system user
+            SystemUserFunctionalGroupMappingEntity systemUserFunctionalGroupMapping = new SystemUserFunctionalGroupMappingEntity();
+            systemUserFunctionalGroupMapping.setFunctionalGroupGlobalId(adminFunctionalGroup.getFunctionalGroupGlobalId());
+            systemUserFunctionalGroupMapping.setSystemUserGlobalId(systemUser.getSystemUserGlobalId());
+            systemUserFunctionalGroupMapping.setIsActive(1);
+            systemUserFunctionalGroupMappingService.saveSystemUserFunctionalGroupMapping(systemUserFunctionalGroupMapping);
+
+            SystemUserEntity tokenObject = new SystemUserEntity();
+
+            tokenObject.setSystemUserGlobalId(systemUser.getSystemUserGlobalId());
+            tokenObject.setTenantGlobalId(systemUser.getTenantGlobalId());
+            tokenObject.setTenantName(systemUser.getTenantName());
+            tokenObject.setBranchGlobalId(systemUser.getBranchGlobalId());
+            tokenObject.setRefreshToken(systemUser.getRefreshToken());
+
+            VisualObject tokenResponse = restTemplate.postForObject("http://localhost:9100/api/v1/auth/tokens", tokenObject, VisualObject.class);
+
+            return tokenResponse;
+        }
+        else { // this is for posting a system user
+            // get a salt value using the SecureRandom class
+//>>>>>>> 38a3202030d1dae4413194fd759936e802da0224
             SecureRandom secureRandom = new SecureRandom();
             byte[] salt = secureRandom.generateSeed(12);
 
@@ -284,9 +350,9 @@ public class SystemUserService {
         return savedMemberResponse;
     }
 
-    public List<SystemUserFunctionalGroupsProcedureEntity> systemUserFunctionalGroupsProcedure() {
+    public List<SystemUserFunctionalGroupsProcedureEntity> systemUserFunctionalGroupsProcedure(UUID tenantGlobalId) {
         log.info("Inside systemUserFunctionalGroupsProcedure method of SystemUserService");
-        List<SystemUserFunctionalGroupsProcedureEntity> systemUserFunctionalGroups = systemUserFunctionalGroupsProcedureRepository.systemUserFunctionalGroupsProcedure();
+        List<SystemUserFunctionalGroupsProcedureEntity> systemUserFunctionalGroups = systemUserFunctionalGroupsProcedureRepository.systemUserFunctionalGroupsProcedure(tenantGlobalId);
         if (!systemUserFunctionalGroups.isEmpty()) {
             return systemUserFunctionalGroups;
         } else {
@@ -295,9 +361,9 @@ public class SystemUserService {
     }
 
     @Transactional
-    public SystemUserEntity findBySystemUserGlobalId(UUID systemUserGlobalId) {
+    public SystemUserEntity findBySystemUserGlobalId(UUID tenantGlobalId, UUID systemUserGlobalId) {
         log.info("Inside findBySystemUserGlobalId method of SystemUserService");
-        SystemUserEntity login = systemUserRepository.findBySystemUserGlobalId(systemUserGlobalId);
+        SystemUserEntity login = systemUserRepository.findBySystemUserGlobalId(tenantGlobalId,systemUserGlobalId);
         if (login != null) {
             return login;
         } else {
@@ -305,30 +371,33 @@ public class SystemUserService {
         }
     }
 
-    public boolean findByPrimaryPhoneOrSecondaryPhone(String phoneNumber) {
-        log.info("Inside findByPrimaryPhoneOrSecondaryPhone method of SystemUserService");
-        SystemUserEntity userWithPrimaryPhoneOrSecondaryPhone = systemUserRepository.findByPrimaryPhoneOrSecondaryPhone(phoneNumber, phoneNumber);
-        if (userWithPrimaryPhoneOrSecondaryPhone != null) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    public boolean findByPrimaryEmailOrSecondaryEmail(String email) {
-        log.info("Inside findByPrimaryPhoneOrSecondaryEmail method of SystemUserService");
-        SystemUserEntity userWithPrimaryEmailOrSecondaryEmail = systemUserRepository.findByPrimaryEmailOrSecondaryEmail(email, email);
-        if (userWithPrimaryEmailOrSecondaryEmail != null) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    public List<SystemUserEntity> findAllSystemUsers() {
+//<<<<<<< HEAD
+//    public boolean findByPrimaryPhoneOrSecondaryPhone(String phoneNumber) {
+//        log.info("Inside findByPrimaryPhoneOrSecondaryPhone method of SystemUserService");
+//        SystemUserEntity userWithPrimaryPhoneOrSecondaryPhone = systemUserRepository.findByPrimaryPhoneOrSecondaryPhone(phoneNumber, phoneNumber);
+//        if (userWithPrimaryPhoneOrSecondaryPhone != null) {
+//            return true;
+//        } else {
+//            return false;
+//        }
+//    }
+//
+//    public boolean findByPrimaryEmailOrSecondaryEmail(String email) {
+//        log.info("Inside findByPrimaryPhoneOrSecondaryEmail method of SystemUserService");
+//        SystemUserEntity userWithPrimaryEmailOrSecondaryEmail = systemUserRepository.findByPrimaryEmailOrSecondaryEmail(email, email);
+//        if (userWithPrimaryEmailOrSecondaryEmail != null) {
+//            return true;
+//        } else {
+//            return false;
+//        }
+//    }
+//
+//    public List<SystemUserEntity> findAllSystemUsers() {
+//=======
+    public List<SystemUserEntity> findAllSystemUsers(UUID tenantGlobalId) {
+//>>>>>>> 38a3202030d1dae4413194fd759936e802da0224
         log.info("Inside findAllSystemUsers method of SystemUserService");
-        List<SystemUserEntity> systemUsers = new ArrayList<SystemUserEntity>();
-        systemUsers.addAll(systemUserRepository.findAll());
+        List<SystemUserEntity> systemUsers =systemUserRepository.findAllSystemUsers(tenantGlobalId);
 
         if (systemUsers.isEmpty()) {
             throw new CustomNoContentException("SystemUsers not found");
@@ -337,9 +406,9 @@ public class SystemUserService {
         return systemUsers;
     }
     @Transactional
-    public List<TenantOnlineMembersProcedureEntity> findAllOnlineMembers() {
+    public List<TenantOnlineMembersProcedureEntity> findAllOnlineMembers(UUID tenantGlobalId) {
         log.info("Inside findAllOnlineMembers method of SystemUserService");
-        List<TenantOnlineMembersProcedureEntity> onlineMembers = tenantOnlineMembersProcedureRepository.tenantOnlineMembersProcedure();
+        List<TenantOnlineMembersProcedureEntity> onlineMembers = tenantOnlineMembersProcedureRepository.tenantOnlineMembersProcedure(tenantGlobalId);
 
         if (onlineMembers.isEmpty()) {
             throw new CustomNoContentException("Online Members not found");
@@ -349,14 +418,14 @@ public class SystemUserService {
     }
 
     @Transactional
-    public SystemUserEntity patchSystemUser(UUID systemUserGlobalId, JsonPatch jsonPatch)
+    public SystemUserEntity patchSystemUser(UUID tenantGlobalId, UUID systemUserGlobalId, JsonPatch jsonPatch)
             throws JsonPatchException, JsonProcessingException {
         log.info("Inside patchSystemUser method of SystemUserService");
         if (systemUserGlobalId.equals(0L)) {
             throw new CustomInvalidInputException("SystemUser id - " + systemUserGlobalId + " - is not valid");
         }
 
-        Optional<SystemUserEntity> login = Optional.ofNullable(systemUserRepository.findBySystemUserGlobalId(systemUserGlobalId));
+        Optional<SystemUserEntity> login = Optional.ofNullable(systemUserRepository.findBySystemUserGlobalId(tenantGlobalId, systemUserGlobalId));
 
         if (login.isPresent()) {
             SystemUserEntity loginEntity = this.applyPatchToSystemUserEntity(jsonPatch, login.get());
@@ -372,16 +441,16 @@ public class SystemUserService {
         return objectMapper.treeToValue(patched, SystemUserEntity.class);
     }
 
-    public SystemUserEntity updateSystemUser(UUID systemUserGlobalUuid, SystemUserEntity systemUserEntity) {
+    public SystemUserEntity updateSystemUser(UUID tenantGlobalId, UUID systemUserGlobalId, SystemUserEntity systemUserEntity) {
         log.info("Inside updateSystemUser method of SystemUserService");
-        if (systemUserGlobalUuid.equals(0L)) {
-            throw new CustomInvalidInputException("System User id - " + systemUserGlobalUuid + " - is not valid");
+        if (systemUserGlobalId.equals(0L)) {
+            throw new CustomInvalidInputException("System User id - " + systemUserGlobalId + " - is not valid");
         }
 
-        Optional<SystemUserEntity> userOptional = Optional.ofNullable(systemUserRepository.findBySystemUserGlobalId(systemUserGlobalUuid));
+        Optional<SystemUserEntity> userOptional = Optional.ofNullable(systemUserRepository.findBySystemUserGlobalId(tenantGlobalId, systemUserGlobalId));
 
         if (userOptional.isPresent()) {
-            systemUserEntity.setSystemUserGlobalId(systemUserGlobalUuid);
+            systemUserEntity.setSystemUserGlobalId(systemUserGlobalId);
             systemUserEntity.setMemberGlobalId(systemUserEntity.getMemberGlobalId());
             systemUserEntity.setFirstName(systemUserEntity.getFirstName());
             systemUserEntity.setMiddleName(systemUserEntity.getMiddleName());
@@ -394,7 +463,7 @@ public class SystemUserService {
             systemUserEntity.setIsStaff(1);
             return systemUserRepository.save(systemUserEntity);
         } else {
-            throw new CustomNotFoundException("System User with id - " + systemUserGlobalUuid + " - not found");
+            throw new CustomNotFoundException("System User with id - " + systemUserGlobalId + " - not found");
         }
     }
 

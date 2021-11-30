@@ -1,4 +1,5 @@
-create or replace function user_system_user_functional_groups_procedure()
+-- SELECT * FROM user_system_user_functional_groups_procedure();
+create or replace function user_system_user_functional_groups_procedure(tenantGlobalId uuid)
 returns
 table(
     system_user_global_id uuid,
@@ -27,6 +28,7 @@ return query
         user_system_user,user_system_user_functional_group_mapping
         LEFT JOIN user_functional_group ON user_functional_group.functional_group_global_id = user_system_user_functional_group_mapping.functional_group_global_id
     WHERE
+        user_system_user.tenant_global_id = tenantGlobalId AND
         user_system_user.system_user_global_id = user_system_user_functional_group_mapping.system_user_global_id AND
         user_system_user.is_staff = 1 AND
         user_system_user_functional_group_mapping.soft_delete = 0 AND
