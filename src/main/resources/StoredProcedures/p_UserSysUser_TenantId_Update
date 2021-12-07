@@ -3,7 +3,9 @@ RETURNS trigger AS
 $$
 BEGIN
 	UPDATE user_system_user
-	SET tenant_global_id = NEW.tenant_global_id
+	SET
+	    tenant_global_id = NEW.tenant_global_id,
+	    tenant_name = NEW.name
 	WHERE system_user_global_id = NEW.created_by;
 RETURN NEW;
 END;

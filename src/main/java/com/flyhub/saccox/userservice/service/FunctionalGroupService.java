@@ -69,7 +69,7 @@ public class FunctionalGroupService {
 
 	public FunctionalGroupEntity findInternalAdminFunctionalGroup(){
 		log.info("Inside findInternalAdminFunctionalGroup method of FunctionalGroupService");
-		FunctionalGroupEntity internalAdminFunctionalGroup = functionalGroupRepository.findByNameContains("nternal Admin");
+		FunctionalGroupEntity internalAdminFunctionalGroup = functionalGroupRepository.findFunctionalGroupByName("nternal Admin");
 		return internalAdminFunctionalGroup;
 	}
 
