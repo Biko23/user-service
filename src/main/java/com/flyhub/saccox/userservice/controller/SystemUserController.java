@@ -80,17 +80,17 @@ public class SystemUserController {
         return new ResponseEntity<>(new ApiResponseFormat(true, null, "System user found.", systemUser), HttpStatus.OK);
     }
 
-    @GetMapping("/{tenantGlobalId}/staff")
+    @GetMapping("/staff/{tenantGlobalId}")
     public ResponseEntity<?> systemUserFunctionalGroupsProcedure(@PathVariable("tenantGlobalId") UUID tenantGlobalId) {
         log.info("Inside systemUserFunctionalGroupsProcedure method of SystemUserController");
         return new ResponseEntity<>(new ApiResponseFormat(true, null, "System user(s) found.", systemUserService.systemUserFunctionalGroupsProcedure(tenantGlobalId)), HttpStatus.OK);
     }
-    @GetMapping("/{tenantGlobalId}/online-members")
+    @GetMapping("/online-members/{tenantGlobalId}")
     public ResponseEntity<?> findAllOnlineMembers(@PathVariable("tenantGlobalId") UUID tenantGlobalId) {
         log.info("Inside findAllOnlineMembers method of SystemUserController");
         return new ResponseEntity<>(new ApiResponseFormat(true, null, "Online members found.", systemUserService.findAllOnlineMembers(tenantGlobalId)), HttpStatus.OK);
     }
-    @GetMapping("/{tenantGlobalId}")
+    @GetMapping("/tenant/{tenantGlobalId}")
     public ResponseEntity<?> findAllSystemUsers(@PathVariable("tenantGlobalId") UUID tenantGlobalId) {
         log.info("Inside findAllSystemUsers method of SystemUserController");
         return new ResponseEntity<>(new ApiResponseFormat(true, null, "System user(s) found.", systemUserService.findAllSystemUsers(tenantGlobalId)), HttpStatus.OK);

@@ -394,8 +394,8 @@ public class SystemUserService {
 //
 //    public List<SystemUserEntity> findAllSystemUsers() {
 //=======
+    @Transactional
     public List<SystemUserEntity> findAllSystemUsers(UUID tenantGlobalId) {
-//>>>>>>> 38a3202030d1dae4413194fd759936e802da0224
         log.info("Inside findAllSystemUsers method of SystemUserService");
         List<SystemUserEntity> systemUsers =systemUserRepository.findAllSystemUsers(tenantGlobalId);
 

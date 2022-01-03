@@ -13,8 +13,12 @@ import org.springframework.stereotype.Repository;
 public interface FunctionalGroupRepository extends JpaRepository<FunctionalGroupEntity, UUID> {
     @Query(value = "SELECT * FROM user_functional_group fg WHERE fg.tenant_global_id = :tenantGlobalId AND fg.functional_group_global_id = :functionalGroupGlobalId", nativeQuery = true)
     FunctionalGroupEntity findByFunctionalGroupGlobalId(UUID tenantGlobalId, UUID functionalGroupGlobalId);
+
+    FunctionalGroupEntity findByNameContains(String name);
+
     @Query(value="SELECT * FROM user_functional_group fg WHERE fg.tenant_global_id = :tenantGlobalId AND fg.is_default=0", nativeQuery = true)
     List<FunctionalGroupEntity> findAllAddedFunctionalGroups(UUID tenantGlobalId);
+
     @Query(value="SELECT * FROM user_functional_group fg WHERE fg.tenant_global_id IS NULL AND fg.name LIKE '%' ||'nternal'||'%'", nativeQuery = true)
     FunctionalGroupEntity findFunctionalGroupByName(String name);
 }
